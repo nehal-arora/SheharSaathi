@@ -16,8 +16,7 @@ const notoSansDevanagari = Noto_Sans_Devanagari({
 
 export const metadata: Metadata = {
   title: "शहरSaathi",
-  description:
-    "Making Every New City Feel Like Home",
+  description: "Making Every New City Feel Like Home",
   keywords: [
     "Relocation",
     "Housing",
@@ -39,7 +38,7 @@ export default function RootLayout({
       lang="en"
       className={`${manrope.variable} ${notoSansDevanagari.variable}`}
     >
-      <body className="min-h-screen bg-background font-sans text-foreground antialiased">
+      <body className="min-h-screen bg-[#FBFAF5] font-sans text-[#333333] antialiased">
         {children}
 
         <Toaster
@@ -47,6 +46,9 @@ export default function RootLayout({
           richColors
           closeButton
           duration={3000}
+          expand={true}
+          visibleToasts={3}
+          theme="light"
         />
       </body>
     </html>

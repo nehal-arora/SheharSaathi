@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 import AuthLayout from "@/components/auth/AuthLayout";
 import AuthCard from "@/components/auth/AuthCard";
@@ -30,7 +31,7 @@ export default function SignupPage() {
     e.preventDefault();
 
     if (password !== confirmPassword) {
-      alert("Passwords do not match.");
+      toast.error("Passwords do not match.");
       return;
     }
 
@@ -43,7 +44,7 @@ export default function SignupPage() {
         password,
       });
 
-      alert("Account created successfully!");
+      toast.success("Account created successfully!");
 
       router.push("/login");
     } catch (error: any) {
@@ -51,7 +52,7 @@ export default function SignupPage() {
         error?.response?.data?.detail ||
         "Signup failed. Please try again.";
 
-      alert(message);
+      toast.error(message);
     } finally {
       setLoading(false);
     }
@@ -139,7 +140,7 @@ export default function SignupPage() {
         <p className="mt-8 text-center text-sm text-gray-600">
           Already have an account?{" "}
           <Link
-            href="/auth/login"
+            href="/login"
             className="font-semibold text-[#6B8E23] hover:underline"
           >
             Login

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 import AuthLayout from "@/components/auth/AuthLayout";
 import AuthCard from "@/components/auth/AuthCard";
@@ -47,7 +48,7 @@ export default function LoginPage() {
         JSON.stringify(response.user)
       );
 
-      alert("Login Successful!");
+      toast.success("Login successful!");
 
       router.push("/");
     } catch (error: any) {
@@ -55,7 +56,7 @@ export default function LoginPage() {
         error?.response?.data?.detail ||
         "Invalid email or password.";
 
-      alert(message);
+      toast.error(message);
     } finally {
       setLoading(false);
     }

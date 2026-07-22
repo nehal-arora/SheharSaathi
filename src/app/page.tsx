@@ -15,7 +15,9 @@ export default function Home() {
           <h1 className="max-w-4xl text-5xl font-extrabold leading-tight text-[#333333] md:text-7xl">
             Move to a New City
             <br />
-            <span className="text-[#6B8E23]">Without the Stress.</span>
+            <span className="text-[#6B8E23]">
+              Without the Stress.
+            </span>
           </h1>
 
           <p className="mt-8 max-w-2xl text-lg leading-8 text-gray-600">

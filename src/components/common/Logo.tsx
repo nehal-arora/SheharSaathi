@@ -14,7 +14,6 @@ export default function Logo({
       href="/"
       className="flex items-center gap-3 transition-opacity duration-300 hover:opacity-90"
     >
-      {/* Logo Icon */}
       <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#6B8E23] text-2xl shadow-md">
         🏡
       </div>

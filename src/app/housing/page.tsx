@@ -4,13 +4,12 @@ import { useEffect, useState } from "react";
 
 import {
   HousingFilters,
-  HousingListing,
+  Housing,
 } from "@/types/housing";
 
 import { getHousing } from "@/services/housing";
 
 import HousingGrid from "@/components/housing/HousingGrid";
-import HousingSkeleton from "@/components/housing/HousingSkeleton";
 import HousingEmpty from "@/components/housing/HousingEmpty";
 import SearchBar from "@/components/housing/SearchBar";
 import FilterSidebar from "@/components/housing/FilterSidebar";
@@ -19,15 +18,15 @@ import Pagination from "@/components/housing/Pagination";
 
 export default function HousingPage() {
 
-  const [listings, setListings] = useState<HousingListing[]>([]);
+  const [listings, setListings] = useState<Housing[]>([]);
 
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState(true);
 
   const [filters, setFilters] = useState<HousingFilters>({});
 
-  const [page, setPage] = useState<number>(1);
+  const [page, setPage] = useState(1);
 
-  const [totalPages, setTotalPages] = useState<number>(1);
+  const [totalPages, setTotalPages] = useState(1);
 
 
 
@@ -36,6 +35,7 @@ export default function HousingPage() {
     try {
 
       setLoading(true);
+
 
       const response = await getHousing({
         ...filters,
@@ -55,6 +55,10 @@ export default function HousingPage() {
         "Failed to fetch housing:",
         error
       );
+
+
+      setListings([]);
+
 
     } finally {
 
@@ -88,14 +92,12 @@ export default function HousingPage() {
 
 
 
-
-
   return (
 
     <main
       className="
       min-h-screen
-      bg-white
+      bg-[#FBFAF5]
       px-5
       py-10
       sm:px-8
@@ -103,15 +105,14 @@ export default function HousingPage() {
       "
     >
 
-      <div
-        className="
-        mx-auto
-        max-w-7xl
-        "
-      >
 
+      <div className="mx-auto max-w-7xl">
+
+
+        {/* Header */}
 
         <section className="mb-10">
+
 
           <h1
             className="
@@ -136,19 +137,24 @@ export default function HousingPage() {
           </p>
 
 
+
+          <div className="mt-6 max-w-2xl">
+
+            <SearchBar
+              onSearch={handleSearch}
+            />
+
+          </div>
+
+
         </section>
 
 
-
-        <div>
-  SEARCH TEST
-</div>
 
 
 
         <div
           className="
-          mt-10
           grid
           gap-8
           lg:grid-cols-[280px_1fr]
@@ -156,44 +162,61 @@ export default function HousingPage() {
         >
 
 
-        <div>
- FILTER TEST
-</div>
+
+          {/* Sidebar */}
+
+          <FilterSidebar
+  filters={filters}
+  onChange={(updatedFilters) => {
+    setFilters(updatedFilters);
+    setPage(1);
+  }}
+/>
 
 
+
+
+
+          {/* Housing Results */}
 
           <section>
 
 
+            <HousingGrid
+              listings={listings}
+              loading={loading}
+            />
+
+
+
             {
-              loading ? (
-
-                <HousingSkeleton />
-
-              ) : listings.length === 0 ? (
-
-                <HousingEmpty />
-
-              ) : (
-
-                <div>
-  TEST HOUSING PAGE
-</div>
-
+              !loading &&
+              listings.length > 0 &&
+              (
+                <Pagination
+                  currentPage={page}
+                  totalPages={totalPages}
+                  onPageChange={setPage}
+                />
               )
             }
 
 
 
-          <div>
- PAGINATION TEST
-</div>
+            {
+              !loading &&
+              listings.length === 0 &&
+              (
+                <HousingEmpty />
+              )
+            }
 
 
           </section>
 
 
         </div>
+
 
 
       </div>

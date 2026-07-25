@@ -4,6 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from database.init_db import init_db
 from routers.auth import router as auth_router
 from routers.users import router as users_router
+from routers.housing import router as housing_router
 
 app = FastAPI(
     title="SheharSaathi API",
@@ -28,6 +29,8 @@ app.add_middleware(
 # Routers
 app.include_router(auth_router)
 app.include_router(users_router)
+app.include_router(housing_router)
+print("Housing router imported successfully")
 
 
 @app.get("/")

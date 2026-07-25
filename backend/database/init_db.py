@@ -3,6 +3,7 @@ from database.session import engine
 
 # Import all models here
 from models.user import User
+from models.housing import Housing
 
 
 def init_db():

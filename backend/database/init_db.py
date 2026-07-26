@@ -5,6 +5,8 @@ from database.session import engine
 from models.user import User
 from models.housing import Housing
 from models.roommate import Roommate
+from models.favorite_roommate import FavoriteRoommate
+
 
 
 def init_db():

@@ -4,6 +4,7 @@ from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 
 from models.roommate import Roommate
+from models.favorite_roommate import FavoriteRoommate
 from models.user import User
 from schemas.roommate import (
     RoommateCreate,
@@ -164,6 +165,18 @@ def get_roommate_list(
         .limit(limit)
         .all()
     )
+    favorite_ids = {
+        favorite.roommate_id
+        for favorite in (
+            db.query(FavoriteRoommate)
+            .filter(
+                FavoriteRoommate.user_id == current_user.id
+            )
+            .all()
+        )
+    }
+    for roommate in roommates:
+        roommate.is_favorite = roommate.id in favorite_ids            
 
     return {
         "items": roommates,
@@ -174,6 +187,7 @@ def get_roommate_list(
 
 def get_roommate_by_id(
     roommate_id: int,
+    current_user:User,
     db: Session,
 ):
     roommate = (
@@ -187,7 +201,15 @@ def get_roommate_by_id(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Roommate profile not found.",
         )
-
+    favorite=(
+        db.query(FavoriteRoommate)
+        .filter(
+            FavoriteRoommate.user_id == current_user.id,
+             FavoriteRoommate.roommate_id == roommate.id,
+        )
+        .first()
+    )
+    roommate.is_favorite = favorite is not None
     return roommate
 
 def get_recommendations(
@@ -246,7 +268,15 @@ def get_recommendations(
             score += 5
 
         roommate.compatibility = score
-        roommate.is_favorite = False
+        favorite=(
+            db.query(FavoriteRoommate)
+            .filter(
+                FavoriteRoommate.user_id == current_user.id,
+                FavoriteRoommate.roommate_id == roommate.id,
+            )
+            .first()
+        )
+        roommate.is_favorite = favorite is not None
 
         recommendations.append(roommate)
 

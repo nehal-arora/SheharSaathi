@@ -139,8 +139,10 @@ def roommate_recommendations(
 def get_roommate(
     roommate_id: int,
     db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ):
     return get_roommate_by_id(
         roommate_id,
+        current_user,
         db,
     )

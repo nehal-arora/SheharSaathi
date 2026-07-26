@@ -4,6 +4,7 @@ from database.session import engine
 # Import all models here
 from models.user import User
 from models.housing import Housing
+from models.roommate import Roommate
 
 
 def init_db():

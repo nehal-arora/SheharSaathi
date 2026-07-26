@@ -133,7 +133,7 @@ Protected route.
 Requires:
 
 ```
-Authorization: Bearer <access_token>
+Authorization: `Bearer ${token}`
 ```
 
 Returns the currently logged-in user.

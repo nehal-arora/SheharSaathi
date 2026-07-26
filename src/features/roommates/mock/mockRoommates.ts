@@ -475,7 +475,7 @@ export const mockCurrentRoommateProfile: RoommateProfile = {
 
   bio: "Computer Science student looking for a clean, friendly and responsible roommate near college.",
 
-  profile_image: null,
+  profile_image: "",
 
   food_preference: "Vegetarian",
   smoking: "Non-Smoker",

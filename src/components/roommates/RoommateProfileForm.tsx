@@ -365,8 +365,8 @@ export default function RoommateProfileForm({
           ...values,
 
           profile_image:
-            values.profile_image?.trim() ||
-            null,
+  values.profile_image?.trim() ||
+  "",
 
           languages: values.languages
             .split(",")

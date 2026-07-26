@@ -76,7 +76,7 @@ export interface RoommateProfile {
   budget: number;
 
   bio: string;
-  profile_image: string | null;
+  profile_image: string;
 
   food_preference: FoodPreference;
   smoking: SmokingPreference;

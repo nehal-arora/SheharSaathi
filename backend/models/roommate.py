@@ -147,7 +147,7 @@ class Roommate(Base):
     )
 
     lease_duration = Column(
-        String(50),
+        Integer,
         nullable=False,
     )
 

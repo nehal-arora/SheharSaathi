@@ -29,7 +29,7 @@ class RoommateBase(BaseModel):
     preferred_gender: str
     sharing_type: str
     move_in_date: date
-    lease_duration: str
+    lease_duration: int = Field(..., ge=1, le=60)
 
 
 class RoommateCreate(RoommateBase):
@@ -45,6 +45,7 @@ class RoommateResponse(RoommateBase):
     user_id: int
     compatibility: Optional[int] = None
     is_favorite: bool = False
+    lease_duration: int
     created_at: datetime
     updated_at: datetime
 

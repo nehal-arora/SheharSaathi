@@ -1,13 +1,9 @@
 import axios from "axios";
 
-/**
- * Backend Base URL
- */
-const API_BASE_URL = "http://127.0.0.1:8000";
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_URL ||
+  "http://127.0.0.1:8000";
 
-/**
- * Axios Instance
- */
 const api = axios.create({
   baseURL: API_BASE_URL,
   headers: {
@@ -15,24 +11,24 @@ const api = axios.create({
   },
 });
 
-/**
- * Automatically attach JWT token
- */
-api.interceptors.request.use((config) => {
-  if (typeof window !== "undefined") {
-    const token = localStorage.getItem("access_token");
+api.interceptors.request.use(
+  (config) => {
+    if (typeof window !== "undefined") {
+      const token = localStorage.getItem("access_token");
 
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
     }
-  }
 
-  return config;
-});
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
 
-/* ===========================================================
+/* =========================================================
    AUTH TYPES
-=========================================================== */
+========================================================= */
 
 export interface SignupData {
   name: string;
@@ -58,34 +54,29 @@ export interface LoginResponse {
   user: User;
 }
 
-/* ===========================================================
+/* =========================================================
    AUTH APIs
-=========================================================== */
+========================================================= */
 
-/**
- * Signup
- */
-export const signupUser = async (data: SignupData) => {
+export async function signupUser(data: SignupData) {
   const response = await api.post("/auth/signup", data);
   return response.data;
-};
+}
 
-/**
- * Login
- */
-export const loginUser = async (
+export async function loginUser(
   data: LoginData
-): Promise<LoginResponse> => {
-  const response = await api.post("/auth/login", data);
-  return response.data;
-};
+): Promise<LoginResponse> {
+  const response = await api.post<LoginResponse>(
+    "/auth/login",
+    data
+  );
 
-/**
- * Current User
- */
-export const getCurrentUser = async (): Promise<User> => {
-  const response = await api.get("/users/me");
   return response.data;
-};
+}
+
+export async function getCurrentUser(): Promise<User> {
+  const response = await api.get<User>("/users/me");
+  return response.data;
+}
 
 export default api;

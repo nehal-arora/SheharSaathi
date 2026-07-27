@@ -7,7 +7,7 @@ from models.housing import Housing
 from models.roommate import Roommate
 from models.favorite_roommate import FavoriteRoommate
 from models.expense import Expense
-
+from models import ai
 
 
 def init_db():

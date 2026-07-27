@@ -7,6 +7,7 @@ from routers.users import router as users_router
 from routers.housing import router as housing_router
 from routers.roommates import router as roommates_router
 from routers.favorite_roommates import router as favorite_roommates_router
+from routers.expenses import router as expenses_router
 
 app = FastAPI(
     title="SheharSaathi API",
@@ -34,6 +35,7 @@ app.include_router(users_router)
 app.include_router(housing_router)
 app.include_router(roommates_router)
 app.include_router(favorite_roommates_router)
+app.include_router(expenses_router)
 
 
 @app.get("/")

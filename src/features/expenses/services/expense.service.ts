@@ -829,3 +829,6 @@ export function resetExpenseMockData(): void {
     ...mockBudget,
   };
 }
+
+// Expense module is now fully integrated with the FastAPI backend.
+// All CRUD operations, budget, dashboard, analytics, and reports use live APIs.

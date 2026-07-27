@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
@@ -47,27 +46,30 @@ export default function MyRoommateProfilePage() {
 
   const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState(false);
-
-  async function loadProfile() {
-    try {
-      setLoading(true);
-
-      const data = await getMyRoommateProfile();
-
-      setProfile(data);
-    } catch (error) {
-      const message =
-        error instanceof Error
-          ? error.message
-          : "Unable to load your roommate profile.";
-
-      toast.error(message);
-    } finally {
-      setLoading(false);
-    }
-  }
+  const [imageFailed, setImageFailed] = useState(false);
 
   useEffect(() => {
+    async function loadProfile() {
+      try {
+        setLoading(true);
+
+        const data = await getMyRoommateProfile();
+
+        setProfile(data);
+        setImageFailed(false);
+      } catch (error) {
+        const message =
+          error instanceof Error
+            ? error.message
+            : "Unable to load your roommate profile.";
+
+        toast.error(message);
+        setProfile(null);
+      } finally {
+        setLoading(false);
+      }
+    }
+
     loadProfile();
   }, []);
 
@@ -75,7 +77,7 @@ export default function MyRoommateProfilePage() {
     if (!profile) {
       return {
         percentage: 0,
-        missingFields: [],
+        missingFields: [] as string[],
       };
     }
 
@@ -83,18 +85,9 @@ export default function MyRoommateProfilePage() {
       label: string;
       value: unknown;
     }[] = [
-      {
-        label: "Full name",
-        value: profile.name,
-      },
-      {
-        label: "Age",
-        value: profile.age,
-      },
-      {
-        label: "Gender",
-        value: profile.gender,
-      },
+      { label: "Full name", value: profile.name },
+      { label: "Age", value: profile.age },
+      { label: "Gender", value: profile.gender },
       {
         label: "Occupation",
         value: profile.occupation,
@@ -103,10 +96,7 @@ export default function MyRoommateProfilePage() {
         label: "Company or college",
         value: profile.company_or_college,
       },
-      {
-        label: "City",
-        value: profile.city,
-      },
+      { label: "City", value: profile.city },
       {
         label: "Preferred locality",
         value: profile.preferred_locality,
@@ -115,10 +105,7 @@ export default function MyRoommateProfilePage() {
         label: "Monthly budget",
         value: profile.budget,
       },
-      {
-        label: "Bio",
-        value: profile.bio,
-      },
+      { label: "Bio", value: profile.bio },
       {
         label: "Food preference",
         value: profile.food_preference,
@@ -271,8 +258,8 @@ export default function MyRoommateProfilePage() {
           </h1>
 
           <p className="mx-auto mt-3 max-w-xl text-gray-600">
-            Tell us about your lifestyle, budget, location
-            and preferences to receive personalized roommate
+            Tell us about your lifestyle, budget, location and
+            preferences to receive personalized roommate
             recommendations.
           </p>
 
@@ -287,6 +274,8 @@ export default function MyRoommateProfilePage() {
       </main>
     );
   }
+
+  const profileImage = getProfileImage(profile);
 
   return (
     <main className="min-h-screen bg-[#FBFAF5]">
@@ -333,15 +322,19 @@ export default function MyRoommateProfilePage() {
         <div className="mt-8 grid gap-8 lg:grid-cols-[340px_1fr]">
           <aside className="space-y-6">
             <section className="overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-sm">
-              <div className="relative h-80 bg-[#EEF2E4]">
-                <Image
-                  src={getProfileImage(profile)}
-                  alt={`${profile.name}'s profile`}
-                  fill
-                  priority
-                  sizes="(max-width: 1024px) 100vw, 340px"
-                  className="object-cover"
-                />
+              <div className="relative flex h-80 items-center justify-center overflow-hidden bg-[#EEF2E4]">
+                {!imageFailed && profileImage ? (
+                  <img
+                    src={profileImage}
+                    alt={`${profile.name}'s profile`}
+                    className="h-full w-full object-cover"
+                    onError={() => setImageFailed(true)}
+                  />
+                ) : (
+                  <div className="flex h-28 w-28 items-center justify-center rounded-full bg-white text-[#6B8E23] shadow-sm">
+                    <UserRound size={58} />
+                  </div>
+                )}
               </div>
 
               <div className="p-6">
@@ -486,7 +479,10 @@ export default function MyRoommateProfilePage() {
                 <InfoCard
                   icon={<Languages size={21} />}
                   label="Languages"
-                  value={profile.languages.join(", ")}
+                  value={
+                    profile.languages?.join(", ") ||
+                    "Not provided"
+                  }
                 />
 
                 <InfoCard

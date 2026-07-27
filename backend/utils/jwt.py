@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta, timezone
+
 from jose import JWTError, jwt
 
 from config.settings import settings
@@ -21,11 +22,19 @@ def create_access_token(data: dict) -> str:
 
     to_encode.update({"exp": expire})
 
-    return jwt.encode(
+    token = jwt.encode(
         to_encode,
         SECRET_KEY,
-        algorithm=ALGORITHM
+        algorithm=ALGORITHM,
     )
+
+    print("=" * 60)
+    print("JWT CREATED")
+    print("SECRET_KEY:", SECRET_KEY)
+    print("PAYLOAD:", to_encode)
+    print("=" * 60)
+
+    return token
 
 
 def verify_access_token(token: str):
@@ -33,13 +42,26 @@ def verify_access_token(token: str):
     Verify and decode a JWT token.
     """
     try:
+        print("=" * 60)
+        print("VERIFYING TOKEN")
+        print("SECRET_KEY:", SECRET_KEY)
+        print("TOKEN:", token)
+
         payload = jwt.decode(
             token,
             SECRET_KEY,
-            algorithms=[ALGORITHM]
+            algorithms=[ALGORITHM],
         )
+
+        print("DECODED PAYLOAD:", payload)
+        print("=" * 60)
 
         return payload
 
-    except JWTError:
+    except JWTError as e:
+        print("=" * 60)
+        print("JWT ERROR")
+        print(str(e))
+        print("=" * 60)
+
         return None

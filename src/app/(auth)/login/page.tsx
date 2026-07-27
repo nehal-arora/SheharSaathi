@@ -20,7 +20,6 @@ export default function LoginPage() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const [loading, setLoading] = useState(false);
 
   async function handleSubmit(
@@ -31,29 +30,19 @@ export default function LoginPage() {
     try {
       setLoading(true);
 
-      const response = await loginUser({
+      await loginUser({
         email,
         password,
       });
 
-      // Save JWT Token
-      localStorage.setItem(
-        "access_token",
-        response.access_token
-      );
-
-      // Save User Details
-      localStorage.setItem(
-        "user",
-        JSON.stringify(response.user)
-      );
-
       toast.success("Login successful!");
 
-      router.push("/");
+      router.replace("/roommates/profile");
+      router.refresh();
     } catch (error: any) {
       const message =
         error?.response?.data?.detail ||
+        error?.message ||
         "Invalid email or password.";
 
       toast.error(message);
@@ -135,7 +124,7 @@ export default function LoginPage() {
         </button>
 
         <div className="mt-8 text-center text-sm text-gray-600">
-          Don't have an account?{" "}
+          Don&apos;t have an account?{" "}
           <Link
             href="/signup"
             className="font-semibold text-[#6B8E23] hover:underline"

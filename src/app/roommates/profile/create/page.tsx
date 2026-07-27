@@ -1,5 +1,9 @@
 import Link from "next/link";
-import { ArrowLeft, Sparkles, UserRoundPlus } from "lucide-react";
+import {
+  ArrowLeft,
+  Sparkles,
+  UserRoundPlus,
+} from "lucide-react";
 
 import RoommateProfileForm from "@/components/roommates/RoommateProfileForm";
 
@@ -32,8 +36,9 @@ export default function CreateRoommateProfilePage() {
               </h1>
 
               <p className="mt-3 max-w-2xl leading-7 text-white/90">
-                Add your lifestyle, location, budget and roommate
-                preferences to receive personalized compatibility matches.
+                Add your lifestyle, location, budget and
+                roommate preferences to receive personalized
+                compatibility matches.
               </p>
             </div>
           </div>

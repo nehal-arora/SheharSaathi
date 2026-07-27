@@ -1,8 +1,9 @@
 import axios from "axios";
 
-const API_BASE_URL =
+const API_BASE_URL = (
   process.env.NEXT_PUBLIC_API_URL ||
-  "http://127.0.0.1:8000";
+  "http://127.0.0.1:8000"
+).replace(/\/+$/, "");
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -11,14 +12,55 @@ const api = axios.create({
   },
 });
 
+/**
+ * Reads and cleans the token stored in localStorage.
+ *
+ * Handles accidental values such as:
+ * "eyJ..."
+ * Bearer eyJ...
+ * extra spaces
+ */
+function getStoredAccessToken(): string | null {
+  if (typeof window === "undefined") {
+    return null;
+  }
+
+  const storedToken = localStorage.getItem("access_token");
+
+  if (!storedToken) {
+    return null;
+  }
+
+  const cleanedToken = storedToken
+    .trim()
+    .replace(/^["']|["']$/g, "")
+    .replace(/^Bearer\s+/i, "")
+    .trim();
+
+  return cleanedToken || null;
+}
+
 api.interceptors.request.use(
   (config) => {
-    if (typeof window !== "undefined") {
-      const token = localStorage.getItem("access_token");
+    const requestUrl = config.url ?? "";
+
+    const isAuthRequest =
+      requestUrl.includes("/auth/login") ||
+      requestUrl.includes("/auth/signup");
+
+    /*
+     * Never attach an old token to login or signup.
+     */
+    if (!isAuthRequest) {
+      const token = getStoredAccessToken();
 
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
+      } else {
+        delete config.headers.Authorization;
       }
+    } else {
+      delete config.headers.Authorization;
     }
 
     return config;
@@ -66,17 +108,68 @@ export async function signupUser(data: SignupData) {
 export async function loginUser(
   data: LoginData
 ): Promise<LoginResponse> {
+  /*
+   * Remove any expired token before making the login request.
+   */
+  if (typeof window !== "undefined") {
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("user");
+  }
+
   const response = await api.post<LoginResponse>(
     "/auth/login",
     data
   );
 
-  return response.data;
+  const rawToken = response.data.access_token;
+
+  if (!rawToken || typeof rawToken !== "string") {
+    throw new Error(
+      "The backend did not return a valid access token."
+    );
+  }
+
+  /*
+   * Store only the raw JWT, without quotes or Bearer.
+   */
+  const cleanToken = rawToken
+    .trim()
+    .replace(/^["']|["']$/g, "")
+    .replace(/^Bearer\s+/i, "")
+    .trim();
+
+  if (!cleanToken) {
+    throw new Error(
+      "The backend returned an empty access token."
+    );
+  }
+
+  if (typeof window !== "undefined") {
+    localStorage.setItem("access_token", cleanToken);
+    localStorage.setItem(
+      "user",
+      JSON.stringify(response.data.user)
+    );
+  }
+
+  return {
+    ...response.data,
+    access_token: cleanToken,
+  };
 }
 
 export async function getCurrentUser(): Promise<User> {
   const response = await api.get<User>("/users/me");
   return response.data;
+}
+
+export function logoutUser(): void {
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  localStorage.removeItem("access_token");
+  localStorage.removeItem("user");
 }
 
 export default api;

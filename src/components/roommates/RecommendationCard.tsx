@@ -43,11 +43,27 @@ export default function RecommendationCard({
   const interestAccepted =
     roommate.interest_status === "accepted";
 
+  const sharedPreferences = Array.isArray(
+    roommate.shared_preferences
+  )
+    ? roommate.shared_preferences
+    : [];
+
+  const lifestylePreferences = [
+  roommate.food_preference,
+  roommate.smoking,
+  roommate.sleep_schedule,
+  roommate.cleanliness,
+  roommate.sharing_type,
+].filter(
+  (preference) =>
+    typeof preference === "string" &&
+    preference.trim().length > 0
+);
+
   return (
     <article className="overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg">
       <div className="grid md:grid-cols-[220px_1fr]">
-        {/* Profile image */}
-
         <div className="relative min-h-[260px] bg-[#EEF2E4] md:min-h-full">
           <Image
             src={getProfileImage(roommate)}
@@ -94,8 +110,6 @@ export default function RecommendationCard({
           </button>
         </div>
 
-        {/* Main content */}
-
         <div className="flex flex-col p-6">
           <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-start">
             <div>
@@ -118,8 +132,6 @@ export default function RecommendationCard({
               </p>
             </div>
           </div>
-
-          {/* Basic details */}
 
           <div className="mt-5 grid gap-3 text-sm text-gray-600 sm:grid-cols-2">
             <div className="flex items-center gap-2">
@@ -146,26 +158,20 @@ export default function RecommendationCard({
             </div>
           </div>
 
-          {/* Lifestyle tags */}
-
-          <div className="mt-5 flex flex-wrap gap-2">
-            {[
-              roommate.food_preference,
-              roommate.smoking,
-              roommate.sleep_schedule,
-              roommate.cleanliness,
-              roommate.sharing_type,
-            ].map((preference) => (
-              <span
-                key={preference}
-                className="rounded-full bg-gray-100 px-3 py-1.5 text-xs font-medium text-gray-700"
-              >
-                {preference}
-              </span>
-            ))}
-          </div>
-
-          {/* AI explanation */}
+          {lifestylePreferences.length > 0 && (
+            <div className="mt-5 flex flex-wrap gap-2">
+              {lifestylePreferences.map(
+                (preference, index) => (
+                  <span
+                    key={`${preference}-${index}`}
+                    className="rounded-full bg-gray-100 px-3 py-1.5 text-xs font-medium text-gray-700"
+                  >
+                    {preference}
+                  </span>
+                )
+              )}
+            </div>
+          )}
 
           <div className="mt-5 rounded-2xl border border-[#D6C7A1] bg-[#FBFAF5] p-4">
             <div className="flex items-center gap-2">
@@ -180,37 +186,40 @@ export default function RecommendationCard({
             </div>
 
             <p className="mt-2 text-sm leading-6 text-gray-600">
-              {roommate.reason}
+              {roommate.reason ||
+                "This profile matches several of your roommate preferences."}
             </p>
           </div>
-
-          {/* Shared preferences */}
 
           <div className="mt-5">
             <h3 className="text-sm font-semibold text-gray-900">
               Shared preferences
             </h3>
 
-            <div className="mt-3 grid gap-2 sm:grid-cols-2">
-              {roommate.shared_preferences.map(
-                (preference) => (
-                  <div
-                    key={preference}
-                    className="flex items-start gap-2 rounded-xl bg-green-50 px-3 py-2 text-sm text-green-700"
-                  >
-                    <CheckCircle2
-                      size={16}
-                      className="mt-0.5 shrink-0"
-                    />
+            {sharedPreferences.length > 0 ? (
+              <div className="mt-3 grid gap-2 sm:grid-cols-2">
+                {sharedPreferences.map(
+                  (preference, index) => (
+                    <div
+                      key={`${preference}-${index}`}
+                      className="flex items-start gap-2 rounded-xl bg-green-50 px-3 py-2 text-sm text-green-700"
+                    >
+                      <CheckCircle2
+                        size={16}
+                        className="mt-0.5 shrink-0"
+                      />
 
-                    <span>{preference}</span>
-                  </div>
-                )
-              )}
-            </div>
+                      <span>{preference}</span>
+                    </div>
+                  )
+                )}
+              </div>
+            ) : (
+              <p className="mt-2 text-sm text-gray-500">
+                No shared preferences were returned.
+              </p>
+            )}
           </div>
-
-          {/* Actions */}
 
           <div className="mt-auto flex flex-col gap-3 pt-6 sm:flex-row">
             <button

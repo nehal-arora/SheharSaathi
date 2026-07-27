@@ -32,6 +32,14 @@ const initialForm: BudgetAdviceRequest = {
   savings: 5000,
 };
 
+function formatCurrency(value: number): string {
+  return new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+    maximumFractionDigits: 0,
+  }).format(value);
+}
+
 export default function BudgetAdvisorPage() {
   const [form, setForm] =
     useState<BudgetAdviceRequest>(initialForm);
@@ -127,6 +135,41 @@ export default function BudgetAdvisorPage() {
     },
   ];
 
+  const totalExpenses =
+    result?.total_expenses ??
+    result?.estimated_total_expenses ??
+    0;
+
+  const remainingAmount =
+    result?.remaining_amount ??
+    result?.estimated_savings ??
+    0;
+
+  const savingsRate =
+    result?.savings_rate ??
+    (result?.monthly_income && result.monthly_income > 0
+      ? (remainingAmount / result.monthly_income) * 100
+      : 0);
+
+  const advice =
+    result?.advice ??
+    result?.summary ??
+    "No budget summary was returned.";
+
+  const spendingAlerts = Array.isArray(result?.spending_alerts)
+    ? result.spending_alerts
+    : Array.isArray(result?.warnings)
+      ? result.warnings
+      : [];
+
+  const savingsSuggestions = Array.isArray(
+    result?.savings_suggestions
+  )
+    ? result.savings_suggestions
+    : Array.isArray(result?.recommendations)
+      ? result.recommendations
+      : [];
+
   return (
     <main className="min-h-screen bg-[#FBFAF5]">
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
@@ -221,10 +264,7 @@ export default function BudgetAdvisorPage() {
                     </p>
 
                     <p className="mt-2 text-2xl font-bold text-gray-900">
-                      ₹
-                      {result.total_expenses.toLocaleString(
-                        "en-IN"
-                      )}
+                      {formatCurrency(totalExpenses)}
                     </p>
                   </div>
 
@@ -234,10 +274,7 @@ export default function BudgetAdvisorPage() {
                     </p>
 
                     <p className="mt-2 text-2xl font-bold text-[#6B8E23]">
-                      ₹
-                      {result.remaining_amount.toLocaleString(
-                        "en-IN"
-                      )}
+                      {formatCurrency(remainingAmount)}
                     </p>
                   </div>
 
@@ -247,7 +284,7 @@ export default function BudgetAdvisorPage() {
                     </p>
 
                     <p className="mt-2 text-2xl font-bold text-gray-900">
-                      {result.savings_rate.toFixed(1)}%
+                      {savingsRate.toFixed(1)}%
                     </p>
                   </div>
                 </div>
@@ -258,7 +295,7 @@ export default function BudgetAdvisorPage() {
                   icon={<TrendingUp className="h-5 w-5" />}
                 >
                   <p className="text-sm leading-7 text-gray-700">
-                    {result.advice}
+                    {advice}
                   </p>
                 </AIResultCard>
 
@@ -268,11 +305,11 @@ export default function BudgetAdvisorPage() {
                     description="Areas that may require closer attention."
                     icon={<CircleAlert className="h-5 w-5" />}
                   >
-                    {result.spending_alerts.length > 0 ? (
+                    {spendingAlerts.length > 0 ? (
                       <ul className="space-y-3">
-                        {result.spending_alerts.map((alert) => (
+                        {spendingAlerts.map((alert, index) => (
                           <li
-                            key={alert}
+                            key={`${alert}-${index}`}
                             className="flex items-start gap-3 rounded-xl bg-amber-50 p-4 text-sm leading-6 text-amber-900"
                           >
                             <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-amber-500" />
@@ -292,12 +329,12 @@ export default function BudgetAdvisorPage() {
                     description="Practical ideas for improving your monthly savings."
                     icon={<PiggyBank className="h-5 w-5" />}
                   >
-                    {result.savings_suggestions.length > 0 ? (
+                    {savingsSuggestions.length > 0 ? (
                       <ul className="space-y-3">
-                        {result.savings_suggestions.map(
-                          (suggestion) => (
+                        {savingsSuggestions.map(
+                          (suggestion, index) => (
                             <li
-                              key={suggestion}
+                              key={`${suggestion}-${index}`}
                               className="flex items-start gap-3 rounded-xl bg-[#EEF2E4] p-4 text-sm leading-6 text-gray-700"
                             >
                               <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-[#6B8E23]" />

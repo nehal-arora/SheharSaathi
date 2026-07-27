@@ -36,6 +36,7 @@ export default function LocalityPage() {
     LocalityRecommendation[]
   >([]);
 
+  const [summary, setSummary] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -49,6 +50,25 @@ export default function LocalityPage() {
     }));
   }
 
+  async function loadRecommendations() {
+    const response = await getLocalityRecommendations(form);
+
+    const receivedRecommendations = Array.isArray(
+      response.recommendations
+    )
+      ? response.recommendations
+      : [];
+
+    setRecommendations(receivedRecommendations);
+    setSummary(response.summary ?? "");
+
+    if (receivedRecommendations.length === 0) {
+      toast.info(
+        "No suitable localities were found for the selected preferences."
+      );
+    }
+  }
+
   async function handleSubmit(
     event: React.FormEvent<HTMLFormElement>
   ) {
@@ -58,15 +78,7 @@ export default function LocalityPage() {
       setLoading(true);
       setError("");
 
-      const response = await getLocalityRecommendations(form);
-
-      setRecommendations(response.recommendations);
-
-      if (response.recommendations.length === 0) {
-        toast.info(
-          "No suitable localities were found for the selected preferences."
-        );
-      }
+      await loadRecommendations();
     } catch (err) {
       const message =
         err instanceof Error
@@ -74,6 +86,7 @@ export default function LocalityPage() {
           : "Unable to generate locality recommendations.";
 
       setError(message);
+      setSummary("");
       setRecommendations([]);
     } finally {
       setLoading(false);
@@ -85,15 +98,16 @@ export default function LocalityPage() {
       setLoading(true);
       setError("");
 
-      const response = await getLocalityRecommendations(form);
-
-      setRecommendations(response.recommendations);
+      await loadRecommendations();
     } catch (err) {
       setError(
         err instanceof Error
           ? err.message
           : "Unable to generate locality recommendations."
       );
+
+      setSummary("");
+      setRecommendations([]);
     } finally {
       setLoading(false);
     }
@@ -280,18 +294,20 @@ export default function LocalityPage() {
                     Recommended localities
                   </h2>
 
-                  <p className="mt-2 text-sm text-gray-500">
-                    These suggestions are based on your current
-                    preferences.
+                  <p className="mt-2 text-sm leading-6 text-gray-500">
+                    {summary ||
+                      "These suggestions are based on your current preferences."}
                   </p>
                 </div>
 
-                {recommendations.map((recommendation) => (
-                  <RecommendationCard
-                    key={recommendation.id}
-                    recommendation={recommendation}
-                  />
-                ))}
+                {recommendations.map(
+                  (recommendation, index) => (
+                    <RecommendationCard
+                      key={`${recommendation.id}-${index}`}
+                      recommendation={recommendation}
+                    />
+                  )
+                )}
               </div>
             ) : (
               <div className="flex min-h-[430px] flex-col items-center justify-center rounded-3xl border border-dashed border-gray-300 bg-white px-6 py-12 text-center">

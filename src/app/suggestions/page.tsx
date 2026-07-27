@@ -28,13 +28,21 @@ export default function SuggestionsPage() {
       const response =
         await getPersonalizedSuggestions();
 
-      setSuggestions(response.suggestions);
+      const receivedSuggestions = Array.isArray(response.items)
+        ? response.items
+        : Array.isArray(response.suggestions)
+          ? response.suggestions
+          : [];
+
+      setSuggestions(receivedSuggestions);
     } catch (err) {
       setError(
         err instanceof Error
           ? err.message
           : "Unable to load personalized suggestions."
       );
+
+      setSuggestions([]);
     } finally {
       setLoading(false);
     }
@@ -81,9 +89,9 @@ export default function SuggestionsPage() {
               </div>
 
               <div className="grid gap-6 lg:grid-cols-2">
-                {suggestions.map((suggestion) => (
+                {suggestions.map((suggestion, index) => (
                   <SuggestionCard
-                    key={suggestion.id}
+                    key={`${suggestion.id}-${index}`}
                     suggestion={suggestion}
                   />
                 ))}

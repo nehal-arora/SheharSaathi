@@ -5,7 +5,7 @@ from fastapi import (
 
 from sqlalchemy.orm import Session
 
-from database.init_db import Base
+from database.session import get_db
 
 from models.user import User
 
@@ -23,6 +23,7 @@ from services.notification_service import (
 
 from utils.dependencies import (
     get_current_user,
+    get_db,
 )
 
 router = APIRouter(

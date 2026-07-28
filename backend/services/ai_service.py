@@ -1,6 +1,11 @@
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
+import json
 
+from ai.client import generate_response
+from ai.prompts import locality_prompt
+
+from models.housing import Housing
 from models.ai import AIChatMessage
 from models.user import User
 
@@ -11,15 +16,17 @@ from schemas.ai import (
 
 def generate_ai_response(question: str) -> str:
     """
-    Placeholder AI response.
-    Replace this later with Gemini/OpenAI.
+    Generates a response using Gemini AI.
     """
 
-    return (
-        "Thank you for your question. "
-        "The AI integration is currently under development. "
-        "Your query has been received successfully."
-    )
+    try:
+        return generate_response(question)
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=503,
+            detail=f"AI service unavailable: {str(e)}",
+        )
 
 
 def chat_with_ai(
@@ -108,41 +115,48 @@ def get_locality_recommendation(
     current_user: User,
     db: Session,
 ):
-    return {
-        "summary": (
-            f"{request.city} recommendations generated "
-            "based on your preferences."
-        ),
-        "recommendations": [
+    houses = (
+        db.query(Housing)
+        .filter(Housing.city == request.city)
+        .all()
+    )
+
+    housing_data = []
+
+    for house in houses:
+        housing_data.append(
             {
-                "id": "rohini-sector-9",
-                "locality": "Rohini Sector 9",
-                "city": request.city,
-                "match_score": 91,
-                "average_rent": 16000,
-                "safety_score": 8.7,
-                "transport_score": 9.1,
-                "affordability_score": 8.8,
-                "commute_minutes": 30,
-                "nearest_metro": "Rohini East",
-                "distance_to_metro_km": 1.2,
-                "reasons": [
-                    "Fits within your budget",
-                    "Strong metro connectivity",
-                    "Suitable for students",
-                    "Good safety profile",
-                ],
-                "pros": [
-                    "Affordable",
-                    "Good transport",
-                    "Nearby markets",
-                ],
-                "cons": [
-                    "Can be crowded during peak hours",
-                ],
+                "id": house.id,
+                "property_name": house.property_name,
+                "city": house.city,
+                "locality": house.locality,
+                "rent": house.rent,
+                "property_type": house.property_type,
+                "rating": house.rating,
+                "verified": house.verified,
+                #Temporary values(not yet in DB)
+                "rating": 4.5,
+                "nearest_metro": "unknown",
+                "distance_to_metro_km":1.5,
+                "is_furnished": house.is_furnished,
             }
-        ],
-    }
+        )
+
+    prompt = locality_prompt(
+        request,
+        housing_data,
+    )
+
+    ai_response = generate_response(prompt)
+
+    try:
+        return json.loads(ai_response)
+
+    except Exception:
+        return {
+            "summary": "Unable to generate recommendations.",
+            "recommendations": [],
+        }
 
 
 def scam_check(
@@ -314,4 +328,4 @@ def get_suggestions(
                 "created_at": current_user.created_at,
             }
         ]
-    }    
+    }

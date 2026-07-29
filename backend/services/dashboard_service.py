@@ -16,9 +16,22 @@ def get_dashboard_data(
 ):
     now = datetime.now()
 
-    # =========================
+    # =====================================================
+    # USER
+    # =====================================================
+
+    user_data = {
+        "id": current_user.id,
+        "full_name": current_user.name,
+        "email": current_user.email,
+        "city": getattr(current_user, "city", None),
+        "occupation": getattr(current_user, "occupation", None),
+        "profile_image": getattr(current_user, "profile_image", None),
+    }
+
+    # =====================================================
     # HOUSING
-    # =========================
+    # =====================================================
 
     total_listings = (
         db.query(Housing)
@@ -30,35 +43,42 @@ def get_dashboard_data(
         db.query(Housing)
         .filter(
             Housing.owner_id == current_user.id,
-            Housing.available == True,
+            Housing.available.is_(True),
         )
         .count()
     )
 
-    # Replace later when Saved Housing module is built
+    # TODO: Replace with Saved Housing table later
     saved_listings = 0
 
-    recent_listing = (
+    latest_listing = (
         db.query(Housing)
         .filter(Housing.owner_id == current_user.id)
         .order_by(Housing.created_at.desc())
         .first()
     )
 
-    if recent_listing:
-        recent_listing_data = {
-            "id": recent_listing.id,
-            "title": recent_listing.title,
-            "locality": recent_listing.locality,
-            "city": recent_listing.city,
-            "rent": float(recent_listing.rent),
-        }
-    else:
-        recent_listing_data = None
+    recent_listing = None
 
-    # =========================
+    if latest_listing:
+        recent_listing = {
+            "id": latest_listing.id,
+            "title": latest_listing.title,
+            "locality": latest_listing.locality,
+            "city": latest_listing.city,
+            "rent": float(latest_listing.rent),
+        }
+
+    housing_data = {
+        "total_listings": total_listings,
+        "active_listings": active_listings,
+        "saved_listings": saved_listings,
+        "recent_listing": recent_listing,
+    }
+
+    # =====================================================
     # EXPENSES
-    # =========================
+    # =====================================================
 
     total_expenses = (
         db.query(func.coalesce(func.sum(Expense.amount), 0))
@@ -70,7 +90,6 @@ def get_dashboard_data(
         .scalar()
     )
 
-    
     top_category = (
         db.query(
             Expense.category,
@@ -86,15 +105,25 @@ def get_dashboard_data(
         .first()
     )
 
-    top_category_name = (
-        top_category.category
-        if top_category
-        else None
-    )
+    monthly_budget = None
+    remaining_budget = None
+    budget_used_percentage = None
 
-    # =========================
+    expense_data = {
+        "monthly_budget": monthly_budget,
+        "total_expenses": float(total_expenses),
+        "remaining_budget": remaining_budget,
+        "budget_used_percentage": budget_used_percentage,
+        "top_category": (
+            top_category.category
+            if top_category
+            else None
+        ),
+    }
+
+    # =====================================================
     # ROOMMATES
-    # =========================
+    # =====================================================
 
     favorites = (
         db.query(FavoriteRoommate)
@@ -104,14 +133,16 @@ def get_dashboard_data(
         .count()
     )
 
-    # Replace later with actual matching module
-    total_matches = 0
-    pending_interests = 0
-    top_match = None
+    roommate_data = {
+        "total_matches": 0,
+        "favorites": favorites,
+        "pending_interests": 0,
+        "top_match": None,
+    }
 
-    # =========================
+    # =====================================================
     # NOTIFICATIONS
-    # =========================
+    # =====================================================
 
     notifications = (
         db.query(Notification)
@@ -121,56 +152,47 @@ def get_dashboard_data(
         .all()
     )
 
-    # =========================
-    # TRANSPORT
-    # =========================
+    notification_data = []
 
-    transport = {
+    for notification in notifications:
+        notification_data.append(
+            {
+                "id": notification.id,
+                "title": notification.title,
+                "message": notification.message,
+                "type": notification.type,
+                "is_read": notification.is_read,
+                "created_at": notification.created_at,
+            }
+        )
+
+    # =====================================================
+    # TRANSPORT
+    # =====================================================
+
+    transport_data = {
         "nearest_metro": None,
         "metro_distance_km": None,
         "estimated_commute": None,
         "preferred_route": None,
     }
 
-    # =========================
+    # =====================================================
     # AI SUGGESTIONS
-    # =========================
+    # =====================================================
 
     ai_suggestions = []
 
-    # =========================
-    # RESPONSE
-    # =========================
+    # =====================================================
+    # FINAL RESPONSE
+    # =====================================================
 
     return {
-        "user": {
-            "id": current_user.id,
-            "full_name": current_user.name,
-            "email": current_user.email,
-            "city": None,
-            "occupation": None,
-            "profile_image": None,
-        },
-        "housing": {
-            "total_listings": total_listings,
-            "active_listings": active_listings,
-            "saved_listings": saved_listings,
-            "recent_listing": recent_listing_data,
-        },
-        "expenses": {
-            "monthly_budget": monthly_budget,
-            "total_expenses": float(total_expenses),
-            "remaining_budget": remaining_budget,
-            "budget_used_percentage": budget_used_percentage,
-            "top_category": top_category_name,
-        },
-        "roommates": {
-            "total_matches": total_matches,
-            "favorites": favorites,
-            "pending_interests": pending_interests,
-            "top_match": top_match,
-        },
-        "notifications": notifications,
-        "transport": transport,
+        "user": user_data,
+        "housing": housing_data,
+        "expenses": expense_data,
+        "roommates": roommate_data,
+        "notifications": notification_data,
+        "transport": transport_data,
         "aiSuggestions": ai_suggestions,
     }

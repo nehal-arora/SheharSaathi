@@ -3,7 +3,9 @@ from datetime import datetime
 from pydantic import BaseModel
 
 
-# ---------- USER ----------
+# ==========================
+# USER
+# ==========================
 
 class DashboardUser(BaseModel):
     id: int
@@ -14,7 +16,9 @@ class DashboardUser(BaseModel):
     profile_image: str | None = None
 
 
-# ---------- HOUSING ----------
+# ==========================
+# HOUSING
+# ==========================
 
 class RecentListing(BaseModel):
     id: int
@@ -31,17 +35,21 @@ class HousingSummary(BaseModel):
     recent_listing: RecentListing | None = None
 
 
-# ---------- EXPENSES ----------
+# ==========================
+# EXPENSES
+# ==========================
 
 class ExpenseSummary(BaseModel):
-    monthly_budget: float | None
+    monthly_budget: float | None = None
     total_expenses: float
-    remaining_budget: float | None
-    budget_used_percentage: float | None
+    remaining_budget: float | None = None
+    budget_used_percentage: float | None = None
     top_category: str | None = None
 
 
-# ---------- ROOMMATES ----------
+# ==========================
+# ROOMMATES
+# ==========================
 
 class TopMatch(BaseModel):
     id: int
@@ -57,7 +65,9 @@ class RoommateSummary(BaseModel):
     top_match: TopMatch | None = None
 
 
-# ---------- NOTIFICATIONS ----------
+# ==========================
+# NOTIFICATIONS
+# ==========================
 
 class DashboardNotification(BaseModel):
     id: int
@@ -68,7 +78,9 @@ class DashboardNotification(BaseModel):
     created_at: datetime
 
 
-# ---------- TRANSPORT ----------
+# ==========================
+# TRANSPORT
+# ==========================
 
 class TransportSummary(BaseModel):
     nearest_metro: str | None = None
@@ -77,7 +89,9 @@ class TransportSummary(BaseModel):
     preferred_route: str | None = None
 
 
-# ---------- AI ----------
+# ==========================
+# AI SUGGESTIONS
+# ==========================
 
 class DashboardAISuggestion(BaseModel):
     id: str
@@ -87,7 +101,9 @@ class DashboardAISuggestion(BaseModel):
     action_url: str | None = None
 
 
-# ---------- RESPONSE ----------
+# ==========================
+# COMPLETE RESPONSE
+# ==========================
 
 class DashboardResponse(BaseModel):
     user: DashboardUser

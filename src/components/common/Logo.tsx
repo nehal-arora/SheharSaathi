@@ -15,11 +15,9 @@ export default function Logo({
   return (
     <Link
       href="/"
-      aria-label="ShaharSaathi home"
+      aria-label="SheharSaathi home"
       className="group inline-flex min-w-0 items-center gap-3 rounded-xl outline-none transition-opacity duration-200 hover:opacity-90 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-4"
     >
-      {/* Brand mark */}
-
       <div
         className={`relative flex shrink-0 items-center justify-center overflow-hidden bg-primary text-primary-foreground shadow-[0_8px_24px_rgba(107,142,35,0.22)] transition-transform duration-300 group-hover:-translate-y-0.5 ${
           compact
@@ -46,8 +44,6 @@ export default function Logo({
         <span className="absolute -right-2 -top-2 h-6 w-6 rounded-full bg-white/15" />
         <span className="absolute -bottom-3 -left-2 h-8 w-8 rounded-full bg-black/5" />
       </div>
-
-      {/* Brand text */}
 
       <div className="min-w-0">
         <div className="flex items-baseline whitespace-nowrap text-xl font-extrabold tracking-[-0.04em] text-foreground sm:text-[22px]">

@@ -1,8 +1,8 @@
 import Link from "next/link";
+import type { ComponentType } from "react";
 import {
   ArrowRight,
   CircleDollarSign,
-  PieChart,
   ReceiptText,
   TrendingUp,
   WalletCards,
@@ -19,7 +19,7 @@ function formatCurrency(amount: number): string {
     style: "currency",
     currency: "INR",
     maximumFractionDigits: 0,
-  }).format(amount);
+  }).format(Number(amount) || 0);
 }
 
 function clampPercentage(value: number): number {
@@ -33,136 +33,148 @@ export default function ExpenseWidget({
     expenses.budget_used_percentage
   );
 
-  const isOverBudget =
-    expenses.total_expenses > expenses.monthly_budget;
-
   const hasBudget = expenses.monthly_budget > 0;
 
+  const isOverBudget =
+    hasBudget &&
+    expenses.total_expenses > expenses.monthly_budget;
+
+  const statusText = !hasBudget
+    ? "Budget not configured"
+    : isOverBudget
+      ? "Monthly budget exceeded"
+      : "Your spending is within budget";
+
   return (
-    <section className="relative overflow-hidden rounded-[34px] bg-[#252019] text-white shadow-[0_28px_75px_rgba(55,42,23,0.2)]">
-      <div className="pointer-events-none absolute -right-24 -top-24 h-64 w-64 rounded-full bg-[#E9B958]/20 blur-[85px]" />
+    <section className="flex h-full min-h-[430px] flex-col overflow-hidden rounded-[26px] border border-[#E4E5DE] bg-white shadow-[0_12px_34px_rgba(36,43,29,0.045)]">
+      {/* Header */}
 
-      <div className="pointer-events-none absolute -bottom-32 -left-20 h-64 w-64 rounded-full bg-[#C77E2C]/15 blur-[90px]" />
-
-      <div className="relative p-6 sm:p-7">
-        {/* Header */}
-
-        <div className="flex items-start justify-between gap-4">
-          <div className="flex items-start gap-4">
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-[18px] border border-white/10 bg-white/10 text-[#F3C968] backdrop-blur">
-              <WalletCards className="h-5 w-5" />
-            </div>
-
-            <div>
-              <p className="text-xs font-extrabold uppercase tracking-[0.16em] text-[#E2B85A]">
-                Expense control
-              </p>
-
-              <h2 className="mt-2 text-2xl font-black tracking-[-0.03em]">
-                Monthly budget
-              </h2>
-
-              <p className="mt-1.5 text-sm text-white/50">
-                Track your relocation spending.
-              </p>
-            </div>
+      <div className="flex items-start justify-between gap-4 border-b border-[#ECEDE7] px-6 py-5">
+        <div className="flex items-start gap-3">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#EEF2E7] text-[#6B8E23]">
+            <WalletCards className="h-5 w-5" />
           </div>
 
-          <Link
-            href="/expenses"
-            className="group flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/10 text-white/60 transition hover:bg-[#E2B85A] hover:text-[#2B2115]"
-            aria-label="View expenses"
-          >
-            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-          </Link>
-        </div>
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#6B8E23]">
+              Expenses
+            </p>
 
-        {/* Main amount */}
+            <h2 className="mt-1 text-lg font-bold tracking-[-0.025em] text-[#252820]">
+              Monthly budget overview
+            </h2>
 
-        <div className="mt-8">
-          <p className="text-sm font-semibold text-white/45">
-            Total spent
-          </p>
-
-          <p className="mt-2 break-words text-4xl font-black tracking-[-0.05em] sm:text-5xl">
-            {formatCurrency(expenses.total_expenses)}
-          </p>
-
-          <div className="mt-3 flex flex-wrap items-center gap-2">
-            <span
-              className={
-                isOverBudget
-                  ? "rounded-full bg-red-400/15 px-3 py-1.5 text-xs font-extrabold text-red-300"
-                  : "rounded-full bg-[#E2B85A]/15 px-3 py-1.5 text-xs font-extrabold text-[#F3C968]"
-              }
-            >
-              {expenses.budget_used_percentage}% used
-            </span>
-
-            <span className="text-xs font-medium text-white/40">
-              of {formatCurrency(expenses.monthly_budget)}
-            </span>
+            <p className="mt-1 text-sm text-[#85887F]">
+              Monitor your relocation spending and balance.
+            </p>
           </div>
         </div>
 
-        {/* Budget visual */}
+        <Link
+          href="/expenses"
+          className="group inline-flex shrink-0 items-center gap-1.5 text-sm font-semibold text-[#5F7E20] transition hover:text-[#486317]"
+        >
+          View all
 
-        <div className="mt-7 rounded-[26px] border border-white/10 bg-white/[0.06] p-5 backdrop-blur">
-          <div className="flex items-center justify-between gap-4">
+          <ArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5" />
+        </Link>
+      </div>
+
+      {/* Content */}
+
+      <div className="flex flex-1 flex-col p-5 sm:p-6">
+        <div className="rounded-[20px] border border-[#E4E8DC] bg-[#F5F7F1] p-5">
+          <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
             <div>
-              <p className="text-xs font-bold uppercase tracking-[0.13em] text-white/40">
-                Budget status
+              <p className="text-xs font-semibold text-[#7A7D75]">
+                Total spent this month
               </p>
 
-              <p className="mt-2 text-lg font-black">
-                {isOverBudget
-                  ? "Budget exceeded"
-                  : hasBudget
-                    ? "Spending is being tracked"
-                    : "Budget not configured"}
+              <p className="mt-2 break-words text-3xl font-bold tracking-[-0.04em] text-[#26311D] sm:text-[34px]">
+                {formatCurrency(expenses.total_expenses)}
               </p>
+
+              <div className="mt-3 flex flex-wrap items-center gap-2">
+                <span
+                  className={
+                    isOverBudget
+                      ? "rounded-full bg-red-50 px-3 py-1.5 text-xs font-semibold text-red-700"
+                      : "rounded-full bg-[#E7EEDB] px-3 py-1.5 text-xs font-semibold text-[#5F7E20]"
+                  }
+                >
+                  {expenses.budget_used_percentage}% used
+                </span>
+
+                <span className="text-xs font-medium text-[#85887F]">
+                  of {formatCurrency(expenses.monthly_budget)}
+                </span>
+              </div>
             </div>
 
             <div
               className={
                 isOverBudget
-                  ? "flex h-14 w-14 items-center justify-center rounded-full bg-red-400/15 text-red-300"
-                  : "flex h-14 w-14 items-center justify-center rounded-full bg-[#E2B85A]/15 text-[#F3C968]"
+                  ? "flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-red-50 text-red-700"
+                  : "flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-[#E7EEDB] text-[#5F7E20]"
               }
             >
-              <span className="text-sm font-black">
+              <span className="text-sm font-bold">
                 {expenses.budget_used_percentage}%
               </span>
             </div>
           </div>
 
-          <div className="mt-5 h-3 overflow-hidden rounded-full bg-white/10">
+          <div className="mt-6">
+            <div className="h-2.5 overflow-hidden rounded-full bg-[#DFE3D8]">
+              <div
+                className={
+                  isOverBudget
+                    ? "h-full rounded-full bg-red-500 transition-all duration-700"
+                    : "h-full rounded-full bg-[#6B8E23] transition-all duration-700"
+                }
+                style={{
+                  width: `${progress}%`,
+                }}
+              />
+            </div>
+
+            <div className="mt-3 flex items-center justify-between gap-3 text-xs font-medium text-[#85887F]">
+              <span>₹0</span>
+
+              <span className="truncate">
+                {formatCurrency(expenses.monthly_budget)}
+              </span>
+            </div>
+          </div>
+
+          <div className="mt-5 flex items-start gap-3 border-t border-[#E0E5D8] pt-4">
             <div
               className={
                 isOverBudget
-                  ? "h-full rounded-full bg-gradient-to-r from-red-500 to-red-300 transition-all duration-700"
-                  : "h-full rounded-full bg-gradient-to-r from-[#C98527] via-[#E3AE45] to-[#F1D079] transition-all duration-700"
+                  ? "flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-red-50 text-red-700"
+                  : "flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-white text-[#6B8E23]"
               }
-              style={{
-                width: `${progress}%`,
-              }}
-            />
-          </div>
+            >
+              <ReceiptText className="h-4 w-4" />
+            </div>
 
-          <div className="mt-3 flex items-center justify-between text-xs font-semibold text-white/35">
-            <span>₹0</span>
-            <span>
-              {formatCurrency(expenses.monthly_budget)}
-            </span>
+            <div>
+              <p className="text-sm font-semibold text-[#353A31]">
+                {statusText}
+              </p>
+
+              <p className="mt-1 text-xs leading-5 text-[#85887F]">
+                Add expenses regularly to keep your dashboard
+                insights accurate.
+              </p>
+            </div>
           </div>
         </div>
-
-        {/* Lower stats */}
 
         <div className="mt-5 grid gap-3 sm:grid-cols-2">
           <ExpenseStat
             icon={CircleDollarSign}
-            label="Remaining"
+            label="Remaining budget"
             value={formatCurrency(
               expenses.remaining_budget
             )}
@@ -179,31 +191,14 @@ export default function ExpenseWidget({
           />
         </div>
 
-        {/* Bottom action */}
-
-        <div className="mt-5 flex flex-col gap-4 rounded-[24px] bg-[#F4D47D] p-5 text-[#332615] sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex items-start gap-3">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-[#332615]/10">
-              <ReceiptText className="h-5 w-5" />
-            </div>
-
-            <div>
-              <p className="font-black">
-                Keep your records updated
-              </p>
-
-              <p className="mt-1 text-sm leading-5 text-[#6F5730]">
-                Add expenses regularly for more accurate budget insights.
-              </p>
-            </div>
-          </div>
-
+        <div className="mt-auto pt-5">
           <Link
             href="/expenses"
-            className="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 self-start rounded-2xl bg-[#332615] px-4 text-sm font-extrabold text-white transition hover:-translate-y-0.5 hover:bg-[#49371E] sm:self-center"
+            className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-xl bg-[#26311D] px-5 text-sm font-semibold text-white transition hover:bg-[#354329]"
           >
-            <PieChart className="h-4 w-4" />
-            View expenses
+            Manage expenses
+
+            <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
       </div>
@@ -212,7 +207,7 @@ export default function ExpenseWidget({
 }
 
 interface ExpenseStatProps {
-  icon: React.ComponentType<{
+  icon: ComponentType<{
     className?: string;
   }>;
   label: string;
@@ -227,11 +222,11 @@ function ExpenseStat({
   danger = false,
 }: ExpenseStatProps) {
   return (
-    <div className="rounded-[22px] border border-white/10 bg-white/[0.06] p-4">
-      <div className="flex items-center gap-2 text-white/40">
-        <Icon className="h-4 w-4" />
+    <div className="min-w-0 rounded-2xl border border-[#E8E9E3] bg-[#FAFAF7] p-4">
+      <div className="flex items-center gap-2 text-[#6B8E23]">
+        <Icon className="h-4 w-4 shrink-0" />
 
-        <p className="text-xs font-bold uppercase tracking-[0.12em]">
+        <p className="truncate text-[11px] font-bold uppercase tracking-[0.08em]">
           {label}
         </p>
       </div>
@@ -239,8 +234,8 @@ function ExpenseStat({
       <p
         className={
           danger
-            ? "mt-3 break-words text-xl font-black text-red-300"
-            : "mt-3 break-words text-xl font-black text-white"
+            ? "mt-3 break-words text-xl font-bold tracking-[-0.025em] text-red-700"
+            : "mt-3 break-words text-xl font-bold tracking-[-0.025em] text-[#252820]"
         }
       >
         {value}

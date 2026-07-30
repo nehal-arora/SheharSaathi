@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import type { ComponentType } from "react";
 import {
   ArrowRight,
   Heart,
@@ -23,84 +24,90 @@ export default function RoommateWidget({
   const match = roommates.top_match;
 
   return (
-    <section className="relative overflow-hidden rounded-[34px] bg-gradient-to-br from-[#F5F0FA] via-[#F8F4FC] to-white border border-[#E5DDF0] shadow-[0_25px_70px_rgba(86,62,122,.08)]">
+    <section className="flex h-full min-h-[430px] flex-col overflow-hidden rounded-[26px] border border-[#E4E5DE] bg-white shadow-[0_12px_34px_rgba(36,43,29,0.045)]">
 
-      <div className="absolute -right-16 -top-16 h-52 w-52 rounded-full bg-[#A78BC8]/20 blur-[90px]" />
+      {/* Header */}
 
-      <div className="relative p-6">
+      <div className="flex items-start justify-between border-b border-[#ECEDE7] px-6 py-5">
 
-        {/* Header */}
+        <div className="flex items-start gap-3">
 
-        <div className="flex items-start justify-between">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#EEF2E7] text-[#6B8E23]">
 
-          <div className="flex items-center gap-4">
-
-            <div className="flex h-12 w-12 items-center justify-center rounded-[18px] bg-[#7A63A2] text-white shadow-lg">
-
-              <Users className="h-5 w-5"/>
-
-            </div>
-
-            <div>
-
-              <p className="text-xs font-black uppercase tracking-[0.15em] text-[#7A63A2]">
-
-                Roommate Matching
-
-              </p>
-
-              <h2 className="mt-2 text-2xl font-black text-[#2E2739]">
-
-                Your Best Match
-
-              </h2>
-
-            </div>
+            <Users className="h-5 w-5"/>
 
           </div>
 
-          <Link
-            href="/roommates"
-            className="flex h-10 w-10 items-center justify-center rounded-full bg-white shadow transition hover:bg-[#7A63A2] hover:text-white"
-          >
+          <div>
 
-            <ArrowRight className="h-4 w-4"/>
+            <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#6B8E23]">
 
-          </Link>
+              Roommates
+
+            </p>
+
+            <h2 className="mt-1 text-lg font-bold tracking-[-0.025em] text-[#252820]">
+
+              Best compatibility match
+
+            </h2>
+
+            <p className="mt-1 text-sm text-[#85887F]">
+
+              Discover people who fit your lifestyle.
+
+            </p>
+
+          </div>
 
         </div>
 
-        {/* Match */}
+        <Link
+          href="/roommates"
+          className="group inline-flex items-center gap-1.5 text-sm font-semibold text-[#5F7E20] transition hover:text-[#486317]"
+        >
 
-        <div className="mt-7 rounded-[28px] bg-white p-6 shadow-sm">
+          View all
 
-          {match ? (
+          <ArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5"/>
 
-            <>
+        </Link>
+
+      </div>
+
+      <div className="flex flex-1 flex-col p-6">
+
+        {match ? (
+
+          <>
+
+            <div className="rounded-[20px] border border-[#E5E8DF] bg-[#F7F8F4] p-5">
 
               <div className="flex items-center gap-4">
 
-                {/* Avatar */}
-
-                <div className="flex h-20 w-20 items-center justify-center rounded-full bg-[#7A63A2] text-white text-3xl font-black">
+                <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-[#6B8E23] text-xl font-bold text-white">
 
                   {match.name.charAt(0).toUpperCase()}
 
                 </div>
 
-                <div>
+                <div className="min-w-0 flex-1">
 
-                  <h3 className="text-2xl font-black text-[#2E2739]">
+                  <h3 className="truncate text-xl font-bold text-[#252820]">
 
                     {match.name}
 
                   </h3>
 
-                  <div className="mt-2 flex items-center gap-2 text-[#746F7F]">
+                  <div className="mt-2 flex items-center gap-2 text-sm text-[#85887F]">
 
                     <MapPin className="h-4 w-4"/>
 
-                    {match.locality}
+                    <span className="truncate">
+
+                      {match.locality}
+
+                    </span>
 
                   </div>
 
@@ -108,17 +115,17 @@ export default function RoommateWidget({
 
               </div>
 
-              <div className="mt-7 rounded-2xl bg-[#F4EFF9] p-5">
+              <div className="mt-6">
 
                 <div className="flex items-center justify-between">
 
-                  <span className="font-semibold">
+                  <span className="text-sm font-semibold text-[#5E615A]">
 
                     Compatibility
 
                   </span>
 
-                  <span className="text-2xl font-black text-[#7A63A2]">
+                  <span className="text-lg font-bold text-[#6B8E23]">
 
                     {match.compatibility_score}%
 
@@ -126,18 +133,12 @@ export default function RoommateWidget({
 
                 </div>
 
-                <div className="mt-4 h-3 rounded-full bg-[#DDD4EA] overflow-hidden">
+                <div className="mt-3 h-2.5 overflow-hidden rounded-full bg-[#DDE3D4]">
 
                   <div
-                    className="h-full rounded-full bg-gradient-to-r from-[#7A63A2] to-[#B69AD7]"
+                    className="h-full rounded-full bg-[#6B8E23] transition-all duration-700"
                     style={{
-                      width: `${Math.min(
-                        Math.max(
-                          match.compatibility_score,
-                          0
-                        ),
-                        100
-                      )}%`,
+                      width: `${Math.min(Math.max(match.compatibility_score,0),100)}%`,
                     }}
                   />
 
@@ -145,60 +146,61 @@ export default function RoommateWidget({
 
               </div>
 
-            </>
+            </div>
 
-          ) : (
+          </>
 
-            <div className="py-10 text-center">
+        ) : (
 
-              <UserRound className="mx-auto h-14 w-14 text-[#A28BBF]" />
+          <div className="flex flex-1 flex-col items-center justify-center rounded-[20px] border border-dashed border-[#D7DACF] bg-[#FAFAF7] px-6 text-center">
 
-              <h3 className="mt-4 text-xl font-black">
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#EEF2E7] text-[#6B8E23]">
 
-                No matches yet
-
-              </h3>
-
-              <p className="mt-2 text-sm text-[#726D7A]">
-
-                Complete your roommate profile to receive
-                recommendations.
-
-              </p>
-
-              <Link
-                href="/roommates"
-                className="mt-6 inline-flex rounded-xl bg-[#7A63A2] px-5 py-3 text-sm font-bold text-white transition hover:scale-[1.03]"
-              >
-
-                Explore Roommates
-
-              </Link>
+              <UserRound className="h-5 w-5"/>
 
             </div>
 
-          )}
+            <h3 className="mt-4 text-lg font-bold text-[#252820]">
 
-        </div>
+              No roommate matches
 
-        {/* Stats */}
+            </h3>
+
+            <p className="mt-2 text-sm leading-6 text-[#85887F]">
+
+              Complete your roommate profile to receive personalized matches.
+
+            </p>
+
+            <Link
+              href="/roommates"
+              className="mt-5 inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-[#26311D] px-5 text-sm font-semibold text-white transition hover:bg-[#354329]"
+            >
+
+              Explore roommates
+
+            </Link>
+
+          </div>
+
+        )}
 
         <div className="mt-5 grid grid-cols-3 gap-3">
 
           <Stat
-            icon={<Users size={18}/>}
+            icon={Users}
             label="Matches"
             value={roommates.total_matches}
           />
 
           <Stat
-            icon={<Heart size={18}/>}
+            icon={Heart}
             label="Saved"
             value={roommates.favorites}
           />
 
           <Stat
-            icon={<ArrowRight size={18}/>}
+            icon={ArrowRight}
             label="Pending"
             value={roommates.pending_interests}
           />
@@ -211,40 +213,42 @@ export default function RoommateWidget({
   );
 }
 
-function Stat({
-  icon,
-  label,
-  value,
-}:{
-  icon:React.ReactNode;
+interface StatProps{
+  icon:ComponentType<{className?:string}>;
   label:string;
   value:number;
-}){
+}
 
-return(
+function Stat({
+  icon:Icon,
+  label,
+  value,
+}:StatProps){
 
-<div className="rounded-2xl bg-white p-5 shadow-sm">
+  return(
 
-<div className="flex items-center gap-2 text-[#7A63A2]">
+    <div className="rounded-2xl border border-[#E8E9E3] bg-[#FAFAF7] p-4">
 
-{icon}
+      <div className="flex items-center gap-2 text-[#6B8E23]">
 
-<span className="text-xs font-bold uppercase">
+        <Icon className="h-4 w-4"/>
 
-{label}
+        <span className="text-[11px] font-bold uppercase tracking-[0.08em]">
 
-</span>
+          {label}
 
-</div>
+        </span>
 
-<p className="mt-3 text-3xl font-black">
+      </div>
 
-{value}
+      <p className="mt-3 text-2xl font-bold tracking-[-0.025em] text-[#252820]">
 
-</p>
+        {value}
 
-</div>
+      </p>
 
-);
+    </div>
+
+  );
 
 }

@@ -11,9 +11,7 @@ import {
   UserRoundCheck,
 } from "lucide-react";
 
-import type {
-  DashboardNotification,
-} from "@/features/dashboard/types/dashboard.types";
+import type { DashboardNotification } from "@/features/dashboard/types/dashboard.types";
 
 interface NotificationWidgetProps {
   notifications: DashboardNotification[];
@@ -37,33 +35,27 @@ function formatNotificationDate(dateValue: string): string {
 const notificationStyles = {
   housing: {
     icon: Building2,
-    iconClass: "bg-[#EEF4E3] text-[#668326]",
-    lineClass: "bg-[#C9DAA8]",
+    className: "bg-[#EEF2E7] text-[#6B8E23]",
   },
   roommate: {
     icon: UserRoundCheck,
-    iconClass: "bg-[#F2ECF8] text-[#7A63A2]",
-    lineClass: "bg-[#D8CBE8]",
+    className: "bg-[#EEF2E7] text-[#6B8E23]",
   },
   expense: {
     icon: CircleDollarSign,
-    iconClass: "bg-[#FFF2DE] text-[#B4741E]",
-    lineClass: "bg-[#E9C98E]",
+    className: "bg-[#EEF2E7] text-[#6B8E23]",
   },
   ai: {
     icon: Bot,
-    iconClass: "bg-[#202918] text-[#C8E894]",
-    lineClass: "bg-[#9DBE61]",
+    className: "bg-[#26311D] text-white",
   },
   reminder: {
     icon: CalendarClock,
-    iconClass: "bg-[#EAF3F7] text-[#4F8099]",
-    lineClass: "bg-[#BCD4DF]",
+    className: "bg-[#EEF2E7] text-[#6B8E23]",
   },
   general: {
     icon: Info,
-    iconClass: "bg-[#F1F1ED] text-[#666B62]",
-    lineClass: "bg-[#D8D9D2]",
+    className: "bg-[#F0F1EC] text-[#64685F]",
   },
 } as const;
 
@@ -76,157 +68,134 @@ export default function NotificationWidget({
         new Date(b.created_at).getTime() -
         new Date(a.created_at).getTime()
     )
-    .slice(0, 5);
+    .slice(0, 4);
 
   const unreadCount = notifications.filter(
     (notification) => !notification.is_read
   ).length;
 
   return (
-    <section className="relative overflow-hidden rounded-[34px] border border-[#E6E2D8] bg-[#FFFEFA] shadow-[0_26px_70px_rgba(42,45,34,0.07)]">
-      <div className="pointer-events-none absolute -right-20 -top-24 h-64 w-64 rounded-full bg-[#D9D2EE]/25 blur-[90px]" />
+    <section className="flex h-full min-h-[430px] flex-col overflow-hidden rounded-[26px] border border-[#E4E5DE] bg-white shadow-[0_12px_34px_rgba(36,43,29,0.045)]">
+      {/* Header */}
 
-      <div className="relative p-6 sm:p-7">
-        <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
-          <div className="flex items-start gap-4">
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-[18px] bg-[#6F5A91] text-white shadow-[0_12px_30px_rgba(111,90,145,0.2)]">
-              <Bell className="h-5 w-5" />
-            </div>
-
-            <div>
-              <p className="text-xs font-extrabold uppercase tracking-[0.16em] text-[#765F99]">
-                Activity centre
-              </p>
-
-              <h2 className="mt-2 text-2xl font-black tracking-[-0.03em] text-[#2C2930]">
-                Recent updates
-              </h2>
-
-              <p className="mt-1.5 text-sm leading-6 text-[#77727B]">
-                Stay updated on important relocation activity.
-              </p>
-            </div>
+      <div className="flex items-start justify-between gap-4 border-b border-[#ECEDE7] px-6 py-5">
+        <div className="flex items-start gap-3">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#EEF2E7] text-[#6B8E23]">
+            <Bell className="h-5 w-5" />
           </div>
 
-          <div className="flex items-center gap-3">
-            {unreadCount > 0 && (
-              <span className="rounded-full bg-[#765F99]/10 px-3 py-1.5 text-xs font-extrabold text-[#765F99]">
-                {unreadCount} unread
-              </span>
-            )}
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#6B8E23]">
+              Notifications
+            </p>
 
-            <Link
-              href="/notifications"
-              className="group flex h-10 w-10 items-center justify-center rounded-full border border-[#E4DDEC] bg-white text-[#765F99] shadow-sm transition hover:bg-[#765F99] hover:text-white"
-              aria-label="View all notifications"
-            >
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-            </Link>
+            <h2 className="mt-1 text-lg font-bold tracking-[-0.025em] text-[#252820]">
+              Recent activity
+            </h2>
+
+            <p className="mt-1 text-sm text-[#85887F]">
+              Important updates from your relocation workspace.
+            </p>
           </div>
         </div>
 
+        <Link
+          href="/notifications"
+          className="group inline-flex shrink-0 items-center gap-1.5 text-sm font-semibold text-[#5F7E20] transition hover:text-[#486317]"
+        >
+          View all
+
+          <ArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5" />
+        </Link>
+      </div>
+
+      {/* Content */}
+
+      <div className="flex flex-1 flex-col p-5 sm:p-6">
+        <div className="flex items-center justify-between gap-3">
+          <p className="text-xs font-semibold text-[#85887F]">
+            Latest updates
+          </p>
+
+          {unreadCount > 0 && (
+            <span className="rounded-full bg-[#E7EEDB] px-3 py-1.5 text-xs font-semibold text-[#5F7E20]">
+              {unreadCount} unread
+            </span>
+          )}
+        </div>
+
         {sortedNotifications.length > 0 ? (
-          <div className="mt-7">
-            {sortedNotifications.map(
-              (notification, index) => {
-                const style =
-                  notificationStyles[
-                    notification.type
-                  ] ?? notificationStyles.general;
+          <div className="mt-4 space-y-3">
+            {sortedNotifications.map((notification) => {
+              const style =
+                notificationStyles[notification.type] ??
+                notificationStyles.general;
 
-                const Icon = style.icon;
+              const Icon = style.icon;
 
-                return (
+              return (
+                <div
+                  key={notification.id}
+                  className="flex gap-3 rounded-2xl border border-[#E8E9E3] bg-[#FAFAF7] p-4"
+                >
                   <div
-                    key={notification.id}
-                    className="relative flex gap-4"
+                    className={`relative flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${style.className}`}
                   >
-                    <div className="relative flex shrink-0 flex-col items-center">
-                      <div
-                        className={`relative z-10 flex h-11 w-11 items-center justify-center rounded-[16px] ${style.iconClass}`}
-                      >
-                        <Icon className="h-4.5 w-4.5" />
+                    <Icon className="h-4 w-4" />
 
-                        {!notification.is_read && (
-                          <span className="absolute -right-0.5 -top-0.5 h-3 w-3 rounded-full border-2 border-[#FFFEFA] bg-[#E06C55]" />
+                    {!notification.is_read && (
+                      <span className="absolute -right-0.5 -top-0.5 h-2.5 w-2.5 rounded-full border-2 border-white bg-[#6B8E23]" />
+                    )}
+                  </div>
+
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="min-w-0">
+                        <h3 className="truncate text-sm font-bold text-[#30332D]">
+                          {notification.title}
+                        </h3>
+
+                        <p className="mt-1 line-clamp-2 text-xs leading-5 text-[#7E8179]">
+                          {notification.message}
+                        </p>
+                      </div>
+
+                      <p className="shrink-0 text-[11px] font-medium text-[#9A9D95]">
+                        {formatNotificationDate(
+                          notification.created_at
                         )}
-                      </div>
-
-                      {index <
-                        sortedNotifications.length - 1 && (
-                        <div
-                          className={`my-2 h-full min-h-14 w-px ${style.lineClass}`}
-                        />
-                      )}
-                    </div>
-
-                    <div
-                      className={`min-w-0 flex-1 ${
-                        index <
-                        sortedNotifications.length - 1
-                          ? "pb-6"
-                          : "pb-1"
-                      }`}
-                    >
-                      <div className="rounded-[22px] border border-black/[0.05] bg-white p-4 shadow-[0_8px_24px_rgba(40,42,34,0.035)]">
-                        <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
-                          <div className="min-w-0">
-                            <div className="flex items-center gap-2">
-                              <h3 className="truncate font-black text-[#302E31]">
-                                {notification.title}
-                              </h3>
-
-                              {!notification.is_read && (
-                                <span className="shrink-0 rounded-full bg-[#FDEBE6] px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-[0.08em] text-[#BC5F49]">
-                                  New
-                                </span>
-                              )}
-                            </div>
-
-                            <p className="mt-2 line-clamp-2 text-sm leading-6 text-[#77727B]">
-                              {notification.message}
-                            </p>
-                          </div>
-
-                          <p className="shrink-0 text-xs font-semibold text-[#A09BA3]">
-                            {formatNotificationDate(
-                              notification.created_at
-                            )}
-                          </p>
-                        </div>
-                      </div>
+                      </p>
                     </div>
                   </div>
-                );
-              }
-            )}
+                </div>
+              );
+            })}
           </div>
         ) : (
-          <div className="mt-7 rounded-[28px] border border-dashed border-[#DCD5E5] bg-[#F8F5FB] px-6 py-12 text-center">
-            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-[22px] bg-white text-[#8068A0] shadow-sm">
-              <Sparkles className="h-7 w-7" />
+          <div className="mt-4 flex flex-1 flex-col items-center justify-center rounded-[20px] border border-dashed border-[#D7DACF] bg-[#FAFAF7] px-6 py-10 text-center">
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#EEF2E7] text-[#6B8E23]">
+              <Sparkles className="h-5 w-5" />
             </div>
 
-            <h3 className="mt-5 text-xl font-black tracking-[-0.02em] text-[#302A38]">
+            <h3 className="mt-4 text-lg font-bold text-[#252820]">
               You are all caught up
             </h3>
 
-            <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-[#7A7282]">
-              New housing, roommate, expense and AI updates
-              will appear here.
+            <p className="mt-2 max-w-sm text-sm leading-6 text-[#85887F]">
+              New housing, expense, roommate and AI updates will appear here.
             </p>
           </div>
         )}
 
-        {notifications.length > 5 && (
+        <div className="mt-auto pt-5">
           <Link
             href="/notifications"
-            className="mt-6 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-2xl bg-[#F2EDF7] px-4 text-sm font-extrabold text-[#765F99] transition hover:bg-[#765F99] hover:text-white"
+            className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-xl bg-[#26311D] px-5 text-sm font-semibold text-white transition hover:bg-[#354329]"
           >
-            View all {notifications.length} notifications
+            View notifications
             <ArrowRight className="h-4 w-4" />
           </Link>
-        )}
+        </div>
       </div>
     </section>
   );

@@ -4,6 +4,11 @@ import json
 
 from ai.client import generate_response
 from ai.prompts import locality_prompt
+from ai.prompts import chat_prompt
+from ai.prompts import scam_check_prompt
+from ai.prompts import budget_prompt
+from ai.prompts import personalized_suggestions_prompt
+
 
 from models.housing import Housing
 from models.ai import AIChatMessage
@@ -20,7 +25,8 @@ def generate_ai_response(question: str) -> str:
     """
 
     try:
-        return generate_response(question)
+        prompt= chat_prompt(question)
+        return generate_response(prompt)
 
     except Exception as e:
         raise HTTPException(
@@ -127,12 +133,11 @@ def get_locality_recommendation(
         housing_data.append(
             {
                 "id": house.id,
-                "property_name": house.property_name,
+                "title": house.title,
                 "city": house.city,
                 "locality": house.locality,
                 "rent": house.rent,
-                "property_type": house.property_type,
-                "rating": house.rating,
+                "house_type": house.house_type,
                 "verified": house.verified,
                 #Temporary values(not yet in DB)
                 "rating": 4.5,
@@ -152,7 +157,7 @@ def get_locality_recommendation(
     try:
         return json.loads(ai_response)
 
-    except Exception:
+    except json.JSONDecodeError:
         return {
             "summary": "Unable to generate recommendations.",
             "recommendations": [],
@@ -194,24 +199,44 @@ def scam_check(
     else:
         level = "Low"
 
-    return {
+    risk_score = min(risk_score, 100)
+    prompt = scam_check_prompt(request=request,risk_level=level,risk_score=risk_score, red_flags=red_flags,)
+    try:
+        ai_response = generate_response(prompt)
+        ai_data = json.loads(ai_response)
+    except Exception:
+        ai_data={
+            "summary": "AI generated rental scam assessment.",
+            "positive_signals":[
+                "Basic listing information provided."
+            ],
+            "recommendations":[
+                "Visit the property before paying.",
+                "Verify owner identity."
+                "Avoid advance payment.",
+            ], 
+        } 
+    return{
         "risk_level": level,
-        "risk_score": min(risk_score, 100),
-        "summary": "AI generated rental scam assessment.",
+        "risk_score": risk_score,
+        "summary": ai_data.get(
+            "summary",
+            "AI generated rental scam assessment.",
+        ),
         "red_flags": red_flags,
-        "positive_signals": [
-            "Basic listing information provided."
-        ],
-        "recommendations": [
-            "Visit the property before paying.",
-            "Verify owner identity.",
-            "Avoid advance payment.",
-        ],
-        "disclaimer": (
+        "positive_signals": ai_data.get(
+            "positive_signals",
+            [],
+        ),
+        "recommendations": ai_data.get(
+            "recommendations",
+            [],
+        ),
+        "disclaimer":(
             "This is an AI-based risk assessment "
             "and not a legal guarantee."
         ),
-    }
+    }  
 
 
 def budget_advisor(
@@ -246,7 +271,27 @@ def budget_advisor(
         status = "Tight"
     else:
         status = "Risky"
-
+    summary= f"""
+    Status: {status}
+    Monthly Income: {request.monthly_income}
+    Housing Budget: {request.housing_budget}
+    Estimated Expenses: {total_expenses}
+    Estimated Savings: {savings}
+    Housing Percentage: {round(housing_percentage, 2)}%
+    """
+    prompt = budget_prompt(
+        request=request,
+        summary=summary,
+    )
+    try:
+        ai_response = generate_response(prompt)
+        ai_data = json.loads(ai_response)
+    except Exception:
+         ai_data = {
+            "summary": ai_data["summary"],
+            "recommendations":ai_data["recommendations"],
+            "warnings":ai_data["warnings"],
+         }    
     return {
         "status": status,
         "summary": "Budget analysis generated successfully.",
@@ -307,25 +352,42 @@ def get_suggestions(
     current_user: User,
     db: Session,
 ):
-    return {
-        "items": [
-            {
-                "id": "suggestion-1",
-                "type": "housing",
-                "title": "Consider shared housing",
-                "description": (
-                    "Shared accommodation can reduce "
-                    "monthly rent."
-                ),
-                "reason": (
-                    "Matches your current preferences."
-                ),
-                "priority": "High",
-                "action_label": "Explore Housing",
-                "action_url": (
-                    "/housing?city=Delhi"
-                ),
-                "created_at": current_user.created_at,
-            }
-        ]
-    }
+    context = f"""
+User Name: {current_user.name}
+Email: {current_user.email}
+Account Created: {current_user.created_at}
+"""
+
+    prompt = personalized_suggestions_prompt(
+        current_user,
+        context,
+    )
+
+    try:
+        ai_response = generate_response(prompt)
+
+        ai_data = json.loads(ai_response)
+
+        return ai_data
+
+    except Exception:
+        return {
+            "items": [
+                {
+                    "id": "suggestion-1",
+                    "type": "housing",
+                    "title": "Consider shared housing",
+                    "description": (
+                        "Shared accommodation can reduce "
+                        "your monthly rent."
+                    ),
+                    "reason": (
+                        "Matches your current preferences."
+                    ),
+                    "priority": "High",
+                    "action_label": "Explore Housing",
+                    "action_url": "/housing?city=Delhi",
+                    "created_at": current_user.created_at,
+                }
+            ]
+        }

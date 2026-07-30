@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import Image from "next/image";
 import {
   ArrowRight,
   Bookmark,
@@ -7,13 +10,15 @@ import {
   MapPin,
 } from "lucide-react";
 
-import type { DashboardHousingSummary } from "@/features/dashboard/types/dashboard.types";
+import type {
+  DashboardHousingSummary,
+} from "@/features/dashboard/types/dashboard.types";
 
-interface HousingWidgetProps {
+interface Props {
   housing: DashboardHousingSummary;
 }
 
-function formatCurrency(amount: number): string {
+function formatCurrency(amount: number) {
   return new Intl.NumberFormat("en-IN", {
     style: "currency",
     currency: "INR",
@@ -23,119 +28,164 @@ function formatCurrency(amount: number): string {
 
 export default function HousingWidget({
   housing,
-}: HousingWidgetProps) {
+}: Props) {
   return (
-    <section className="rounded-2xl border border-neutral-200 bg-white p-5 shadow-sm">
-      <div className="flex items-start justify-between gap-4">
-        <div>
-          <div className="flex items-center gap-2">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#EEF2E4] text-[#6B8E23]">
-              <Building2 className="h-5 w-5" />
-            </div>
+    <section className="overflow-hidden rounded-[34px] border border-black/5 bg-white shadow-[0_25px_70px_rgba(35,42,30,.08)]">
+
+      {/* Banner */}
+
+      <div className="relative h-60">
+
+        <Image
+          src="/images/dashboard/property-placeholder.jpg"
+          alt="Property"
+          fill
+          className="object-cover"
+        />
+
+        <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
+
+        <div className="absolute left-6 bottom-6 right-6">
+
+          <div className="inline-flex rounded-full bg-white/15 backdrop-blur px-3 py-1 text-xs font-bold text-white">
+            Featured Property
+          </div>
+
+          {housing.recent_listing ? (
+            <>
+              <h2 className="mt-3 text-3xl font-black text-white">
+
+                {housing.recent_listing.title}
+
+              </h2>
+
+              <div className="mt-2 flex items-center gap-2 text-white/80">
+
+                <MapPin className="h-4 w-4"/>
+
+                {housing.recent_listing.locality},{" "}
+                {housing.recent_listing.city}
+
+              </div>
+
+            </>
+          ) : (
+            <>
+              <h2 className="mt-3 text-3xl font-black text-white">
+
+                No listing yet
+
+              </h2>
+
+              <p className="mt-2 text-white/70">
+
+                Publish your first property.
+
+              </p>
+            </>
+          )}
+
+        </div>
+
+      </div>
+
+      {/* Content */}
+
+      <div className="p-6">
+
+        {housing.recent_listing && (
+
+          <div className="flex items-center justify-between">
 
             <div>
-              <h2 className="text-lg font-semibold text-neutral-900">
-                Housing
-              </h2>
+
               <p className="text-sm text-neutral-500">
-                Manage your listings and saved homes
+
+                Monthly Rent
+
               </p>
+
+              <h3 className="mt-1 text-3xl font-black text-[#6B8E23]">
+
+                {formatCurrency(housing.recent_listing.rent)}
+
+              </h3>
+
             </div>
-          </div>
-        </div>
-
-        <Link
-          href="/housing"
-          className="inline-flex items-center gap-1 text-sm font-medium text-[#6B8E23] transition hover:opacity-75"
-        >
-          View all
-          <ArrowRight className="h-4 w-4" />
-        </Link>
-      </div>
-
-      <div className="mt-5 grid grid-cols-3 gap-3">
-        <div className="rounded-xl bg-neutral-50 p-3">
-          <p className="text-2xl font-bold text-neutral-900">
-            {housing.total_listings}
-          </p>
-          <p className="mt-1 text-xs text-neutral-500">
-            Total listings
-          </p>
-        </div>
-
-        <div className="rounded-xl bg-neutral-50 p-3">
-          <div className="flex items-center gap-1">
-            <CheckCircle2 className="h-4 w-4 text-[#6B8E23]" />
-            <p className="text-2xl font-bold text-neutral-900">
-              {housing.active_listings}
-            </p>
-          </div>
-          <p className="mt-1 text-xs text-neutral-500">
-            Active
-          </p>
-        </div>
-
-        <div className="rounded-xl bg-neutral-50 p-3">
-          <div className="flex items-center gap-1">
-            <Bookmark className="h-4 w-4 text-[#6B8E23]" />
-            <p className="text-2xl font-bold text-neutral-900">
-              {housing.saved_listings}
-            </p>
-          </div>
-          <p className="mt-1 text-xs text-neutral-500">
-            Saved
-          </p>
-        </div>
-      </div>
-
-      {housing.recent_listing ? (
-        <div className="mt-5 rounded-xl border border-neutral-200 p-4">
-          <p className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
-            Recent listing
-          </p>
-
-          <h3 className="mt-2 font-semibold text-neutral-900">
-            {housing.recent_listing.title}
-          </h3>
-
-          <div className="mt-2 flex items-center gap-1 text-sm text-neutral-500">
-            <MapPin className="h-4 w-4" />
-            <span>
-              {housing.recent_listing.locality},{" "}
-              {housing.recent_listing.city}
-            </span>
-          </div>
-
-          <div className="mt-4 flex items-center justify-between gap-3">
-            <p className="font-semibold text-[#6B8E23]">
-              {formatCurrency(housing.recent_listing.rent)}
-              <span className="text-sm font-normal text-neutral-500">
-                /month
-              </span>
-            </p>
 
             <Link
               href={`/housing/${housing.recent_listing.id}`}
-              className="text-sm font-medium text-neutral-700 hover:text-[#6B8E23]"
+              className="rounded-xl bg-[#202918] px-5 py-3 text-sm font-bold text-white transition hover:scale-[1.03]"
             >
-              View details
+              View Listing
             </Link>
-          </div>
-        </div>
-      ) : (
-        <div className="mt-5 rounded-xl border border-dashed border-neutral-300 p-5 text-center">
-          <p className="text-sm text-neutral-500">
-            No recent housing activity.
-          </p>
 
-          <Link
-            href="/housing/add"
-            className="mt-3 inline-flex text-sm font-medium text-[#6B8E23]"
-          >
-            Add a listing
-          </Link>
+          </div>
+
+        )}
+
+        <div className="mt-7 grid grid-cols-3 gap-4">
+
+          <Stat
+            icon={<Building2 size={18}/>}
+            label="Listings"
+            value={housing.total_listings}
+          />
+
+          <Stat
+            icon={<CheckCircle2 size={18}/>}
+            label="Active"
+            value={housing.active_listings}
+          />
+
+          <Stat
+            icon={<Bookmark size={18}/>}
+            label="Saved"
+            value={housing.saved_listings}
+          />
+
         </div>
-      )}
+
+      </div>
+
     </section>
   );
+}
+
+function Stat({
+  icon,
+  label,
+  value,
+}:{
+  icon:React.ReactNode;
+  label:string;
+  value:number;
+}){
+
+  return(
+
+<div className="rounded-2xl bg-[#F7F7F4] p-5">
+
+<div className="flex items-center gap-2 text-[#6B8E23]">
+
+{icon}
+
+<span className="text-xs font-bold uppercase">
+
+{label}
+
+</span>
+
+</div>
+
+<p className="mt-3 text-3xl font-black">
+
+{value}
+
+</p>
+
+</div>
+
+  )
+
 }

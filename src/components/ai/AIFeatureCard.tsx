@@ -20,33 +20,44 @@ export default function AIFeatureCard({
   return (
     <Link
       href={href}
-      className="group block rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-[#6B8E23]/40 hover:shadow-md"
+      className="group relative overflow-hidden rounded-[28px] border border-[#205C46]/40 bg-[#0D211B] p-7 shadow-[0_18px_45px_rgba(0,0,0,0.22)] transition-all duration-300 hover:-translate-y-2 hover:border-[#D4A34F]/40 hover:shadow-[0_30px_80px_rgba(0,0,0,0.35)]"
     >
-      <div className="flex items-start justify-between gap-4">
-        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#EEF2E4] text-[#6B8E23]">
-          <Icon className="h-6 w-6" />
+      {/* Background Glow */}
+
+      <div className="absolute -right-10 -top-10 h-36 w-36 rounded-full bg-[#D4A34F]/10 blur-3xl opacity-0 transition duration-500 group-hover:opacity-100" />
+
+      <div className="relative">
+        <div className="flex items-start justify-between">
+          <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-[#D4A34F]/20 bg-[#D4A34F]/10 text-[#F0C86A] transition group-hover:scale-110">
+            <Icon className="h-7 w-7" />
+          </div>
+
+          {badge && (
+            <span className="rounded-full border border-[#205C46]/40 bg-[#123126] px-3 py-1 text-xs font-semibold uppercase tracking-wide text-[#D4A34F]">
+              {badge}
+            </span>
+          )}
         </div>
 
-        {badge ? (
-          <span className="rounded-full bg-[#FBFAF5] px-3 py-1 text-xs font-medium text-[#6B8E23]">
-            {badge}
+        <div className="mt-7">
+          <h2 className="text-2xl font-bold text-[#FBFAF7] transition-colors group-hover:text-[#F0C86A]">
+            {title}
+          </h2>
+
+          <p className="mt-3 text-sm leading-7 text-[#B8C5BF]">
+            {description}
+          </p>
+        </div>
+
+        <div className="mt-8 flex items-center justify-between border-t border-[#205C46]/40 pt-5">
+          <span className="text-sm font-semibold text-[#D4A34F]">
+            Launch Tool
           </span>
-        ) : null}
-      </div>
 
-      <div className="mt-5">
-        <h2 className="text-xl font-semibold text-gray-900">
-          {title}
-        </h2>
-
-        <p className="mt-2 text-sm leading-6 text-gray-600">
-          {description}
-        </p>
-      </div>
-
-      <div className="mt-6 flex items-center gap-2 text-sm font-semibold text-[#6B8E23]">
-        Open feature
-        <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#D4A34F]/10 text-[#F0C86A] transition-all group-hover:translate-x-1 group-hover:bg-[#D4A34F] group-hover:text-[#071512]">
+            <ArrowRight className="h-5 w-5" />
+          </div>
+        </div>
       </div>
     </Link>
   );

@@ -51,8 +51,8 @@ const aiFeatures = [
 
 export default function AIPage() {
   return (
-    <main className="min-h-screen bg-[#FBFAF5]">
-      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+    <main className="min-h-screen bg-[#071512]">
+      <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
         <AIHeader
           badge="AI Relocation Assistant"
           title="Move to a new city with greater confidence"
@@ -61,23 +61,34 @@ export default function AIPage() {
         />
 
         <section className="mt-10">
-          <div className="mb-6 flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#EEF2E4] text-[#6B8E23]">
-              <Sparkles className="h-5 w-5" />
+          <div className="mb-7 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-start gap-4">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-[16px] border border-[#D4A34F]/20 bg-[#D4A34F]/10 text-[#F0C86A]">
+                <Sparkles className="h-5 w-5" />
+              </div>
+
+              <div>
+                <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#D4A34F]">
+                  Intelligent Assistance
+                </p>
+
+                <h2 className="mt-1 text-2xl font-bold text-[#FBFAF7]">
+                  AI-Powered Tools
+                </h2>
+
+                <p className="mt-2 text-sm leading-6 text-[#9EAEA7]">
+                  Select a tool based on the relocation guidance you currently
+                  need.
+                </p>
+              </div>
             </div>
 
-            <div>
-              <h2 className="text-xl font-semibold text-gray-900">
-                AI-powered tools
-              </h2>
-
-              <p className="mt-1 text-sm text-gray-500">
-                Select a tool based on the guidance you currently need.
-              </p>
+            <div className="rounded-full border border-[#205C46]/40 bg-[#0D211B] px-4 py-2 text-sm font-semibold text-[#D6E0DB]">
+              {aiFeatures.length} specialised tools
             </div>
           </div>
 
-          <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
             {aiFeatures.map((feature) => (
               <AIFeatureCard
                 key={feature.href}
@@ -90,31 +101,33 @@ export default function AIPage() {
           </div>
         </section>
 
-        <section className="mt-10 rounded-3xl border border-[#D6C7A1]/60 bg-white p-6 shadow-sm sm:p-8">
-          <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+        <section className="relative mt-10 overflow-hidden rounded-[30px] border border-[#205C46]/35 bg-[#0D211B] p-6 shadow-[0_20px_60px_rgba(0,0,0,0.24)] sm:p-8">
+          <div className="absolute -right-20 -top-20 h-60 w-60 rounded-full bg-[#D4A34F]/10 blur-3xl" />
+
+          <div className="relative flex flex-col gap-7 lg:flex-row lg:items-center lg:justify-between">
             <div className="max-w-3xl">
-              <div className="flex items-center gap-2 text-sm font-semibold text-[#6B8E23]">
+              <div className="inline-flex items-center gap-2 rounded-full border border-[#D4A34F]/20 bg-[#D4A34F]/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-[#F0C86A]">
                 <Sparkles className="h-4 w-4" />
-                Responsible AI guidance
+                Responsible AI Guidance
               </div>
 
-              <h2 className="mt-3 text-2xl font-semibold text-gray-900">
+              <h2 className="mt-5 text-3xl font-bold tracking-tight text-[#FBFAF7]">
                 Use AI recommendations as supportive guidance
               </h2>
 
-              <p className="mt-3 text-sm leading-7 text-gray-600">
+              <p className="mt-4 text-sm leading-7 text-[#B8C5BF] sm:text-base">
                 Always verify property ownership, rental documents, payment
                 requests, locality conditions, transport routes, and safety
                 information independently before making an important decision.
               </p>
             </div>
 
-            <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-3xl bg-[#EEF2E4] text-[#6B8E23]">
-              <ShieldCheck className="h-9 w-9" />
+            <div className="flex h-24 w-24 shrink-0 items-center justify-center rounded-[28px] border border-[#D4A34F]/25 bg-[#D4A34F]/10 text-[#F0C86A]">
+              <ShieldCheck className="h-10 w-10" />
             </div>
           </div>
         </section>
-      </div>
+      </section>
     </main>
   );
 }

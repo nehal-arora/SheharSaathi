@@ -1,3 +1,5 @@
+"use client";
+
 import {
   CheckCircle2,
   IndianRupee,
@@ -5,6 +7,7 @@ import {
   ShieldCheck,
   TrainFront,
   TriangleAlert,
+  Sparkles,
 } from "lucide-react";
 
 import type { LocalityRecommendation } from "@/features/ai/types";
@@ -14,7 +17,10 @@ interface RecommendationCardProps {
 }
 
 function formatCurrency(value?: number): string {
-  if (typeof value !== "number" || Number.isNaN(value)) {
+  if (
+    typeof value !== "number" ||
+    Number.isNaN(value)
+  ) {
     return "Not available";
   }
 
@@ -28,9 +34,12 @@ function formatCurrency(value?: number): string {
 function formatScore(
   value: number | undefined,
   maximum: number
-): string {
-  if (typeof value !== "number" || Number.isNaN(value)) {
-    return "Not available";
+) {
+  if (
+    typeof value !== "number" ||
+    Number.isNaN(value)
+  ) {
+    return "N/A";
   }
 
   return `${value}/${maximum}`;
@@ -39,230 +48,270 @@ function formatScore(
 export default function RecommendationCard({
   recommendation,
 }: RecommendationCardProps) {
-  const pros = Array.isArray(recommendation.pros)
-    ? recommendation.pros
-    : [];
+  const pros = recommendation.pros ?? [];
+  const cons = recommendation.cons ?? [];
+  const reasons =
+    recommendation.reasons ?? [];
+  const essentials =
+    recommendation.nearby_essentials ??
+    [];
 
-  const cons = Array.isArray(recommendation.cons)
-    ? recommendation.cons
-    : [];
-
-  const reasons = Array.isArray(recommendation.reasons)
-    ? recommendation.reasons
-    : [];
-
-  const nearbyEssentials = Array.isArray(
-    recommendation.nearby_essentials
-  )
-    ? recommendation.nearby_essentials
-    : [];
-
-  const metroName =
+  const metro =
     recommendation.nearest_metro ??
     recommendation.nearby_metro ??
     "Metro information unavailable";
 
-  const commuteText =
-    typeof recommendation.commute_minutes === "number"
-      ? `${recommendation.commute_minutes} minutes`
+  const commute =
+    typeof recommendation.commute_minutes ===
+    "number"
+      ? `${recommendation.commute_minutes} mins`
       : recommendation.commute_summary ??
-        "Commute information unavailable";
+        "Unavailable";
 
   return (
-    <article className="overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-sm">
-      <div className="border-b border-gray-100 bg-[#FBFAF5] p-6">
-        <div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-start">
+    <article className="overflow-hidden rounded-[30px] border border-[#205C46]/40 bg-[#0D211B] shadow-2xl">
+
+      {/* Header */}
+
+      <div className="relative overflow-hidden border-b border-[#205C46]/40 bg-gradient-to-r from-[#0D211B] via-[#123126] to-[#0D211B] p-7">
+
+        <div className="absolute right-0 top-0 h-40 w-40 rounded-full bg-[#D4A34F]/10 blur-3xl" />
+
+        <div className="relative flex flex-col justify-between gap-6 lg:flex-row">
+
           <div>
-            <div className="flex items-center gap-2 text-sm font-medium text-[#6B8E23]">
-              <MapPin className="h-4 w-4" />
-              {recommendation.city || "City unavailable"}
+            <div className="inline-flex items-center gap-2 rounded-full border border-[#D4A34F]/20 bg-[#D4A34F]/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-[#F0C86A]">
+              <Sparkles className="h-4 w-4" />
+              AI Recommendation
             </div>
 
-            <h2 className="mt-2 text-2xl font-bold text-gray-900">
-              {recommendation.locality || "Locality unavailable"}
+            <p className="mt-4 flex items-center gap-2 text-sm text-[#B8C5BF]">
+              <MapPin className="h-4 w-4 text-[#D4A34F]" />
+              {recommendation.city}
+            </p>
+
+            <h2 className="mt-2 text-3xl font-bold text-white">
+              {recommendation.locality}
             </h2>
 
-            {typeof recommendation.match_score === "number" && (
-              <p className="mt-2 text-sm text-gray-500">
-                {recommendation.match_score}% match for your preferences
+            {recommendation.match_score && (
+              <p className="mt-3 text-[#9FB0A9]">
+                {recommendation.match_score}% Compatibility Match
               </p>
             )}
           </div>
 
-          <div className="rounded-2xl bg-[#EEF2E4] px-5 py-4">
-            <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">
-              Average monthly rent
+          <div className="rounded-2xl border border-[#205C46]/40 bg-[#123126] p-6 text-center">
+            <p className="text-xs uppercase tracking-wider text-[#8FA29B]">
+              Average Rent
             </p>
 
-            <p className="mt-1 text-xl font-bold text-[#6B8E23]">
-              {formatCurrency(recommendation.average_rent)}
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div className="p-6">
-        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-          <div className="rounded-2xl border border-gray-100 bg-gray-50 p-4">
-            <div className="flex items-center gap-2 text-sm font-medium text-gray-600">
-              <ShieldCheck className="h-4 w-4 text-[#6B8E23]" />
-              Safety
-            </div>
-
-            <p className="mt-2 text-lg font-semibold text-gray-900">
-              {formatScore(recommendation.safety_score, 10)}
-            </p>
-          </div>
-
-          <div className="rounded-2xl border border-gray-100 bg-gray-50 p-4">
-            <div className="flex items-center gap-2 text-sm font-medium text-gray-600">
-              <TrainFront className="h-4 w-4 text-[#6B8E23]" />
-              Transport
-            </div>
-
-            <p className="mt-2 text-lg font-semibold text-gray-900">
-              {formatScore(recommendation.transport_score, 10)}
-            </p>
-          </div>
-
-          <div className="rounded-2xl border border-gray-100 bg-gray-50 p-4">
-            <div className="flex items-center gap-2 text-sm font-medium text-gray-600">
-              <IndianRupee className="h-4 w-4 text-[#6B8E23]" />
-              Affordability
-            </div>
-
-            <p className="mt-2 text-lg font-semibold text-gray-900">
-              {formatScore(
-                recommendation.affordability_score,
-                10
+            <p className="mt-2 text-2xl font-bold text-[#D4A34F]">
+              {formatCurrency(
+                recommendation.average_rent
               )}
             </p>
           </div>
+        </div>
+      </div>
 
-          <div className="rounded-2xl border border-gray-100 bg-gray-50 p-4">
-            <div className="flex items-center gap-2 text-sm font-medium text-gray-600">
-              <MapPin className="h-4 w-4 text-[#6B8E23]" />
-              Commute
-            </div>
+      <div className="space-y-7 p-7">
 
-            <p className="mt-2 text-sm font-semibold text-gray-900">
-              {commuteText}
-            </p>
-          </div>
+        {/* Scores */}
+
+        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+
+          <ScoreCard
+            icon={<ShieldCheck size={18} />}
+            title="Safety"
+            value={formatScore(
+              recommendation.safety_score,
+              10
+            )}
+          />
+
+          <ScoreCard
+            icon={<TrainFront size={18} />}
+            title="Transport"
+            value={formatScore(
+              recommendation.transport_score,
+              10
+            )}
+          />
+
+          <ScoreCard
+            icon={<IndianRupee size={18} />}
+            title="Affordability"
+            value={formatScore(
+              recommendation.affordability_score,
+              10
+            )}
+          />
+
+          <ScoreCard
+            icon={<MapPin size={18} />}
+            title="Commute"
+            value={commute}
+          />
+
         </div>
 
-        <div className="mt-5 rounded-2xl border border-[#D6C7A1] bg-[#FBFAF5] p-5">
-          <div className="flex items-start gap-3">
-            <TrainFront className="mt-0.5 h-5 w-5 shrink-0 text-[#6B8E23]" />
+        {/* Metro */}
 
-            <div>
-              <h3 className="font-semibold text-gray-900">
-                Nearby metro
-              </h3>
+        <div className="rounded-2xl border border-[#205C46]/40 bg-[#123126] p-5">
 
-              <p className="mt-1 text-sm leading-6 text-gray-600">
-                {metroName}
+          <h3 className="font-semibold text-[#F0C86A]">
+            Nearest Metro
+          </h3>
 
-                {typeof recommendation.distance_to_metro_km ===
-                  "number" &&
-                  ` • ${recommendation.distance_to_metro_km} km away`}
-              </p>
-            </div>
-          </div>
+          <p className="mt-2 text-[#B8C5BF] leading-7">
+            {metro}
+
+            {typeof recommendation.distance_to_metro_km ===
+              "number" &&
+              ` • ${recommendation.distance_to_metro_km} km away`}
+          </p>
         </div>
+
+        {/* Why */}
 
         {reasons.length > 0 && (
-          <div className="mt-6">
-            <h3 className="font-semibold text-gray-900">
-              Why this locality matches
+          <div>
+
+            <h3 className="mb-4 text-xl font-bold text-white">
+              Why AI recommends this locality
             </h3>
 
-            <div className="mt-3 grid gap-3 sm:grid-cols-2">
-              {reasons.map((reason, index) => (
+            <div className="grid gap-3 md:grid-cols-2">
+              {reasons.map((reason, i) => (
                 <div
-                  key={`${reason}-${index}`}
-                  className="flex items-start gap-2 rounded-xl bg-[#EEF2E4] px-4 py-3 text-sm text-gray-700"
+                  key={i}
+                  className="flex gap-3 rounded-2xl border border-[#205C46]/40 bg-[#123126] p-4"
                 >
-                  <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#6B8E23]" />
+                  <CheckCircle2 className="mt-1 h-5 w-5 text-[#D4A34F]" />
 
-                  <span>{reason}</span>
+                  <span className="text-[#B8C5BF]">
+                    {reason}
+                  </span>
                 </div>
               ))}
             </div>
+
           </div>
         )}
 
-        <div className="mt-6 grid gap-5 md:grid-cols-2">
-          <div className="rounded-2xl border border-green-100 bg-green-50 p-5">
-            <h3 className="flex items-center gap-2 font-semibold text-green-800">
-              <CheckCircle2 className="h-5 w-5" />
+        {/* Pros Cons */}
+
+        <div className="grid gap-6 lg:grid-cols-2">
+
+          <div className="rounded-2xl border border-emerald-500/20 bg-emerald-500/10 p-6">
+
+            <h3 className="flex items-center gap-2 font-bold text-emerald-300">
+              <CheckCircle2 />
               Advantages
             </h3>
 
-            {pros.length > 0 ? (
-              <ul className="mt-3 space-y-2">
-                {pros.map((pro, index) => (
+            <ul className="mt-4 space-y-3">
+              {pros.length ? (
+                pros.map((item, i) => (
                   <li
-                    key={`${pro}-${index}`}
-                    className="flex items-start gap-2 text-sm leading-6 text-green-700"
+                    key={i}
+                    className="flex gap-3 text-[#CDE7DB]"
                   >
-                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-green-600" />
-                    <span>{pro}</span>
+                    • {item}
                   </li>
-                ))}
-              </ul>
-            ) : (
-              <p className="mt-3 text-sm text-green-700">
-                No specific advantages were returned.
-              </p>
-            )}
+                ))
+              ) : (
+                <li className="text-[#CDE7DB]">
+                  No advantages available.
+                </li>
+              )}
+            </ul>
+
           </div>
 
-          <div className="rounded-2xl border border-amber-100 bg-amber-50 p-5">
-            <h3 className="flex items-center gap-2 font-semibold text-amber-800">
-              <TriangleAlert className="h-5 w-5" />
-              Things to consider
+          <div className="rounded-2xl border border-amber-500/20 bg-amber-500/10 p-6">
+
+            <h3 className="flex items-center gap-2 font-bold text-amber-300">
+              <TriangleAlert />
+              Things to Consider
             </h3>
 
-            {cons.length > 0 ? (
-              <ul className="mt-3 space-y-2">
-                {cons.map((con, index) => (
+            <ul className="mt-4 space-y-3">
+              {cons.length ? (
+                cons.map((item, i) => (
                   <li
-                    key={`${con}-${index}`}
-                    className="flex items-start gap-2 text-sm leading-6 text-amber-700"
+                    key={i}
+                    className="flex gap-3 text-[#FFE7B3]"
                   >
-                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-600" />
-                    <span>{con}</span>
+                    • {item}
                   </li>
-                ))}
-              </ul>
-            ) : (
-              <p className="mt-3 text-sm text-amber-700">
-                No major concerns were returned.
-              </p>
-            )}
+                ))
+              ) : (
+                <li className="text-[#FFE7B3]">
+                  No concerns available.
+                </li>
+              )}
+            </ul>
+
           </div>
+
         </div>
 
-        {nearbyEssentials.length > 0 && (
-          <div className="mt-6">
-            <h3 className="font-semibold text-gray-900">
-              Nearby essentials
+        {/* Essentials */}
+
+        {essentials.length > 0 && (
+          <div>
+
+            <h3 className="mb-4 text-xl font-bold text-white">
+              Nearby Essentials
             </h3>
 
-            <div className="mt-3 flex flex-wrap gap-2">
-              {nearbyEssentials.map((essential, index) => (
-                <span
-                  key={`${essential}-${index}`}
-                  className="rounded-full bg-gray-100 px-3 py-1.5 text-xs font-medium text-gray-700"
-                >
-                  {essential}
-                </span>
-              ))}
+            <div className="flex flex-wrap gap-3">
+              {essentials.map(
+                (item, index) => (
+                  <span
+                    key={index}
+                    className="rounded-full border border-[#205C46]/40 bg-[#123126] px-4 py-2 text-sm font-medium text-[#D4A34F]"
+                  >
+                    {item}
+                  </span>
+                )
+              )}
             </div>
+
           </div>
         )}
+
       </div>
     </article>
+  );
+}
+
+function ScoreCard({
+  icon,
+  title,
+  value,
+}: {
+  icon: React.ReactNode;
+  title: string;
+  value: string;
+}) {
+  return (
+    <div className="rounded-2xl border border-[#205C46]/40 bg-[#123126] p-5">
+
+      <div className="flex items-center gap-2 text-[#D4A34F]">
+        {icon}
+
+        <span className="text-sm font-semibold">
+          {title}
+        </span>
+      </div>
+
+      <p className="mt-4 text-2xl font-bold text-white">
+        {value}
+      </p>
+
+    </div>
   );
 }

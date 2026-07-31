@@ -195,7 +195,7 @@ export default function Home() {
             {/* Product preview */}
 
             <div className="relative mx-auto w-full max-w-[650px]">
-              <div className="absolute -left-5 top-16 hidden rounded-2xl border border-border bg-card p-4 shadow-[0_20px_55px_rgba(31,41,55,0.12)] xl:block">
+              <div className="absolute -left-5 top-16 hidden rounded-2xl border border-[#D8C6A6] bg-[#F6ECD8] p-4 shadow-[0_20px_55px_rgba(31,41,55,0.12)] xl:block">
                 <div className="flex items-center gap-3">
                   <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
                     <BadgeCheck className="h-5 w-5" />
@@ -205,14 +205,14 @@ export default function Home() {
                     <p className="text-xs font-medium text-muted-foreground">
                       Verified options
                     </p>
-                    <p className="text-sm font-bold text-foreground">
+                    <p className="text-sm font-black text-[#183126]">
                       Safer decisions
                     </p>
                   </div>
                 </div>
               </div>
 
-              <div className="absolute -right-3 bottom-24 z-20 hidden rounded-2xl border border-border bg-card p-4 shadow-[0_20px_55px_rgba(31,41,55,0.12)] sm:block xl:-right-8">
+              <div className="absolute -right-3 bottom-24 z-20 hidden rounded-2xl border border-[#D8C6A6] bg-[#F6ECD8] p-4 shadow-[0_20px_55px_rgba(31,41,55,0.12)] sm:block xl:-right-8">
                 <div className="flex items-center gap-3">
                   <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#FFF5D9] text-[#9B6B00]">
                     <TrendingUp className="h-5 w-5" />
@@ -222,22 +222,22 @@ export default function Home() {
                     <p className="text-xs font-medium text-muted-foreground">
                       Monthly budget
                     </p>
-                    <p className="text-sm font-bold text-foreground">
+                    <p className="text-sm font-black text-[#183126]">
                       On track
                     </p>
                   </div>
                 </div>
               </div>
 
-              <div className="relative overflow-hidden rounded-[34px] border border-border/80 bg-card p-3 shadow-[0_35px_100px_rgba(31,41,55,0.13)] sm:p-5">
-                <div className="rounded-[26px] border border-border bg-[#F8F9F4] p-4 sm:p-6">
-                  <div className="flex items-center justify-between border-b border-border pb-5">
+              <div className="relative overflow-hidden rounded-[34px] border border-[#D7C5A6]/60 bg-[#EEDFC5] p-3 shadow-[0_35px_100px_rgba(0,0,0,0.22)] sm:p-5">
+                <div className="rounded-[26px] border border-[#D7C5A6] bg-[#F6ECD8] p-4 sm:p-6">
+                  <div className="flex items-center justify-between border-b border-[#D8C6A6] pb-5">
                     <div>
                       <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">
                         Your relocation dashboard
                       </p>
 
-                      <h2 className="mt-2 text-xl font-extrabold tracking-tight text-foreground sm:text-2xl">
+                      <h2 className="mt-2 text-xl font-black tracking-tight text-[#183126] sm:text-2xl">
                         Product Preview
                       </h2>
                     </div>
@@ -273,7 +273,7 @@ export default function Home() {
 />
                   </div>
 
-                  <div className="mt-4 rounded-3xl bg-[#1F2A17] p-5 text-white">
+                  <div className="mt-4 rounded-3xl bg-gradient-to-r from-[#20391F] to-[#304A25] p-5 text-white">
                     <div className="flex items-start justify-between gap-4">
                       <div>
                         <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.14em] text-[#BCD78B]">
@@ -298,14 +298,14 @@ export default function Home() {
                   </div>
 
                   <div className="mt-4 grid gap-3 sm:grid-cols-[1.15fr_0.85fr]">
-                    <div className="rounded-3xl border border-border bg-card p-5">
+                    <div className="rounded-3xl border border-[#D8C6A6] bg-[#EFE3CC] p-5">
                       <div className="flex items-center justify-between">
                         <div>
                           <p className="text-xs font-semibold text-muted-foreground">
                             Monthly expenses
                           </p>
 
-                          <p className="mt-1 text-xl font-extrabold text-foreground">
+                          <p className="mt-1 text-xl font-black text-[#183126]">
                             ₹18,450
                           </p>
                         </div>
@@ -328,17 +328,17 @@ export default function Home() {
                       </div>
                     </div>
 
-                    <div className="rounded-3xl border border-border bg-card p-5">
+                    <div className="rounded-3xl border border-[#D8C6A6] bg-[#EFE3CC] p-5">
                       <div className="flex items-center gap-2">
                         <ShieldCheck className="h-5 w-5 text-primary" />
 
-                        <p className="text-sm font-bold text-foreground">
+                        <p className="text-sm font-black text-[#183126]">
                           Relocation health
                         </p>
                       </div>
 
                       <div className="mt-5 flex items-end gap-2">
-                        <span className="text-3xl font-extrabold text-foreground">
+                        <span className="text-3xl font-black text-[#183126]">
                           82
                         </span>
 
@@ -505,7 +505,7 @@ export default function Home() {
                         className="flex items-center gap-3 rounded-2xl border border-white/80 bg-white/75 p-4 shadow-sm backdrop-blur"
                       >
                         <Check className="h-4 w-4 text-primary" />
-                        <span className="text-sm font-bold text-foreground">
+                        <span className="text-sm font-black text-[#183126]">
                           {item}
                         </span>
                       </div>
@@ -642,14 +642,14 @@ function PreviewCard({
   icon: Icon,
 }: PreviewCardProps) {
   return (
-    <div className="rounded-2xl border border-border bg-card p-4 shadow-sm sm:p-5">
+    <div className="rounded-2xl border border-[#D8C6A6] bg-[#EFE3CC] p-4 shadow-[0_10px_30px_rgba(0,0,0,0.08)] sm:p-5">
       <div className="flex items-center justify-between gap-3">
         <div>
-          <p className="text-[11px] font-semibold text-muted-foreground sm:text-xs">
+          <p className="text-[11px] font-bold text-[#64766A] sm:text-xs">
             {label}
           </p>
 
-          <p className="mt-1 text-xl font-extrabold tracking-tight text-foreground sm:text-2xl">
+          <p className="mt-1 text-xl font-black tracking-tight text-[#183126] sm:text-2xl">
             {value}
           </p>
         </div>

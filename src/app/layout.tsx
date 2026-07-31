@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
-import { Manrope, Noto_Sans_Devanagari } from "next/font/google";
+import {
+  Manrope,
+  Noto_Sans_Devanagari,
+} from "next/font/google";
 import { Toaster } from "sonner";
+
 import "./globals.css";
 
 const manrope = Manrope({
@@ -8,15 +12,17 @@ const manrope = Manrope({
   subsets: ["latin"],
 });
 
-const notoSansDevanagari = Noto_Sans_Devanagari({
-  variable: "--font-hindi",
-  subsets: ["devanagari"],
-  weight: ["400", "500", "600", "700"],
-});
+const notoSansDevanagari =
+  Noto_Sans_Devanagari({
+    variable: "--font-hindi",
+    subsets: ["devanagari"],
+    weight: ["400", "500", "600", "700"],
+  });
 
 export const metadata: Metadata = {
   title: "शहरSaathi",
-  description: "Making Every New City Feel Like Home",
+  description:
+    "Making Every New City Feel Like Home",
   keywords: [
     "Relocation",
     "Housing",
@@ -38,7 +44,7 @@ export default function RootLayout({
       lang="en"
       className={`${manrope.variable} ${notoSansDevanagari.variable}`}
     >
-      <body className="min-h-screen bg-[#FBFAF5] font-sans text-[#333333] antialiased">
+      <body className="min-h-screen bg-[#071512] font-sans text-[#FBFAF7] antialiased">
         {children}
 
         <Toaster
@@ -46,9 +52,17 @@ export default function RootLayout({
           richColors
           closeButton
           duration={3000}
-          expand={true}
+          expand
           visibleToasts={3}
-          theme="light"
+          theme="dark"
+          toastOptions={{
+            style: {
+              background: "#0D211B",
+              color: "#FBFAF7",
+              border:
+                "1px solid rgba(212, 163, 79, 0.2)",
+            },
+          }}
         />
       </body>
     </html>

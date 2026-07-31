@@ -35,27 +35,39 @@ function formatNotificationDate(dateValue: string): string {
 const notificationStyles = {
   housing: {
     icon: Building2,
-    className: "bg-[#EEF2E7] text-[#6B8E23]",
+    containerClass:
+      "border-[#8AB59C]/10 bg-[#205C46]/35 text-[#A5CEB5]",
+    dotClass: "bg-[#8AB59C]",
   },
   roommate: {
     icon: UserRoundCheck,
-    className: "bg-[#EEF2E7] text-[#6B8E23]",
+    containerClass:
+      "border-[#8AB59C]/10 bg-[#205C46]/35 text-[#A5CEB5]",
+    dotClass: "bg-[#8AB59C]",
   },
   expense: {
     icon: CircleDollarSign,
-    className: "bg-[#EEF2E7] text-[#6B8E23]",
+    containerClass:
+      "border-[#D4A34F]/15 bg-[#D4A34F]/10 text-[#F0C86A]",
+    dotClass: "bg-[#D4A34F]",
   },
   ai: {
     icon: Bot,
-    className: "bg-[#26311D] text-white",
+    containerClass:
+      "border-[#D4A34F]/15 bg-[#D4A34F]/10 text-[#F0C86A]",
+    dotClass: "bg-[#D4A34F]",
   },
   reminder: {
     icon: CalendarClock,
-    className: "bg-[#EEF2E7] text-[#6B8E23]",
+    containerClass:
+      "border-[#8AB59C]/10 bg-[#205C46]/35 text-[#A5CEB5]",
+    dotClass: "bg-[#8AB59C]",
   },
   general: {
     icon: Info,
-    className: "bg-[#F0F1EC] text-[#64685F]",
+    containerClass:
+      "border-white/[0.07] bg-white/[0.04] text-white/55",
+    dotClass: "bg-white/60",
   },
 } as const;
 
@@ -75,25 +87,31 @@ export default function NotificationWidget({
   ).length;
 
   return (
-    <section className="flex h-full min-h-[430px] flex-col overflow-hidden rounded-[26px] border border-[#E4E5DE] bg-white shadow-[0_12px_34px_rgba(36,43,29,0.045)]">
-      {/* Header */}
+    <section className="relative flex h-full min-h-[430px] flex-col overflow-hidden rounded-[20px] border border-white/[0.07] bg-gradient-to-br from-[#0F251E] to-[#0B1D18] shadow-[0_20px_55px_rgba(0,0,0,0.2)]">
+      <div className="pointer-events-none absolute -right-16 -top-20 h-52 w-52 rounded-full bg-[#D4A34F]/10 blur-[70px]" />
 
-      <div className="flex items-start justify-between gap-4 border-b border-[#ECEDE7] px-6 py-5">
-        <div className="flex items-start gap-3">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#EEF2E7] text-[#6B8E23]">
+      <div className="relative flex items-start justify-between gap-4 border-b border-white/[0.06] px-5 py-5 sm:px-6">
+        <div className="flex min-w-0 items-start gap-3">
+          <div className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-[#D4A34F]/15 bg-[#D4A34F]/10 text-[#F0C86A]">
             <Bell className="h-5 w-5" />
+
+            {unreadCount > 0 && (
+              <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full border-2 border-[#0F251E] bg-[#D4A34F] px-1 text-[9px] font-bold text-[#10251D]">
+                {unreadCount > 9 ? "9+" : unreadCount}
+              </span>
+            )}
           </div>
 
-          <div>
-            <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#6B8E23]">
+          <div className="min-w-0">
+            <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#D4A34F]">
               Notifications
             </p>
 
-            <h2 className="mt-1 text-lg font-bold tracking-[-0.025em] text-[#252820]">
+            <h2 className="mt-1 text-lg font-bold tracking-[-0.025em] text-white">
               Recent activity
             </h2>
 
-            <p className="mt-1 text-sm text-[#85887F]">
+            <p className="mt-1 text-sm leading-6 text-white/38">
               Important updates from your relocation workspace.
             </p>
           </div>
@@ -101,25 +119,27 @@ export default function NotificationWidget({
 
         <Link
           href="/notifications"
-          className="group inline-flex shrink-0 items-center gap-1.5 text-sm font-semibold text-[#5F7E20] transition hover:text-[#486317]"
+          className="group inline-flex shrink-0 items-center gap-1.5 text-sm font-semibold text-[#F0C86A] transition hover:text-[#FFE19A]"
         >
           View all
 
-          <ArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5" />
+          <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
         </Link>
       </div>
 
-      {/* Content */}
-
-      <div className="flex flex-1 flex-col p-5 sm:p-6">
+      <div className="relative flex flex-1 flex-col p-5 sm:p-6">
         <div className="flex items-center justify-between gap-3">
-          <p className="text-xs font-semibold text-[#85887F]">
+          <p className="text-xs font-semibold uppercase tracking-[0.09em] text-white/35">
             Latest updates
           </p>
 
-          {unreadCount > 0 && (
-            <span className="rounded-full bg-[#E7EEDB] px-3 py-1.5 text-xs font-semibold text-[#5F7E20]">
+          {unreadCount > 0 ? (
+            <span className="rounded-full border border-[#D4A34F]/15 bg-[#D4A34F]/10 px-3 py-1.5 text-xs font-semibold text-[#F0C86A]">
               {unreadCount} unread
+            </span>
+          ) : (
+            <span className="rounded-full border border-[#8AB59C]/10 bg-[#205C46]/35 px-3 py-1.5 text-xs font-semibold text-[#A5CEB5]">
+              All read
             </span>
           )}
         </div>
@@ -136,31 +156,43 @@ export default function NotificationWidget({
               return (
                 <div
                   key={notification.id}
-                  className="flex gap-3 rounded-2xl border border-[#E8E9E3] bg-[#FAFAF7] p-4"
+                  className={
+                    notification.is_read
+                      ? "group flex gap-3 rounded-[16px] border border-white/[0.05] bg-white/[0.02] p-4 transition hover:border-white/[0.09] hover:bg-white/[0.035]"
+                      : "group flex gap-3 rounded-[16px] border border-[#D4A34F]/10 bg-[#D4A34F]/[0.035] p-4 transition hover:border-[#D4A34F]/20 hover:bg-[#D4A34F]/[0.055]"
+                  }
                 >
                   <div
-                    className={`relative flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${style.className}`}
+                    className={`relative flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border ${style.containerClass}`}
                   >
                     <Icon className="h-4 w-4" />
 
                     {!notification.is_read && (
-                      <span className="absolute -right-0.5 -top-0.5 h-2.5 w-2.5 rounded-full border-2 border-white bg-[#6B8E23]" />
+                      <span
+                        className={`absolute -right-1 -top-1 h-2.5 w-2.5 rounded-full border-2 border-[#0F251E] ${style.dotClass}`}
+                      />
                     )}
                   </div>
 
                   <div className="min-w-0 flex-1">
                     <div className="flex items-start justify-between gap-3">
                       <div className="min-w-0">
-                        <h3 className="truncate text-sm font-bold text-[#30332D]">
+                        <h3
+                          className={
+                            notification.is_read
+                              ? "truncate text-sm font-semibold text-white/72"
+                              : "truncate text-sm font-bold text-white"
+                          }
+                        >
                           {notification.title}
                         </h3>
 
-                        <p className="mt-1 line-clamp-2 text-xs leading-5 text-[#7E8179]">
+                        <p className="mt-1 line-clamp-2 text-xs leading-5 text-white/35">
                           {notification.message}
                         </p>
                       </div>
 
-                      <p className="shrink-0 text-[11px] font-medium text-[#9A9D95]">
+                      <p className="shrink-0 text-right text-[10px] font-medium leading-4 text-white/24 sm:text-[11px]">
                         {formatNotificationDate(
                           notification.created_at
                         )}
@@ -172,16 +204,20 @@ export default function NotificationWidget({
             })}
           </div>
         ) : (
-          <div className="mt-4 flex flex-1 flex-col items-center justify-center rounded-[20px] border border-dashed border-[#D7DACF] bg-[#FAFAF7] px-6 py-10 text-center">
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#EEF2E7] text-[#6B8E23]">
+          <div className="mt-4 flex flex-1 flex-col items-center justify-center rounded-[18px] border border-dashed border-white/10 bg-white/[0.02] px-6 py-10 text-center">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-[#D4A34F]/15 bg-[#D4A34F]/10 text-[#F0C86A]">
               <Sparkles className="h-5 w-5" />
             </div>
 
-            <h3 className="mt-4 text-lg font-bold text-[#252820]">
+            <p className="mt-4 text-xs font-bold uppercase tracking-[0.14em] text-[#D4A34F]">
+              Inbox clear
+            </p>
+
+            <h3 className="mt-2 text-lg font-bold text-white">
               You are all caught up
             </h3>
 
-            <p className="mt-2 max-w-sm text-sm leading-6 text-[#85887F]">
+            <p className="mt-2 max-w-sm text-sm leading-6 text-white/38">
               New housing, expense, roommate and AI updates will appear here.
             </p>
           </div>
@@ -190,9 +226,10 @@ export default function NotificationWidget({
         <div className="mt-auto pt-5">
           <Link
             href="/notifications"
-            className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-xl bg-[#26311D] px-5 text-sm font-semibold text-white transition hover:bg-[#354329]"
+            className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-xl bg-[#D4A34F] px-5 text-sm font-bold text-[#10251D] transition hover:bg-[#E5B65B]"
           >
             View notifications
+
             <ArrowRight className="h-4 w-4" />
           </Link>
         </div>

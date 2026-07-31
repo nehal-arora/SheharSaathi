@@ -4,6 +4,8 @@ import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import {
+  BadgeCheck,
+  Building2,
   Edit3,
   Eye,
   Home,
@@ -12,6 +14,7 @@ import {
   Plus,
   Power,
   RefreshCw,
+  Sparkles,
   Trash2,
 } from "lucide-react";
 import { toast } from "sonner";
@@ -171,17 +174,22 @@ export default function MyListingsPage() {
 
   if (loading) {
     return (
-      <main className="min-h-screen bg-white px-5 py-10 sm:px-8 lg:px-12">
-        <div className="mx-auto flex min-h-[500px] max-w-5xl items-center justify-center rounded-3xl border border-[#EEF2E4] bg-[#FBFAF5]">
-          <div className="flex flex-col items-center gap-4 text-center">
-            <Loader2
-              size={38}
-              className="animate-spin text-[#6B8E23]"
-            />
+      <main className="min-h-screen bg-[#071512] px-5 py-10 sm:px-8 lg:px-12">
+        <div className="mx-auto flex min-h-[520px] max-w-6xl items-center justify-center rounded-[32px] border border-[#D4A34F]/15 bg-[#0D211B] shadow-[0_25px_70px_rgba(0,0,0,0.35)]">
+          <div className="flex flex-col items-center gap-5 text-center">
+            <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-[#D4A34F]/20 bg-[#122A22]">
+              <Loader2 className="h-8 w-8 animate-spin text-[#F0C86A]" />
+            </div>
 
-            <p className="font-medium text-gray-500">
-              Loading your listings...
-            </p>
+            <div>
+              <p className="text-lg font-semibold text-[#FBFAF7]">
+                Loading your listings
+              </p>
+
+              <p className="mt-1 text-sm text-[#9EAEA7]">
+                Fetching your uploaded properties...
+              </p>
+            </div>
           </div>
         </div>
       </main>
@@ -190,24 +198,28 @@ export default function MyListingsPage() {
 
   if (error) {
     return (
-      <main className="min-h-screen bg-white px-5 py-10 sm:px-8 lg:px-12">
-        <div className="mx-auto flex min-h-[500px] max-w-5xl items-center justify-center rounded-3xl border border-red-100 bg-[#FBFAF5] p-8">
+      <main className="min-h-screen bg-[#071512] px-5 py-10 sm:px-8 lg:px-12">
+        <div className="mx-auto flex min-h-[520px] max-w-6xl items-center justify-center rounded-[32px] border border-red-400/20 bg-[#0D211B] p-8 shadow-[0_25px_70px_rgba(0,0,0,0.35)]">
           <div className="max-w-md text-center">
-            <h1 className="text-2xl font-bold text-[#333333]">
+            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl border border-red-400/20 bg-red-400/10">
+              <RefreshCw className="h-8 w-8 text-red-300" />
+            </div>
+
+            <h1 className="mt-5 text-2xl font-bold text-[#FBFAF7]">
               Unable to load listings
             </h1>
 
-            <p className="mt-3 text-gray-500">
+            <p className="mt-3 text-[#9EAEA7]">
               {error}
             </p>
 
             <button
               type="button"
               onClick={() => void loadListings()}
-              className="mt-6 inline-flex items-center gap-2 rounded-xl bg-[#6B8E23] px-5 py-3 font-semibold text-white transition hover:opacity-90"
+              className="mt-7 inline-flex items-center gap-2 rounded-2xl bg-[#D4A34F] px-6 py-3 font-semibold text-[#10251D] transition hover:bg-[#E5B65B]"
             >
               <RefreshCw size={18} />
-              Try again
+              Try Again
             </button>
           </div>
         </div>
@@ -216,43 +228,61 @@ export default function MyListingsPage() {
   }
 
   return (
-    <main className="min-h-screen bg-white px-5 py-10 sm:px-8 lg:px-12">
+    <main className="min-h-screen bg-[#071512] px-5 py-10 sm:px-8 lg:px-12">
       <div className="mx-auto max-w-6xl">
-        <div className="mb-8 flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <h1 className="text-3xl font-bold text-[#333333]">
-              My Listings
-            </h1>
-
-            <p className="mt-2 text-gray-500">
-              Manage your uploaded housing properties.
-            </p>
-          </div>
-
-          <button
-            type="button"
-            onClick={() => router.push("/housing/add")}
-            className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#6B8E23] px-5 py-3 font-semibold text-white transition hover:opacity-90"
-          >
-            <Plus size={19} />
-            Add New Listing
-          </button>
-        </div>
-
-        {listings.length === 0 ? (
-          <div className="rounded-3xl border border-[#EEF2E4] bg-[#FBFAF5] p-10">
-            <div className="flex flex-col items-center justify-center text-center">
-              <div className="rounded-full bg-[#EEF2E4] p-5 text-[#6B8E23]">
-                <Home size={40} />
+        <section className="overflow-hidden rounded-[32px] border border-[#D4A34F]/15 bg-gradient-to-br from-[#0D211B] via-[#143126] to-[#205C46] shadow-[0_25px_70px_rgba(0,0,0,0.35)]">
+          <div className="flex flex-col gap-8 px-6 py-9 sm:px-10 lg:flex-row lg:items-center lg:justify-between">
+            <div>
+              <div className="inline-flex items-center gap-2 rounded-full border border-[#D4A34F]/20 bg-[#071512]/45 px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-[#F0C86A]">
+                <Sparkles size={14} />
+                Property Management
               </div>
 
-              <h2 className="mt-5 text-2xl font-bold text-[#333333]">
+              <h1 className="mt-5 text-4xl font-bold text-[#FBFAF7] sm:text-5xl">
+                My Listings
+              </h1>
+
+              <p className="mt-3 max-w-2xl text-[#C5D0CB]">
+                Manage, update, and track all your uploaded housing properties from one place.
+              </p>
+            </div>
+
+            <div className="flex flex-col gap-3 sm:flex-row">
+              <div className="rounded-2xl border border-[#D4A34F]/15 bg-[#071512]/45 px-5 py-4 backdrop-blur">
+                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#D4A34F]">
+                  Total Listings
+                </p>
+
+                <p className="mt-1 text-2xl font-bold text-[#FBFAF7]">
+                  {listings.length}
+                </p>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => router.push("/housing/add")}
+                className="inline-flex items-center justify-center gap-2 rounded-2xl bg-[#D4A34F] px-6 py-4 font-semibold text-[#10251D] shadow-[0_12px_30px_rgba(212,163,79,0.22)] transition hover:-translate-y-0.5 hover:bg-[#E5B65B]"
+              >
+                <Plus size={19} />
+                Add New Listing
+              </button>
+            </div>
+          </div>
+        </section>
+
+        {listings.length === 0 ? (
+          <section className="mt-8 rounded-[32px] border border-[#D4A34F]/15 bg-[#0D211B] p-10 shadow-[0_20px_60px_rgba(0,0,0,0.25)]">
+            <div className="flex flex-col items-center justify-center text-center">
+              <div className="flex h-20 w-20 items-center justify-center rounded-3xl border border-[#D4A34F]/20 bg-[#122A22] text-[#F0C86A]">
+                <Home size={38} />
+              </div>
+
+              <h2 className="mt-6 text-2xl font-bold text-[#FBFAF7]">
                 No listings yet
               </h2>
 
-              <p className="mt-3 max-w-md text-gray-500">
-                Create your first housing listing and it
-                will appear here.
+              <p className="mt-3 max-w-md text-[#9EAEA7]">
+                Create your first housing listing and it will appear here.
               </p>
 
               <button
@@ -260,15 +290,15 @@ export default function MyListingsPage() {
                 onClick={() =>
                   router.push("/housing/add")
                 }
-                className="mt-6 inline-flex items-center gap-2 rounded-xl bg-[#6B8E23] px-5 py-3 font-semibold text-white transition hover:opacity-90"
+                className="mt-7 inline-flex items-center gap-2 rounded-2xl bg-[#D4A34F] px-6 py-3 font-semibold text-[#10251D] transition hover:bg-[#E5B65B]"
               >
                 <Plus size={19} />
                 Create Listing
               </button>
             </div>
-          </div>
+          </section>
         ) : (
-          <div className="grid gap-6 md:grid-cols-2">
+          <section className="mt-8 grid gap-7 md:grid-cols-2">
             {listings.map((listing) => {
               const isDeleting =
                 deletingId === Number(listing.id);
@@ -279,21 +309,23 @@ export default function MyListingsPage() {
               return (
                 <article
                   key={listing.id}
-                  className="overflow-hidden rounded-3xl border border-[#EEF2E4] bg-[#FBFAF5] shadow-sm"
+                  className="group overflow-hidden rounded-[30px] border border-[#D4A34F]/12 bg-[#0D211B] shadow-[0_18px_50px_rgba(0,0,0,0.28)] transition hover:-translate-y-1 hover:border-[#D4A34F]/25"
                 >
-                  <div className="relative h-56 bg-[#EEF2E4]">
+                  <div className="relative h-60 overflow-hidden bg-[#122A22]">
                     <img
                       src={getPrimaryImage(listing)}
                       alt={listing.title}
-                      className="h-full w-full object-cover"
+                      className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
                     />
+
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#071512]/85 via-transparent to-transparent" />
 
                     <div className="absolute left-4 top-4">
                       <span
-                        className={`rounded-full px-3 py-1 text-xs font-bold ${
+                        className={`rounded-full border px-3 py-1.5 text-xs font-bold backdrop-blur ${
                           listing.available
-                            ? "bg-green-100 text-green-700"
-                            : "bg-gray-200 text-gray-700"
+                            ? "border-emerald-300/20 bg-emerald-400/15 text-emerald-200"
+                            : "border-white/15 bg-black/30 text-[#D5DDD9]"
                         }`}
                       >
                         {listing.available
@@ -304,51 +336,55 @@ export default function MyListingsPage() {
 
                     {listing.verified && (
                       <div className="absolute right-4 top-4">
-                        <span className="rounded-full bg-[#6B8E23] px-3 py-1 text-xs font-bold text-white">
+                        <span className="inline-flex items-center gap-1.5 rounded-full border border-[#D4A34F]/25 bg-[#071512]/70 px-3 py-1.5 text-xs font-bold text-[#F0C86A] backdrop-blur">
+                          <BadgeCheck size={14} />
                           Verified
                         </span>
                       </div>
                     )}
-                  </div>
 
-                  <div className="p-6">
-                    <div className="flex items-start justify-between gap-4">
-                      <div>
-                        <h2 className="text-xl font-bold text-[#333333]">
+                    <div className="absolute bottom-4 left-4 right-4 flex items-end justify-between gap-4">
+                      <div className="min-w-0">
+                        <h2 className="truncate text-2xl font-bold text-white">
                           {listing.title}
                         </h2>
 
-                        <div className="mt-2 flex items-center gap-2 text-sm text-gray-500">
-                          <MapPin size={16} />
+                        <div className="mt-2 flex items-center gap-2 text-sm text-[#D3DDD8]">
+                          <MapPin size={16} className="text-[#F0C86A]" />
 
-                          <span>
-                            {listing.locality},{" "}
-                            {listing.city}
+                          <span className="truncate">
+                            {listing.locality}, {listing.city}
                           </span>
                         </div>
                       </div>
 
-                      <p className="shrink-0 text-lg font-bold text-[#6B8E23]">
-                        {formatRent(listing.rent)}
-                        <span className="text-xs font-medium text-gray-500">
-                          /month
-                        </span>
-                      </p>
-                    </div>
+                      <div className="shrink-0 rounded-2xl border border-[#D4A34F]/20 bg-[#071512]/70 px-4 py-3 text-right backdrop-blur">
+                        <p className="text-lg font-bold text-[#F0C86A]">
+                          {formatRent(listing.rent)}
+                        </p>
 
-                    <div className="mt-5 flex flex-wrap gap-2">
-                      <span className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-[#333333]">
+                        <p className="text-xs text-[#9EAEA7]">
+                          per month
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="p-6">
+                    <div className="flex flex-wrap gap-2">
+                      <span className="inline-flex items-center gap-1.5 rounded-full border border-[#D4A34F]/12 bg-[#122A22] px-3 py-2 text-xs font-semibold text-[#DCE5E0]">
+                        <Building2 size={14} className="text-[#F0C86A]" />
                         {listing.house_type}
                       </span>
 
-                      <span className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-[#333333]">
+                      <span className="rounded-full border border-[#D4A34F]/12 bg-[#122A22] px-3 py-2 text-xs font-semibold text-[#DCE5E0]">
                         {listing.is_furnished
                           ? "Furnished"
                           : "Unfurnished"}
                       </span>
 
                       {listing.sharing_type && (
-                        <span className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-[#333333]">
+                        <span className="rounded-full border border-[#D4A34F]/12 bg-[#122A22] px-3 py-2 text-xs font-semibold text-[#DCE5E0]">
                           {listing.sharing_type}
                         </span>
                       )}
@@ -362,7 +398,7 @@ export default function MyListingsPage() {
                             `/housing/${listing.id}`
                           )
                         }
-                        className="inline-flex items-center justify-center gap-2 rounded-xl border border-[#D6C7A1] bg-white px-4 py-3 text-sm font-semibold text-[#333333] transition hover:bg-[#EEF2E4]"
+                        className="inline-flex items-center justify-center gap-2 rounded-2xl border border-[#D4A34F]/15 bg-[#071512] px-4 py-3 text-sm font-semibold text-[#FBFAF7] transition hover:bg-[#122A22]"
                       >
                         <Eye size={17} />
                         View
@@ -375,7 +411,7 @@ export default function MyListingsPage() {
                             `/housing/edit/${listing.id}`
                           )
                         }
-                        className="inline-flex items-center justify-center gap-2 rounded-xl border border-[#D6C7A1] bg-white px-4 py-3 text-sm font-semibold text-[#333333] transition hover:bg-[#EEF2E4]"
+                        className="inline-flex items-center justify-center gap-2 rounded-2xl border border-[#D4A34F]/15 bg-[#071512] px-4 py-3 text-sm font-semibold text-[#FBFAF7] transition hover:bg-[#122A22]"
                       >
                         <Edit3 size={17} />
                         Edit
@@ -391,7 +427,7 @@ export default function MyListingsPage() {
                         disabled={
                           isToggling || isDeleting
                         }
-                        className="inline-flex items-center justify-center gap-2 rounded-xl border border-[#6B8E23] bg-[#EEF2E4] px-4 py-3 text-sm font-semibold text-[#6B8E23] transition hover:opacity-80 disabled:cursor-not-allowed disabled:opacity-50"
+                        className="inline-flex items-center justify-center gap-2 rounded-2xl border border-[#D4A34F]/25 bg-[#D4A34F]/10 px-4 py-3 text-sm font-semibold text-[#F0C86A] transition hover:bg-[#D4A34F]/15 disabled:cursor-not-allowed disabled:opacity-50"
                       >
                         {isToggling ? (
                           <Loader2
@@ -415,7 +451,7 @@ export default function MyListingsPage() {
                         disabled={
                           isDeleting || isToggling
                         }
-                        className="inline-flex items-center justify-center gap-2 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-semibold text-red-600 transition hover:bg-red-100 disabled:cursor-not-allowed disabled:opacity-50"
+                        className="inline-flex items-center justify-center gap-2 rounded-2xl border border-red-400/20 bg-red-400/10 px-4 py-3 text-sm font-semibold text-red-300 transition hover:bg-red-400/15 disabled:cursor-not-allowed disabled:opacity-50"
                       >
                         {isDeleting ? (
                           <Loader2
@@ -433,7 +469,7 @@ export default function MyListingsPage() {
                 </article>
               );
             })}
-          </div>
+          </section>
         )}
       </div>
     </main>

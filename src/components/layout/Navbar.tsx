@@ -104,8 +104,6 @@ export default function Navbar() {
       <div className="mx-auto flex h-[76px] max-w-[1440px] items-center justify-between px-4 sm:px-6 lg:px-8">
         <Logo />
 
-        {/* Desktop navigation */}
-
         <nav
           aria-label="Primary navigation"
           className="hidden items-center gap-1 lg:flex"
@@ -118,9 +116,7 @@ export default function Navbar() {
               <Link
                 key={item.href}
                 href={item.href}
-                aria-current={
-                  active ? "page" : undefined
-                }
+                aria-current={active ? "page" : undefined}
                 className={`inline-flex h-10 items-center gap-2 rounded-xl px-4 text-sm font-semibold transition-all duration-200 ${
                   active
                     ? "border border-[#D4A34F]/25 bg-[#D4A34F]/12 text-[#F0C86A]"
@@ -132,7 +128,6 @@ export default function Navbar() {
                   className="h-[17px] w-[17px]"
                   strokeWidth={2}
                 />
-
                 {item.label}
               </Link>
             );
@@ -153,9 +148,7 @@ export default function Navbar() {
                 className="h-[17px] w-[17px]"
                 strokeWidth={2}
               />
-
               Roommates
-
               <ChevronDown
                 aria-hidden="true"
                 className="h-4 w-4 transition-transform duration-200 group-hover:rotate-180 group-focus-within:rotate-180"
@@ -205,7 +198,6 @@ export default function Navbar() {
                         <p className="text-sm font-semibold">
                           {item.label}
                         </p>
-
                         <p className="mt-0.5 text-xs leading-5 text-[#9EAEA7]">
                           {item.description}
                         </p>
@@ -228,18 +220,12 @@ export default function Navbar() {
           ))}
         </nav>
 
-        {/* Desktop authentication buttons */}
-
         <div className="hidden items-center gap-2 lg:flex">
           <Link
             href="/login"
             className="inline-flex h-10 items-center gap-2 rounded-xl border border-[#D4A34F]/25 bg-white/[0.025] px-4 text-sm font-semibold text-[#F0C86A] transition-all duration-200 hover:bg-[#D4A34F]/10"
           >
-            <LogIn
-              aria-hidden="true"
-              className="h-4 w-4"
-            />
-
+            <LogIn aria-hidden="true" className="h-4 w-4" />
             Login
           </Link>
 
@@ -247,23 +233,15 @@ export default function Navbar() {
             href="/signup"
             className="inline-flex h-10 items-center gap-2 rounded-xl bg-[#D4A34F] px-5 text-sm font-bold text-[#10251D] shadow-[0_10px_28px_rgba(212,163,79,0.2)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#E5B65B] hover:shadow-[0_14px_34px_rgba(212,163,79,0.28)]"
           >
-            <UserPlus
-              aria-hidden="true"
-              className="h-4 w-4"
-            />
-
+            <UserPlus aria-hidden="true" className="h-4 w-4" />
             Sign Up
           </Link>
         </div>
 
-        {/* Mobile menu button */}
-
         <button
           type="button"
           onClick={() =>
-            setMobileMenuOpen(
-              (previous) => !previous
-            )
+            setMobileMenuOpen((previous) => !previous)
           }
           className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-[#D4A34F]/20 bg-white/[0.035] text-[#FBFAF7] transition-colors hover:bg-[#D4A34F]/10 hover:text-[#F0C86A] lg:hidden"
           aria-label={
@@ -281,8 +259,6 @@ export default function Navbar() {
           )}
         </button>
       </div>
-
-      {/* Mobile navigation */}
 
       {mobileMenuOpen && (
         <div
@@ -335,7 +311,6 @@ export default function Navbar() {
                         aria-hidden="true"
                         className="h-[18px] w-[18px]"
                       />
-
                       {item.label}
                     </Link>
                   );
@@ -360,11 +335,7 @@ export default function Navbar() {
                 onClick={closeMobileMenu}
                 className="inline-flex min-h-12 items-center justify-center gap-2 rounded-2xl border border-[#D4A34F]/30 bg-white/[0.025] px-4 text-sm font-semibold text-[#F0C86A] transition-colors hover:bg-[#D4A34F]/10"
               >
-                <LogIn
-                  aria-hidden="true"
-                  className="h-4 w-4"
-                />
-
+                <LogIn aria-hidden="true" className="h-4 w-4" />
                 Login
               </Link>
 
@@ -373,11 +344,7 @@ export default function Navbar() {
                 onClick={closeMobileMenu}
                 className="inline-flex min-h-12 items-center justify-center gap-2 rounded-2xl bg-[#D4A34F] px-4 text-sm font-bold text-[#10251D] shadow-[0_8px_24px_rgba(212,163,79,0.2)] transition-colors hover:bg-[#E5B65B]"
               >
-                <UserPlus
-                  aria-hidden="true"
-                  className="h-4 w-4"
-                />
-
+                <UserPlus aria-hidden="true" className="h-4 w-4" />
                 Sign Up
               </Link>
             </div>
@@ -420,7 +387,6 @@ function MobileLink({
         aria-hidden="true"
         className="h-[18px] w-[18px]"
       />
-
       {label}
     </Link>
   );

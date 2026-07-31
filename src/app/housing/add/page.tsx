@@ -4,7 +4,21 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { toast } from "sonner";
-import { ArrowLeft, Loader2, Plus } from "lucide-react";
+import {
+  ArrowLeft,
+  BadgeIndianRupee,
+  Building2,
+  CalendarDays,
+  Check,
+  Home,
+  ImagePlus,
+  Loader2,
+  MapPin,
+  Phone,
+  Plus,
+  ShieldCheck,
+  Sparkles,
+} from "lucide-react";
 
 import api from "@/lib/api";
 
@@ -41,6 +55,14 @@ const initialFormData: HousingFormData = {
   contact_number: "",
   images: "",
 };
+
+const inputClassName =
+  "h-12 w-full rounded-2xl border border-[#D4A34F]/15 bg-[#071512] px-4 text-[#FBFAF7] outline-none transition placeholder:text-[#66766F] focus:border-[#D4A34F]/50 focus:ring-2 focus:ring-[#D4A34F]/10";
+
+const textareaClassName =
+  "w-full resize-none rounded-2xl border border-[#D4A34F]/15 bg-[#071512] px-4 py-3 text-[#FBFAF7] outline-none transition placeholder:text-[#66766F] focus:border-[#D4A34F]/50 focus:ring-2 focus:ring-[#D4A34F]/10";
+
+const labelClassName = "mb-2 block text-sm font-semibold text-[#FBFAF7]";
 
 export default function AddHousingPage() {
   const router = useRouter();
@@ -129,11 +151,9 @@ export default function AddHousingPage() {
       address: formData.address.trim(),
       house_type: formData.house_type,
       sharing_type: formData.sharing_type || "Not specified",
-      gender_preference:
-        formData.gender_preference || "Any",
+      gender_preference: formData.gender_preference || "Any",
       is_furnished: formData.is_furnished,
-      available_from:
-        formData.available_from || null,
+      available_from: formData.available_from || null,
       contact_number: formData.contact_number.trim(),
       images: imageUrls,
     };
@@ -193,362 +213,403 @@ export default function AddHousingPage() {
   }
 
   return (
-    <main className="min-h-screen bg-white px-5 py-10 sm:px-8 lg:px-12">
-      <div className="mx-auto max-w-4xl">
+    <main className="min-h-screen bg-[#071512] px-5 py-10 sm:px-8 lg:px-12">
+      <div className="mx-auto max-w-6xl">
         <button
           type="button"
           onClick={() => router.back()}
-          className="mb-6 inline-flex items-center gap-2 text-sm font-semibold text-[#6B8E23] transition hover:opacity-75"
+          className="mb-7 inline-flex items-center gap-2 rounded-xl border border-[#D4A34F]/20 bg-[#0D211B] px-4 py-2.5 text-sm font-semibold text-[#F0C86A] transition hover:border-[#D4A34F]/40 hover:bg-[#122A22]"
         >
-          <ArrowLeft size={18} />
-          Back
+          <ArrowLeft className="h-4 w-4" />
+          Back to listings
         </button>
 
-        <div className="rounded-3xl border border-[#EEF2E4] bg-[#FBFAF5] p-6 shadow-sm sm:p-10">
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold text-[#333333]">
-              Add New Listing
-            </h1>
+        <div className="overflow-hidden rounded-[32px] border border-[#D4A34F]/15 bg-[#0D211B] shadow-[0_28px_80px_rgba(0,0,0,0.35)]">
+          <header className="relative overflow-hidden border-b border-[#D4A34F]/10 bg-gradient-to-br from-[#0D211B] via-[#143126] to-[#205C46] px-6 py-10 sm:px-10 lg:px-12">
+            <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-[#D4A34F]/10 blur-3xl" />
+            <div className="absolute -bottom-28 left-1/3 h-56 w-56 rounded-full bg-[#2D7A5E]/20 blur-3xl" />
 
-            <p className="mt-3 text-gray-500">
-              Add housing details so users can discover your property.
-            </p>
-          </div>
-
-          <form
-            onSubmit={handleSubmit}
-            className="space-y-8"
-          >
-            <section className="space-y-5">
-              <h2 className="text-xl font-semibold text-[#333333]">
-                Property details
-              </h2>
-
+            <div className="relative grid gap-8 lg:grid-cols-[1fr_320px] lg:items-center">
               <div>
-                <label
-                  htmlFor="title"
-                  className="mb-2 block text-sm font-semibold text-[#333333]"
-                >
-                  Listing title *
-                </label>
-
-                <input
-                  id="title"
-                  name="title"
-                  type="text"
-                  value={formData.title}
-                  onChange={handleChange}
-                  placeholder="Furnished 1 BHK near Metro"
-                  required
-                  className="w-full rounded-xl border border-[#D6C7A1] bg-white px-4 py-3 text-[#333333] outline-none transition placeholder:text-gray-400 focus:border-[#6B8E23] focus:ring-2 focus:ring-[#EEF2E4]"
-                />
-              </div>
-
-              <div>
-                <label
-                  htmlFor="description"
-                  className="mb-2 block text-sm font-semibold text-[#333333]"
-                >
-                  Description *
-                </label>
-
-                <textarea
-                  id="description"
-                  name="description"
-                  value={formData.description}
-                  onChange={handleChange}
-                  placeholder="Describe the property, nearby facilities and suitable tenants."
-                  required
-                  rows={5}
-                  className="w-full resize-none rounded-xl border border-[#D6C7A1] bg-white px-4 py-3 text-[#333333] outline-none transition placeholder:text-gray-400 focus:border-[#6B8E23] focus:ring-2 focus:ring-[#EEF2E4]"
-                />
-              </div>
-
-              <div className="grid gap-5 sm:grid-cols-2">
-                <div>
-                  <label
-                    htmlFor="house_type"
-                    className="mb-2 block text-sm font-semibold text-[#333333]"
-                  >
-                    House type *
-                  </label>
-
-                  <select
-                    id="house_type"
-                    name="house_type"
-                    value={formData.house_type}
-                    onChange={handleChange}
-                    required
-                    className="w-full rounded-xl border border-[#D6C7A1] bg-white px-4 py-3 text-[#333333] outline-none transition focus:border-[#6B8E23] focus:ring-2 focus:ring-[#EEF2E4]"
-                  >
-                    <option value="">Select house type</option>
-                    <option value="1 RK">1 RK</option>
-                    <option value="1 BHK">1 BHK</option>
-                    <option value="2 BHK">2 BHK</option>
-                    <option value="3 BHK">3 BHK</option>
-                    <option value="PG">PG</option>
-                    <option value="Hostel">Hostel</option>
-                    <option value="Independent House">
-                      Independent House
-                    </option>
-                    <option value="Apartment">Apartment</option>
-                  </select>
+                <div className="inline-flex items-center gap-2 rounded-full border border-[#D4A34F]/25 bg-[#071512]/45 px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-[#F0C86A]">
+                  <Sparkles className="h-4 w-4" />
+                  New property
                 </div>
 
-                <div>
-                  <label
-                    htmlFor="sharing_type"
-                    className="mb-2 block text-sm font-semibold text-[#333333]"
-                  >
-                    Sharing type
-                  </label>
+                <h1 className="mt-5 text-4xl font-bold tracking-tight text-[#FBFAF7] sm:text-5xl">
+                  Add a housing listing
+                </h1>
 
-                  <select
-                    id="sharing_type"
-                    name="sharing_type"
-                    value={formData.sharing_type}
-                    onChange={handleChange}
-                    className="w-full rounded-xl border border-[#D6C7A1] bg-white px-4 py-3 text-[#333333] outline-none transition focus:border-[#6B8E23] focus:ring-2 focus:ring-[#EEF2E4]"
-                  >
-                    <option value="">Select sharing type</option>
-                    <option value="Private">Private</option>
-                    <option value="Single Sharing">
-                      Single Sharing
-                    </option>
-                    <option value="Double Sharing">
-                      Double Sharing
-                    </option>
-                    <option value="Triple Sharing">
-                      Triple Sharing
-                    </option>
-                  </select>
-                </div>
-              </div>
-
-              <div className="grid gap-5 sm:grid-cols-2">
-                <div>
-                  <label
-                    htmlFor="gender_preference"
-                    className="mb-2 block text-sm font-semibold text-[#333333]"
-                  >
-                    Gender preference
-                  </label>
-
-                  <select
-                    id="gender_preference"
-                    name="gender_preference"
-                    value={formData.gender_preference}
-                    onChange={handleChange}
-                    className="w-full rounded-xl border border-[#D6C7A1] bg-white px-4 py-3 text-[#333333] outline-none transition focus:border-[#6B8E23] focus:ring-2 focus:ring-[#EEF2E4]"
-                  >
-                    <option value="">Select preference</option>
-                    <option value="Any">Any</option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                    <option value="Family">Family</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="available_from"
-                    className="mb-2 block text-sm font-semibold text-[#333333]"
-                  >
-                    Available from
-                  </label>
-
-                  <input
-                    id="available_from"
-                    name="available_from"
-                    type="date"
-                    value={formData.available_from}
-                    onChange={handleChange}
-                    className="w-full rounded-xl border border-[#D6C7A1] bg-white px-4 py-3 text-[#333333] outline-none transition focus:border-[#6B8E23] focus:ring-2 focus:ring-[#EEF2E4]"
-                  />
-                </div>
-              </div>
-
-              <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-[#D6C7A1] bg-white px-4 py-3">
-                <input
-                  name="is_furnished"
-                  type="checkbox"
-                  checked={formData.is_furnished}
-                  onChange={handleCheckboxChange}
-                  className="h-5 w-5 accent-[#6B8E23]"
-                />
-
-                <span className="text-sm font-semibold text-[#333333]">
-                  This property is furnished
-                </span>
-              </label>
-            </section>
-
-            <section className="space-y-5 border-t border-[#EEF2E4] pt-8">
-              <h2 className="text-xl font-semibold text-[#333333]">
-                Rent and location
-              </h2>
-
-              <div className="grid gap-5 sm:grid-cols-2">
-                <div>
-                  <label
-                    htmlFor="rent"
-                    className="mb-2 block text-sm font-semibold text-[#333333]"
-                  >
-                    Monthly rent *
-                  </label>
-
-                  <input
-                    id="rent"
-                    name="rent"
-                    type="number"
-                    min="1"
-                    value={formData.rent}
-                    onChange={handleChange}
-                    placeholder="15000"
-                    required
-                    className="w-full rounded-xl border border-[#D6C7A1] bg-white px-4 py-3 text-[#333333] outline-none transition placeholder:text-gray-400 focus:border-[#6B8E23] focus:ring-2 focus:ring-[#EEF2E4]"
-                  />
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="deposit"
-                    className="mb-2 block text-sm font-semibold text-[#333333]"
-                  >
-                    Security deposit
-                  </label>
-
-                  <input
-                    id="deposit"
-                    name="deposit"
-                    type="number"
-                    min="0"
-                    value={formData.deposit}
-                    onChange={handleChange}
-                    placeholder="30000"
-                    className="w-full rounded-xl border border-[#D6C7A1] bg-white px-4 py-3 text-[#333333] outline-none transition placeholder:text-gray-400 focus:border-[#6B8E23] focus:ring-2 focus:ring-[#EEF2E4]"
-                  />
-                </div>
-              </div>
-
-              <div className="grid gap-5 sm:grid-cols-2">
-                <div>
-                  <label
-                    htmlFor="city"
-                    className="mb-2 block text-sm font-semibold text-[#333333]"
-                  >
-                    City *
-                  </label>
-
-                  <input
-                    id="city"
-                    name="city"
-                    type="text"
-                    value={formData.city}
-                    onChange={handleChange}
-                    placeholder="Delhi"
-                    required
-                    className="w-full rounded-xl border border-[#D6C7A1] bg-white px-4 py-3 text-[#333333] outline-none transition placeholder:text-gray-400 focus:border-[#6B8E23] focus:ring-2 focus:ring-[#EEF2E4]"
-                  />
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="locality"
-                    className="mb-2 block text-sm font-semibold text-[#333333]"
-                  >
-                    Locality *
-                  </label>
-
-                  <input
-                    id="locality"
-                    name="locality"
-                    type="text"
-                    value={formData.locality}
-                    onChange={handleChange}
-                    placeholder="Pitampura"
-                    required
-                    className="w-full rounded-xl border border-[#D6C7A1] bg-white px-4 py-3 text-[#333333] outline-none transition placeholder:text-gray-400 focus:border-[#6B8E23] focus:ring-2 focus:ring-[#EEF2E4]"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label
-                  htmlFor="address"
-                  className="mb-2 block text-sm font-semibold text-[#333333]"
-                >
-                  Complete address *
-                </label>
-
-                <textarea
-                  id="address"
-                  name="address"
-                  value={formData.address}
-                  onChange={handleChange}
-                  placeholder="Near Pitampura Metro Station, Delhi"
-                  required
-                  rows={3}
-                  className="w-full resize-none rounded-xl border border-[#D6C7A1] bg-white px-4 py-3 text-[#333333] outline-none transition placeholder:text-gray-400 focus:border-[#6B8E23] focus:ring-2 focus:ring-[#EEF2E4]"
-                />
-              </div>
-            </section>
-
-            <section className="space-y-5 border-t border-[#EEF2E4] pt-8">
-              <h2 className="text-xl font-semibold text-[#333333]">
-                Contact and images
-              </h2>
-
-              <div>
-                <label
-                  htmlFor="contact_number"
-                  className="mb-2 block text-sm font-semibold text-[#333333]"
-                >
-                  Contact number *
-                </label>
-
-                <input
-                  id="contact_number"
-                  name="contact_number"
-                  type="tel"
-                  value={formData.contact_number}
-                  onChange={handleChange}
-                  placeholder="9876543210"
-                  required
-                  className="w-full rounded-xl border border-[#D6C7A1] bg-white px-4 py-3 text-[#333333] outline-none transition placeholder:text-gray-400 focus:border-[#6B8E23] focus:ring-2 focus:ring-[#EEF2E4]"
-                />
-              </div>
-
-              <div>
-                <label
-                  htmlFor="images"
-                  className="mb-2 block text-sm font-semibold text-[#333333]"
-                >
-                  Image URLs
-                </label>
-
-                <textarea
-                  id="images"
-                  name="images"
-                  value={formData.images}
-                  onChange={handleChange}
-                  placeholder="Paste image URLs separated by commas"
-                  rows={3}
-                  className="w-full resize-none rounded-xl border border-[#D6C7A1] bg-white px-4 py-3 text-[#333333] outline-none transition placeholder:text-gray-400 focus:border-[#6B8E23] focus:ring-2 focus:ring-[#EEF2E4]"
-                />
-
-                <p className="mt-2 text-xs text-gray-500">
-                  For multiple images, separate every URL with a comma.
+                <p className="mt-4 max-w-2xl text-base leading-7 text-[#B8C5C0]">
+                  Share accurate property details so students and professionals
+                  can confidently discover their next home.
                 </p>
               </div>
+
+              <div className="rounded-3xl border border-[#D4A34F]/15 bg-[#071512]/55 p-6 backdrop-blur-sm">
+                <p className="text-xs font-semibold uppercase tracking-[0.15em] text-[#D4A34F]">
+                  Better listing checklist
+                </p>
+
+                <div className="mt-4 space-y-3">
+                  {[
+                    "Use a clear and specific title",
+                    "Mention nearby landmarks",
+                    "Add genuine property images",
+                  ].map((tip) => (
+                    <div key={tip} className="flex items-start gap-3">
+                      <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#D4A34F]/15 text-[#F0C86A]">
+                        <Check className="h-3 w-3" />
+                      </span>
+                      <span className="text-sm text-[#C7D2CD]">{tip}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </header>
+
+          <form onSubmit={handleSubmit} className="space-y-8 p-5 sm:p-8 lg:p-10">
+            <section className="rounded-3xl border border-[#D4A34F]/10 bg-[#122A22] p-5 sm:p-7">
+              <div className="mb-7 flex items-start gap-4">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#205C46]/45 text-[#F0C86A]">
+                  <Home className="h-5 w-5" />
+                </div>
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#D4A34F]">
+                    Section 01
+                  </p>
+                  <h2 className="mt-1 text-2xl font-bold text-[#FBFAF7]">
+                    Property details
+                  </h2>
+                  <p className="mt-1 text-sm text-[#92A39C]">
+                    Describe the home and who it is suitable for.
+                  </p>
+                </div>
+              </div>
+
+              <div className="space-y-6">
+                <div>
+                  <label htmlFor="title" className={labelClassName}>
+                    Listing title *
+                  </label>
+                  <input
+                    id="title"
+                    name="title"
+                    type="text"
+                    value={formData.title}
+                    onChange={handleChange}
+                    placeholder="Furnished 1 BHK near Metro"
+                    required
+                    className={inputClassName}
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="description" className={labelClassName}>
+                    Description *
+                  </label>
+                  <textarea
+                    id="description"
+                    name="description"
+                    value={formData.description}
+                    onChange={handleChange}
+                    placeholder="Describe the property, nearby facilities and suitable tenants."
+                    required
+                    rows={5}
+                    className={textareaClassName}
+                  />
+                </div>
+
+                <div className="grid gap-5 sm:grid-cols-2">
+                  <div>
+                    <label htmlFor="house_type" className={labelClassName}>
+                      House type *
+                    </label>
+                    <select
+                      id="house_type"
+                      name="house_type"
+                      value={formData.house_type}
+                      onChange={handleChange}
+                      required
+                      className={inputClassName}
+                    >
+                      <option value="">Select house type</option>
+                      <option value="1 RK">1 RK</option>
+                      <option value="1 BHK">1 BHK</option>
+                      <option value="2 BHK">2 BHK</option>
+                      <option value="3 BHK">3 BHK</option>
+                      <option value="PG">PG</option>
+                      <option value="Hostel">Hostel</option>
+                      <option value="Independent House">Independent House</option>
+                      <option value="Apartment">Apartment</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label htmlFor="sharing_type" className={labelClassName}>
+                      Sharing type
+                    </label>
+                    <select
+                      id="sharing_type"
+                      name="sharing_type"
+                      value={formData.sharing_type}
+                      onChange={handleChange}
+                      className={inputClassName}
+                    >
+                      <option value="">Select sharing type</option>
+                      <option value="Private">Private</option>
+                      <option value="Single Sharing">Single Sharing</option>
+                      <option value="Double Sharing">Double Sharing</option>
+                      <option value="Triple Sharing">Triple Sharing</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="grid gap-5 sm:grid-cols-2">
+                  <div>
+                    <label htmlFor="gender_preference" className={labelClassName}>
+                      Gender preference
+                    </label>
+                    <select
+                      id="gender_preference"
+                      name="gender_preference"
+                      value={formData.gender_preference}
+                      onChange={handleChange}
+                      className={inputClassName}
+                    >
+                      <option value="">Select preference</option>
+                      <option value="Any">Any</option>
+                      <option value="Male">Male</option>
+                      <option value="Female">Female</option>
+                      <option value="Family">Family</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label htmlFor="available_from" className={labelClassName}>
+                      Available from
+                    </label>
+                    <div className="relative">
+                      <CalendarDays className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[#D4A34F]" />
+                      <input
+                        id="available_from"
+                        name="available_from"
+                        type="date"
+                        value={formData.available_from}
+                        onChange={handleChange}
+                        className={`${inputClassName} pl-11`}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <label className="flex cursor-pointer items-center justify-between gap-4 rounded-2xl border border-[#D4A34F]/12 bg-[#071512] px-5 py-4 transition hover:border-[#D4A34F]/30">
+                  <div>
+                    <p className="font-semibold text-[#FBFAF7]">Furnished property</p>
+                    <p className="mt-1 text-sm text-[#7F9189]">
+                      Select this when essential furniture is included.
+                    </p>
+                  </div>
+                  <input
+                    name="is_furnished"
+                    type="checkbox"
+                    checked={formData.is_furnished}
+                    onChange={handleCheckboxChange}
+                    className="h-5 w-5 shrink-0 accent-[#D4A34F]"
+                  />
+                </label>
+              </div>
             </section>
 
-            <div className="flex flex-col-reverse gap-3 border-t border-[#EEF2E4] pt-8 sm:flex-row sm:justify-end">
+            <section className="rounded-3xl border border-[#D4A34F]/10 bg-[#122A22] p-5 sm:p-7">
+              <div className="mb-7 flex items-start gap-4">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#205C46]/45 text-[#F0C86A]">
+                  <MapPin className="h-5 w-5" />
+                </div>
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#D4A34F]">
+                    Section 02
+                  </p>
+                  <h2 className="mt-1 text-2xl font-bold text-[#FBFAF7]">
+                    Rent and location
+                  </h2>
+                  <p className="mt-1 text-sm text-[#92A39C]">
+                    Add pricing and precise location information.
+                  </p>
+                </div>
+              </div>
+
+              <div className="space-y-6">
+                <div className="grid gap-5 sm:grid-cols-2">
+                  <div>
+                    <label htmlFor="rent" className={labelClassName}>
+                      Monthly rent *
+                    </label>
+                    <div className="relative">
+                      <BadgeIndianRupee className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[#D4A34F]" />
+                      <input
+                        id="rent"
+                        name="rent"
+                        type="number"
+                        min="1"
+                        value={formData.rent}
+                        onChange={handleChange}
+                        placeholder="15000"
+                        required
+                        className={`${inputClassName} pl-11`}
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label htmlFor="deposit" className={labelClassName}>
+                      Security deposit
+                    </label>
+                    <div className="relative">
+                      <ShieldCheck className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[#D4A34F]" />
+                      <input
+                        id="deposit"
+                        name="deposit"
+                        type="number"
+                        min="0"
+                        value={formData.deposit}
+                        onChange={handleChange}
+                        placeholder="30000"
+                        className={`${inputClassName} pl-11`}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid gap-5 sm:grid-cols-2">
+                  <div>
+                    <label htmlFor="city" className={labelClassName}>
+                      City *
+                    </label>
+                    <div className="relative">
+                      <Building2 className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[#D4A34F]" />
+                      <input
+                        id="city"
+                        name="city"
+                        type="text"
+                        value={formData.city}
+                        onChange={handleChange}
+                        placeholder="Delhi"
+                        required
+                        className={`${inputClassName} pl-11`}
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label htmlFor="locality" className={labelClassName}>
+                      Locality *
+                    </label>
+                    <div className="relative">
+                      <MapPin className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[#D4A34F]" />
+                      <input
+                        id="locality"
+                        name="locality"
+                        type="text"
+                        value={formData.locality}
+                        onChange={handleChange}
+                        placeholder="Pitampura"
+                        required
+                        className={`${inputClassName} pl-11`}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <label htmlFor="address" className={labelClassName}>
+                    Complete address *
+                  </label>
+                  <textarea
+                    id="address"
+                    name="address"
+                    value={formData.address}
+                    onChange={handleChange}
+                    placeholder="Near Pitampura Metro Station, Delhi"
+                    required
+                    rows={3}
+                    className={textareaClassName}
+                  />
+                </div>
+              </div>
+            </section>
+
+            <section className="rounded-3xl border border-[#D4A34F]/10 bg-[#122A22] p-5 sm:p-7">
+              <div className="mb-7 flex items-start gap-4">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#205C46]/45 text-[#F0C86A]">
+                  <Phone className="h-5 w-5" />
+                </div>
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#D4A34F]">
+                    Section 03
+                  </p>
+                  <h2 className="mt-1 text-2xl font-bold text-[#FBFAF7]">
+                    Contact and images
+                  </h2>
+                  <p className="mt-1 text-sm text-[#92A39C]">
+                    Help interested users contact you and view the property.
+                  </p>
+                </div>
+              </div>
+
+              <div className="space-y-6">
+                <div>
+                  <label htmlFor="contact_number" className={labelClassName}>
+                    Contact number *
+                  </label>
+                  <div className="relative">
+                    <Phone className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[#D4A34F]" />
+                    <input
+                      id="contact_number"
+                      name="contact_number"
+                      type="tel"
+                      value={formData.contact_number}
+                      onChange={handleChange}
+                      placeholder="9876543210"
+                      required
+                      className={`${inputClassName} pl-11`}
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label htmlFor="images" className={labelClassName}>
+                    Image URLs
+                  </label>
+                  <div className="rounded-2xl border border-dashed border-[#D4A34F]/25 bg-[#071512]/60 p-4">
+                    <div className="mb-3 flex items-center gap-3 text-[#F0C86A]">
+                      <ImagePlus className="h-5 w-5" />
+                      <span className="text-sm font-semibold">Property gallery</span>
+                    </div>
+                    <textarea
+                      id="images"
+                      name="images"
+                      value={formData.images}
+                      onChange={handleChange}
+                      placeholder="Paste image URLs separated by commas"
+                      rows={4}
+                      className={textareaClassName}
+                    />
+                    <p className="mt-3 text-xs leading-5 text-[#7F9189]">
+                      For multiple images, separate every URL with a comma.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <div className="flex flex-col-reverse gap-3 border-t border-[#D4A34F]/10 pt-8 sm:flex-row sm:justify-end">
               <button
                 type="button"
                 onClick={() => router.push("/housing")}
                 disabled={loading}
-                className="rounded-xl border border-[#D6C7A1] bg-white px-6 py-3 font-semibold text-[#333333] transition hover:bg-[#EEF2E4] disabled:cursor-not-allowed disabled:opacity-60"
+                className="rounded-2xl border border-[#D4A34F]/20 bg-[#071512] px-6 py-3 font-semibold text-[#C7D2CD] transition hover:border-[#D4A34F]/40 hover:bg-[#122A22] hover:text-[#FBFAF7] disabled:cursor-not-allowed disabled:opacity-60"
               >
                 Cancel
               </button>
@@ -556,19 +617,16 @@ export default function AddHousingPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#6B8E23] px-6 py-3 font-semibold text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
+                className="inline-flex items-center justify-center gap-2 rounded-2xl bg-[#D4A34F] px-7 py-3 font-semibold text-[#10251D] shadow-[0_12px_30px_rgba(212,163,79,0.22)] transition hover:-translate-y-0.5 hover:bg-[#E5B65B] disabled:cursor-not-allowed disabled:translate-y-0 disabled:opacity-60"
               >
                 {loading ? (
                   <>
-                    <Loader2
-                      size={19}
-                      className="animate-spin"
-                    />
+                    <Loader2 className="h-5 w-5 animate-spin" />
                     Creating listing...
                   </>
                 ) : (
                   <>
-                    <Plus size={19} />
+                    <Plus className="h-5 w-5" />
                     Create listing
                   </>
                 )}

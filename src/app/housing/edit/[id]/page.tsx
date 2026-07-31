@@ -3,7 +3,17 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import axios from "axios";
-import { ArrowLeft, Loader2, Save } from "lucide-react";
+import {
+  ArrowLeft,
+  BadgeCheck,
+  Building2,
+  CalendarDays,
+  ImageIcon,
+  Loader2,
+  MapPin,
+  Save,
+  ShieldCheck,
+} from "lucide-react";
 import { toast } from "sonner";
 
 import {
@@ -74,6 +84,15 @@ function getErrorMessage(error: unknown) {
 
   return "Something went wrong.";
 }
+
+const inputClassName =
+  "h-12 w-full rounded-2xl border border-[#D4A34F]/15 bg-[#071512] px-4 text-[#FBFAF7] outline-none transition placeholder:text-[#66766F] focus:border-[#D4A34F]/50 focus:ring-2 focus:ring-[#D4A34F]/10";
+
+const textareaClassName =
+  "w-full resize-none rounded-2xl border border-[#D4A34F]/15 bg-[#071512] px-4 py-3 text-[#FBFAF7] outline-none transition placeholder:text-[#66766F] focus:border-[#D4A34F]/50 focus:ring-2 focus:ring-[#D4A34F]/10";
+
+const labelClassName =
+  "mb-2 block text-sm font-semibold text-[#FBFAF7]";
 
 export default function EditHousingPage() {
   const params = useParams();
@@ -271,17 +290,22 @@ export default function EditHousingPage() {
 
   if (loading) {
     return (
-      <main className="min-h-screen bg-white px-5 py-10 sm:px-8 lg:px-12">
-        <div className="mx-auto flex min-h-[500px] max-w-4xl items-center justify-center rounded-3xl border border-[#EEF2E4] bg-[#FBFAF5]">
-          <div className="flex flex-col items-center gap-4">
-            <Loader2
-              size={38}
-              className="animate-spin text-[#6B8E23]"
-            />
+      <main className="min-h-screen bg-[#071512] px-5 py-10 sm:px-8 lg:px-12">
+        <div className="mx-auto flex min-h-[520px] max-w-5xl items-center justify-center rounded-[32px] border border-[#D4A34F]/15 bg-[#0D211B] shadow-[0_25px_70px_rgba(0,0,0,0.35)]">
+          <div className="flex flex-col items-center gap-4 text-center">
+            <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-[#D4A34F]/20 bg-[#122A22]">
+              <Loader2 className="h-8 w-8 animate-spin text-[#F0C86A]" />
+            </div>
 
-            <p className="font-medium text-gray-500">
-              Loading listing details...
-            </p>
+            <div>
+              <p className="text-lg font-semibold text-[#FBFAF7]">
+                Loading listing details
+              </p>
+
+              <p className="mt-1 text-sm text-[#9EAEA7]">
+                Preparing your property information...
+              </p>
+            </div>
           </div>
         </div>
       </main>
@@ -290,14 +314,18 @@ export default function EditHousingPage() {
 
   if (error) {
     return (
-      <main className="min-h-screen bg-white px-5 py-10 sm:px-8 lg:px-12">
-        <div className="mx-auto flex min-h-[500px] max-w-4xl items-center justify-center rounded-3xl border border-red-100 bg-[#FBFAF5] p-8">
-          <div className="text-center">
-            <h1 className="text-2xl font-bold text-[#333333]">
+      <main className="min-h-screen bg-[#071512] px-5 py-10 sm:px-8 lg:px-12">
+        <div className="mx-auto flex min-h-[520px] max-w-5xl items-center justify-center rounded-[32px] border border-red-400/20 bg-[#0D211B] p-8 shadow-[0_25px_70px_rgba(0,0,0,0.35)]">
+          <div className="max-w-md text-center">
+            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl border border-red-400/20 bg-red-400/10">
+              <ShieldCheck className="h-8 w-8 text-red-300" />
+            </div>
+
+            <h1 className="mt-5 text-2xl font-bold text-[#FBFAF7]">
               Unable to edit listing
             </h1>
 
-            <p className="mt-3 text-gray-500">
+            <p className="mt-3 text-[#9EAEA7]">
               {error}
             </p>
 
@@ -306,7 +334,7 @@ export default function EditHousingPage() {
               onClick={() =>
                 router.push("/housing/my-listings")
               }
-              className="mt-6 rounded-xl bg-[#6B8E23] px-5 py-3 font-semibold text-white"
+              className="mt-7 rounded-2xl bg-[#D4A34F] px-6 py-3 font-semibold text-[#10251D] transition hover:bg-[#E5B65B]"
             >
               Back to My Listings
             </button>
@@ -317,382 +345,398 @@ export default function EditHousingPage() {
   }
 
   return (
-    <main className="min-h-screen bg-white px-5 py-10 sm:px-8 lg:px-12">
-      <div className="mx-auto max-w-4xl">
+    <main className="min-h-screen bg-[#071512] px-5 py-10 sm:px-8 lg:px-12">
+      <div className="mx-auto max-w-5xl">
         <button
           type="button"
           onClick={() => router.back()}
-          className="mb-6 inline-flex items-center gap-2 text-sm font-semibold text-[#6B8E23] transition hover:opacity-75"
+          className="mb-8 inline-flex items-center gap-2 rounded-xl border border-[#D4A34F]/20 bg-[#0D211B] px-4 py-2 text-sm font-semibold text-[#F0C86A] transition hover:bg-[#122A22]"
         >
           <ArrowLeft size={18} />
           Back
         </button>
 
-        <div className="rounded-3xl border border-[#EEF2E4] bg-[#FBFAF5] p-6 shadow-sm sm:p-10">
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold text-[#333333]">
-              Edit Listing
-            </h1>
+        <div className="overflow-hidden rounded-[32px] border border-[#D4A34F]/15 bg-[#0D211B] shadow-[0_25px_70px_rgba(0,0,0,0.35)]">
+          <div className="border-b border-[#D4A34F]/10 bg-gradient-to-r from-[#0D211B] via-[#143126] to-[#205C46] px-6 py-9 sm:px-10">
+            <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+              <div>
+                <div className="inline-flex items-center gap-2 rounded-full border border-[#D4A34F]/20 bg-[#071512]/40 px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-[#F0C86A]">
+                  <BadgeCheck size={14} />
+                  Listing #{id}
+                </div>
 
-            <p className="mt-3 text-gray-500">
-              Update your housing listing information.
-            </p>
+                <h1 className="mt-4 text-3xl font-bold text-[#FBFAF7] sm:text-4xl">
+                  Edit Housing Listing
+                </h1>
+
+                <p className="mt-3 max-w-2xl text-[#B6C3BE]">
+                  Update your property information and keep your listing accurate.
+                </p>
+              </div>
+
+              <div className="rounded-3xl border border-[#D4A34F]/15 bg-[#071512]/55 p-5 backdrop-blur">
+                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#D4A34F]">
+                  Listing Status
+                </p>
+
+                <p className="mt-2 text-lg font-semibold text-[#FBFAF7]">
+                  {formData.available ? "Available" : "Unavailable"}
+                </p>
+              </div>
+            </div>
           </div>
 
           <form
             onSubmit={handleSubmit}
-            className="space-y-8"
+            className="space-y-8 p-6 sm:p-10"
           >
-            <section className="space-y-5">
-              <h2 className="text-xl font-semibold text-[#333333]">
-                Property details
-              </h2>
-
-              <div>
-                <label
-                  htmlFor="title"
-                  className="mb-2 block text-sm font-semibold text-[#333333]"
-                >
-                  Listing title *
-                </label>
-
-                <input
-                  id="title"
-                  name="title"
-                  type="text"
-                  value={formData.title}
-                  onChange={handleChange}
-                  required
-                  className="w-full rounded-xl border border-[#D6C7A1] bg-white px-4 py-3 text-[#333333] outline-none focus:border-[#6B8E23] focus:ring-2 focus:ring-[#EEF2E4]"
-                />
-              </div>
-
-              <div>
-                <label
-                  htmlFor="description"
-                  className="mb-2 block text-sm font-semibold text-[#333333]"
-                >
-                  Description *
-                </label>
-
-                <textarea
-                  id="description"
-                  name="description"
-                  value={formData.description}
-                  onChange={handleChange}
-                  required
-                  rows={5}
-                  className="w-full resize-none rounded-xl border border-[#D6C7A1] bg-white px-4 py-3 text-[#333333] outline-none focus:border-[#6B8E23] focus:ring-2 focus:ring-[#EEF2E4]"
-                />
-              </div>
-
-              <div className="grid gap-5 sm:grid-cols-2">
-                <div>
-                  <label
-                    htmlFor="house_type"
-                    className="mb-2 block text-sm font-semibold text-[#333333]"
-                  >
-                    House type *
-                  </label>
-
-                  <select
-                    id="house_type"
-                    name="house_type"
-                    value={formData.house_type}
-                    onChange={handleChange}
-                    required
-                    className="w-full rounded-xl border border-[#D6C7A1] bg-white px-4 py-3 text-[#333333] outline-none focus:border-[#6B8E23] focus:ring-2 focus:ring-[#EEF2E4]"
-                  >
-                    <option value="">Select house type</option>
-                    <option value="1 RK">1 RK</option>
-                    <option value="1 BHK">1 BHK</option>
-                    <option value="2 BHK">2 BHK</option>
-                    <option value="3 BHK">3 BHK</option>
-                    <option value="PG">PG</option>
-                    <option value="Hostel">Hostel</option>
-                    <option value="Independent House">
-                      Independent House
-                    </option>
-                    <option value="Apartment">
-                      Apartment
-                    </option>
-                  </select>
+            <section className="rounded-3xl border border-[#D4A34F]/10 bg-[#122A22] p-6 sm:p-7">
+              <div className="mb-7 flex items-start gap-4">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#205C46]/40 text-[#F0C86A]">
+                  <Building2 className="h-5 w-5" />
                 </div>
 
                 <div>
-                  <label
-                    htmlFor="sharing_type"
-                    className="mb-2 block text-sm font-semibold text-[#333333]"
-                  >
-                    Sharing type
-                  </label>
+                  <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#D4A34F]">
+                    Section 01
+                  </p>
 
-                  <select
-                    id="sharing_type"
-                    name="sharing_type"
-                    value={formData.sharing_type}
-                    onChange={handleChange}
-                    className="w-full rounded-xl border border-[#D6C7A1] bg-white px-4 py-3 text-[#333333] outline-none focus:border-[#6B8E23] focus:ring-2 focus:ring-[#EEF2E4]"
-                  >
-                    <option value="">
-                      Select sharing type
-                    </option>
-                    <option value="Private">Private</option>
-                    <option value="Single Sharing">
-                      Single Sharing
-                    </option>
-                    <option value="Double Sharing">
-                      Double Sharing
-                    </option>
-                    <option value="Triple Sharing">
-                      Triple Sharing
-                    </option>
-                  </select>
+                  <h2 className="mt-1 text-2xl font-bold text-[#FBFAF7]">
+                    Property Details
+                  </h2>
+
+                  <p className="mt-1 text-sm text-[#92A39C]">
+                    Update the main details people see first.
+                  </p>
                 </div>
               </div>
 
-              <div className="grid gap-5 sm:grid-cols-2">
+              <div className="space-y-6">
                 <div>
-                  <label
-                    htmlFor="gender_preference"
-                    className="mb-2 block text-sm font-semibold text-[#333333]"
-                  >
-                    Gender preference
-                  </label>
-
-                  <select
-                    id="gender_preference"
-                    name="gender_preference"
-                    value={
-                      formData.gender_preference
-                    }
-                    onChange={handleChange}
-                    className="w-full rounded-xl border border-[#D6C7A1] bg-white px-4 py-3 text-[#333333] outline-none focus:border-[#6B8E23] focus:ring-2 focus:ring-[#EEF2E4]"
-                  >
-                    <option value="">
-                      Select preference
-                    </option>
-                    <option value="Any">Any</option>
-                    <option value="Male">Male</option>
-                    <option value="Female">
-                      Female
-                    </option>
-                    <option value="Family">
-                      Family
-                    </option>
-                  </select>
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="available_from"
-                    className="mb-2 block text-sm font-semibold text-[#333333]"
-                  >
-                    Available from
+                  <label htmlFor="title" className={labelClassName}>
+                    Listing title *
                   </label>
 
                   <input
-                    id="available_from"
-                    name="available_from"
-                    type="date"
-                    value={formData.available_from}
-                    onChange={handleChange}
-                    className="w-full rounded-xl border border-[#D6C7A1] bg-white px-4 py-3 text-[#333333] outline-none focus:border-[#6B8E23] focus:ring-2 focus:ring-[#EEF2E4]"
-                  />
-                </div>
-              </div>
-
-              <div className="grid gap-4 sm:grid-cols-2">
-                <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-[#D6C7A1] bg-white px-4 py-3">
-                  <input
-                    name="is_furnished"
-                    type="checkbox"
-                    checked={formData.is_furnished}
-                    onChange={handleCheckboxChange}
-                    className="h-5 w-5 accent-[#6B8E23]"
-                  />
-
-                  <span className="text-sm font-semibold text-[#333333]">
-                    Furnished property
-                  </span>
-                </label>
-
-                <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-[#D6C7A1] bg-white px-4 py-3">
-                  <input
-                    name="available"
-                    type="checkbox"
-                    checked={formData.available}
-                    onChange={handleCheckboxChange}
-                    className="h-5 w-5 accent-[#6B8E23]"
-                  />
-
-                  <span className="text-sm font-semibold text-[#333333]">
-                    Listing available
-                  </span>
-                </label>
-              </div>
-            </section>
-
-            <section className="space-y-5 border-t border-[#EEF2E4] pt-8">
-              <h2 className="text-xl font-semibold text-[#333333]">
-                Rent and location
-              </h2>
-
-              <div className="grid gap-5 sm:grid-cols-2">
-                <div>
-                  <label
-                    htmlFor="rent"
-                    className="mb-2 block text-sm font-semibold text-[#333333]"
-                  >
-                    Monthly rent *
-                  </label>
-
-                  <input
-                    id="rent"
-                    name="rent"
-                    type="number"
-                    min="1"
-                    value={formData.rent}
-                    onChange={handleChange}
-                    required
-                    className="w-full rounded-xl border border-[#D6C7A1] bg-white px-4 py-3 text-[#333333] outline-none focus:border-[#6B8E23] focus:ring-2 focus:ring-[#EEF2E4]"
-                  />
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="deposit"
-                    className="mb-2 block text-sm font-semibold text-[#333333]"
-                  >
-                    Security deposit
-                  </label>
-
-                  <input
-                    id="deposit"
-                    name="deposit"
-                    type="number"
-                    min="0"
-                    value={formData.deposit}
-                    onChange={handleChange}
-                    className="w-full rounded-xl border border-[#D6C7A1] bg-white px-4 py-3 text-[#333333] outline-none focus:border-[#6B8E23] focus:ring-2 focus:ring-[#EEF2E4]"
-                  />
-                </div>
-              </div>
-
-              <div className="grid gap-5 sm:grid-cols-2">
-                <div>
-                  <label
-                    htmlFor="city"
-                    className="mb-2 block text-sm font-semibold text-[#333333]"
-                  >
-                    City *
-                  </label>
-
-                  <input
-                    id="city"
-                    name="city"
+                    id="title"
+                    name="title"
                     type="text"
-                    value={formData.city}
+                    value={formData.title}
                     onChange={handleChange}
                     required
-                    className="w-full rounded-xl border border-[#D6C7A1] bg-white px-4 py-3 text-[#333333] outline-none focus:border-[#6B8E23] focus:ring-2 focus:ring-[#EEF2E4]"
+                    className={inputClassName}
                   />
                 </div>
 
                 <div>
-                  <label
-                    htmlFor="locality"
-                    className="mb-2 block text-sm font-semibold text-[#333333]"
-                  >
-                    Locality *
+                  <label htmlFor="description" className={labelClassName}>
+                    Description *
                   </label>
 
-                  <input
-                    id="locality"
-                    name="locality"
-                    type="text"
-                    value={formData.locality}
+                  <textarea
+                    id="description"
+                    name="description"
+                    value={formData.description}
                     onChange={handleChange}
                     required
-                    className="w-full rounded-xl border border-[#D6C7A1] bg-white px-4 py-3 text-[#333333] outline-none focus:border-[#6B8E23] focus:ring-2 focus:ring-[#EEF2E4]"
+                    rows={5}
+                    className={textareaClassName}
                   />
+                </div>
+
+                <div className="grid gap-5 sm:grid-cols-2">
+                  <div>
+                    <label htmlFor="house_type" className={labelClassName}>
+                      House type *
+                    </label>
+
+                    <select
+                      id="house_type"
+                      name="house_type"
+                      value={formData.house_type}
+                      onChange={handleChange}
+                      required
+                      className={inputClassName}
+                    >
+                      <option value="">Select house type</option>
+                      <option value="1 RK">1 RK</option>
+                      <option value="1 BHK">1 BHK</option>
+                      <option value="2 BHK">2 BHK</option>
+                      <option value="3 BHK">3 BHK</option>
+                      <option value="PG">PG</option>
+                      <option value="Hostel">Hostel</option>
+                      <option value="Independent House">Independent House</option>
+                      <option value="Apartment">Apartment</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label htmlFor="sharing_type" className={labelClassName}>
+                      Sharing type
+                    </label>
+
+                    <select
+                      id="sharing_type"
+                      name="sharing_type"
+                      value={formData.sharing_type}
+                      onChange={handleChange}
+                      className={inputClassName}
+                    >
+                      <option value="">Select sharing type</option>
+                      <option value="Private">Private</option>
+                      <option value="Single Sharing">Single Sharing</option>
+                      <option value="Double Sharing">Double Sharing</option>
+                      <option value="Triple Sharing">Triple Sharing</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="grid gap-5 sm:grid-cols-2">
+                  <div>
+                    <label htmlFor="gender_preference" className={labelClassName}>
+                      Gender preference
+                    </label>
+
+                    <select
+                      id="gender_preference"
+                      name="gender_preference"
+                      value={formData.gender_preference}
+                      onChange={handleChange}
+                      className={inputClassName}
+                    >
+                      <option value="">Select preference</option>
+                      <option value="Any">Any</option>
+                      <option value="Male">Male</option>
+                      <option value="Female">Female</option>
+                      <option value="Family">Family</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label htmlFor="available_from" className={labelClassName}>
+                      Available from
+                    </label>
+
+                    <input
+                      id="available_from"
+                      name="available_from"
+                      type="date"
+                      value={formData.available_from}
+                      onChange={handleChange}
+                      className={inputClassName}
+                    />
+                  </div>
+                </div>
+
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <label className="flex cursor-pointer items-center gap-3 rounded-2xl border border-[#D4A34F]/12 bg-[#071512] px-4 py-4">
+                    <input
+                      name="is_furnished"
+                      type="checkbox"
+                      checked={formData.is_furnished}
+                      onChange={handleCheckboxChange}
+                      className="h-5 w-5 accent-[#D4A34F]"
+                    />
+
+                    <span className="text-sm font-semibold text-[#FBFAF7]">
+                      Furnished property
+                    </span>
+                  </label>
+
+                  <label className="flex cursor-pointer items-center gap-3 rounded-2xl border border-[#D4A34F]/12 bg-[#071512] px-4 py-4">
+                    <input
+                      name="available"
+                      type="checkbox"
+                      checked={formData.available}
+                      onChange={handleCheckboxChange}
+                      className="h-5 w-5 accent-[#D4A34F]"
+                    />
+
+                    <span className="text-sm font-semibold text-[#FBFAF7]">
+                      Listing available
+                    </span>
+                  </label>
+                </div>
+              </div>
+            </section>
+
+            <section className="rounded-3xl border border-[#D4A34F]/10 bg-[#122A22] p-6 sm:p-7">
+              <div className="mb-7 flex items-start gap-4">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#205C46]/40 text-[#F0C86A]">
+                  <MapPin className="h-5 w-5" />
+                </div>
+
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#D4A34F]">
+                    Section 02
+                  </p>
+
+                  <h2 className="mt-1 text-2xl font-bold text-[#FBFAF7]">
+                    Rent and Location
+                  </h2>
+
+                  <p className="mt-1 text-sm text-[#92A39C]">
+                    Keep pricing and address details accurate.
+                  </p>
                 </div>
               </div>
 
-              <div>
-                <label
-                  htmlFor="address"
-                  className="mb-2 block text-sm font-semibold text-[#333333]"
-                >
-                  Complete address *
-                </label>
+              <div className="space-y-6">
+                <div className="grid gap-5 sm:grid-cols-2">
+                  <div>
+                    <label htmlFor="rent" className={labelClassName}>
+                      Monthly rent *
+                    </label>
 
-                <textarea
-                  id="address"
-                  name="address"
-                  value={formData.address}
-                  onChange={handleChange}
-                  required
-                  rows={3}
-                  className="w-full resize-none rounded-xl border border-[#D6C7A1] bg-white px-4 py-3 text-[#333333] outline-none focus:border-[#6B8E23] focus:ring-2 focus:ring-[#EEF2E4]"
-                />
+                    <input
+                      id="rent"
+                      name="rent"
+                      type="number"
+                      min="1"
+                      value={formData.rent}
+                      onChange={handleChange}
+                      required
+                      className={inputClassName}
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="deposit" className={labelClassName}>
+                      Security deposit
+                    </label>
+
+                    <input
+                      id="deposit"
+                      name="deposit"
+                      type="number"
+                      min="0"
+                      value={formData.deposit}
+                      onChange={handleChange}
+                      className={inputClassName}
+                    />
+                  </div>
+                </div>
+
+                <div className="grid gap-5 sm:grid-cols-2">
+                  <div>
+                    <label htmlFor="city" className={labelClassName}>
+                      City *
+                    </label>
+
+                    <input
+                      id="city"
+                      name="city"
+                      type="text"
+                      value={formData.city}
+                      onChange={handleChange}
+                      required
+                      className={inputClassName}
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="locality" className={labelClassName}>
+                      Locality *
+                    </label>
+
+                    <input
+                      id="locality"
+                      name="locality"
+                      type="text"
+                      value={formData.locality}
+                      onChange={handleChange}
+                      required
+                      className={inputClassName}
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label htmlFor="address" className={labelClassName}>
+                    Complete address *
+                  </label>
+
+                  <textarea
+                    id="address"
+                    name="address"
+                    value={formData.address}
+                    onChange={handleChange}
+                    required
+                    rows={3}
+                    className={textareaClassName}
+                  />
+                </div>
               </div>
             </section>
 
-            <section className="space-y-5 border-t border-[#EEF2E4] pt-8">
-              <h2 className="text-xl font-semibold text-[#333333]">
-                Contact and images
-              </h2>
+            <section className="rounded-3xl border border-[#D4A34F]/10 bg-[#122A22] p-6 sm:p-7">
+              <div className="mb-7 flex items-start gap-4">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#205C46]/40 text-[#F0C86A]">
+                  <ImageIcon className="h-5 w-5" />
+                </div>
 
-              <div>
-                <label
-                  htmlFor="contact_number"
-                  className="mb-2 block text-sm font-semibold text-[#333333]"
-                >
-                  Contact number *
-                </label>
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#D4A34F]">
+                    Section 03
+                  </p>
 
-                <input
-                  id="contact_number"
-                  name="contact_number"
-                  type="tel"
-                  value={formData.contact_number}
-                  onChange={handleChange}
-                  required
-                  className="w-full rounded-xl border border-[#D6C7A1] bg-white px-4 py-3 text-[#333333] outline-none focus:border-[#6B8E23] focus:ring-2 focus:ring-[#EEF2E4]"
-                />
+                  <h2 className="mt-1 text-2xl font-bold text-[#FBFAF7]">
+                    Contact and Images
+                  </h2>
+
+                  <p className="mt-1 text-sm text-[#92A39C]">
+                    Update owner contact details and listing photos.
+                  </p>
+                </div>
               </div>
 
-              <div>
-                <label
-                  htmlFor="images"
-                  className="mb-2 block text-sm font-semibold text-[#333333]"
-                >
-                  Image URLs
-                </label>
+              <div className="space-y-6">
+                <div>
+                  <label htmlFor="contact_number" className={labelClassName}>
+                    Contact number *
+                  </label>
 
-                <textarea
-                  id="images"
-                  name="images"
-                  value={formData.images}
-                  onChange={handleChange}
-                  rows={3}
-                  placeholder="Separate multiple URLs with commas"
-                  className="w-full resize-none rounded-xl border border-[#D6C7A1] bg-white px-4 py-3 text-[#333333] outline-none focus:border-[#6B8E23] focus:ring-2 focus:ring-[#EEF2E4]"
-                />
+                  <input
+                    id="contact_number"
+                    name="contact_number"
+                    type="tel"
+                    value={formData.contact_number}
+                    onChange={handleChange}
+                    required
+                    className={inputClassName}
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="images" className={labelClassName}>
+                    Image URLs
+                  </label>
+
+                  <textarea
+                    id="images"
+                    name="images"
+                    value={formData.images}
+                    onChange={handleChange}
+                    rows={3}
+                    placeholder="Separate multiple URLs with commas"
+                    className={textareaClassName}
+                  />
+
+                  <p className="mt-2 text-xs text-[#7F9088]">
+                    Separate multiple image URLs using commas.
+                  </p>
+                </div>
               </div>
             </section>
 
-            <div className="flex flex-col-reverse gap-3 border-t border-[#EEF2E4] pt-8 sm:flex-row sm:justify-end">
+            <div className="flex flex-col-reverse gap-3 border-t border-[#D4A34F]/10 pt-8 sm:flex-row sm:justify-end">
               <button
                 type="button"
                 onClick={() =>
-                  router.push(
-                    "/housing/my-listings"
-                  )
+                  router.push("/housing/my-listings")
                 }
                 disabled={saving}
-                className="rounded-xl border border-[#D6C7A1] bg-white px-6 py-3 font-semibold text-[#333333] transition hover:bg-[#EEF2E4] disabled:opacity-60"
+                className="rounded-2xl border border-[#D4A34F]/20 bg-[#071512] px-6 py-3 font-semibold text-[#FBFAF7] transition hover:bg-[#122A22] disabled:cursor-not-allowed disabled:opacity-60"
               >
                 Cancel
               </button>
@@ -700,14 +744,11 @@ export default function EditHousingPage() {
               <button
                 type="submit"
                 disabled={saving}
-                className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#6B8E23] px-6 py-3 font-semibold text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
+                className="inline-flex items-center justify-center gap-2 rounded-2xl bg-[#D4A34F] px-7 py-3 font-semibold text-[#10251D] shadow-[0_12px_30px_rgba(212,163,79,0.22)] transition hover:-translate-y-0.5 hover:bg-[#E5B65B] disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {saving ? (
                   <>
-                    <Loader2
-                      size={19}
-                      className="animate-spin"
-                    />
+                    <Loader2 size={19} className="animate-spin" />
                     Saving changes...
                   </>
                 ) : (

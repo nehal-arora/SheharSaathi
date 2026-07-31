@@ -1,99 +1,119 @@
 "use client";
 
-import { Search } from "lucide-react";
 import { useState } from "react";
-
+import {
+  MapPin,
+  Search,
+  Sparkles,
+} from "lucide-react";
 
 interface SearchBarProps {
   onSearch: (value: string) => void;
 }
 
-
 export default function SearchBar({
   onSearch,
 }: SearchBarProps) {
-
-  const [value,setValue] = useState("");
-
+  const [value, setValue] = useState("");
 
   function handleSubmit(
     e: React.FormEvent
-  ){
-
+  ) {
     e.preventDefault();
-
-    onSearch(value);
-
+    onSearch(value.trim());
   }
 
-
   return (
-
     <form
       onSubmit={handleSubmit}
       className="
         flex
-        w-full
-        items-center
-        gap-3
-        rounded-2xl
+        flex-col
+        gap-4
+        rounded-3xl
         border
-        border-[#EEF2E4]
-        bg-white
-        p-3
-        shadow-sm
+        border-[#D4A34F]/15
+        bg-[#0D211B]
+        p-4
+        shadow-[0_18px_55px_rgba(0,0,0,0.28)]
+        sm:flex-row
+        sm:items-center
       "
     >
-
-      <Search
-        size={22}
+      <div
         className="
-          text-[#6B8E23]
+          flex
+          h-12
+          w-12
+          shrink-0
+          items-center
+          justify-center
+          rounded-2xl
+          bg-[#205C46]/40
+          text-[#F0C86A]
         "
-      />
+      >
+        <Search className="h-5 w-5" />
+      </div>
 
+      <div className="flex-1">
+        <div className="mb-2 flex items-center gap-2">
+          <MapPin className="h-4 w-4 text-[#D4A34F]" />
 
-      <input
+          <span className="text-xs font-semibold uppercase tracking-[0.14em] text-[#D4A34F]">
+            Search Location
+          </span>
+        </div>
 
-        value={value}
-
-        onChange={(e)=>
-          setValue(e.target.value)
-        }
-
-        placeholder="
-          Search city, locality or area...
-        "
-
-        className="
-          flex-1
-          bg-transparent
-          outline-none
-          text-[#333333]
-          placeholder:text-gray-400
-        "
-
-      />
-
+        <input
+          value={value}
+          onChange={(e) =>
+            setValue(e.target.value)
+          }
+          placeholder="Delhi, Noida, Rohini, Lajpat Nagar..."
+          className="
+            h-12
+            w-full
+            rounded-2xl
+            border
+            border-[#D4A34F]/12
+            bg-[#071512]
+            px-4
+            text-[#FBFAF7]
+            placeholder:text-[#66766F]
+            outline-none
+            transition-all
+            focus:border-[#D4A34F]/45
+            focus:ring-2
+            focus:ring-[#D4A34F]/10
+          "
+        />
+      </div>
 
       <button
         type="submit"
         className="
-          rounded-xl
-          bg-[#6B8E23]
-          px-6
-          py-3
-          font-medium
-          text-white
-          transition
-          hover:bg-[#58751d]
+          flex
+          h-12
+          items-center
+          justify-center
+          gap-2
+          rounded-2xl
+          bg-[#D4A34F]
+          px-7
+          font-semibold
+          text-[#10251D]
+          shadow-[0_12px_30px_rgba(212,163,79,0.22)]
+          transition-all
+          duration-300
+          hover:-translate-y-0.5
+          hover:bg-[#E5B65B]
+          active:translate-y-0
         "
       >
+        <Sparkles className="h-4 w-4" />
         Search
       </button>
-
-
     </form>
-
   );
 }

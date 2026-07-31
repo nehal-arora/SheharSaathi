@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Heart } from "lucide-react";
+import { Heart, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 
 import RoommateGrid from "@/components/roommates/RoommateGrid";
@@ -90,30 +90,60 @@ export default function FavoriteRoommatesPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#FBFAF5]">
-      <section className="mx-auto max-w-7xl px-4 py-10 lg:px-8">
-        <div className="mb-10 rounded-3xl border border-red-100 bg-white p-8 shadow-sm">
-          <div className="flex items-center gap-3">
-            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-red-50">
-              <Heart
-                size={28}
-                className="text-red-500"
-                fill="currentColor"
-              />
+    <main className="min-h-screen bg-[#071512]">
+      <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
+        <section className="relative mb-10 overflow-hidden rounded-[32px] border border-[#205C46]/35 bg-[#0D211B] p-6 shadow-[0_24px_70px_rgba(0,0,0,0.28)] sm:p-8">
+          <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-[#D4A34F]/10 blur-3xl" />
+
+          <div className="relative flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-start gap-4">
+              <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-[22px] border border-rose-400/25 bg-rose-400/10">
+                <Heart
+                  size={30}
+                  className="text-rose-300"
+                  fill="currentColor"
+                />
+              </div>
+
+              <div>
+                <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#D4A34F]">
+                  Saved profiles
+                </p>
+
+                <h1 className="mt-2 text-3xl font-bold tracking-tight text-[#FBFAF7] sm:text-4xl">
+                  Favorite Roommates
+                </h1>
+
+                <p className="mt-3 max-w-2xl leading-7 text-[#9EAEA7]">
+                  View and manage the roommate
+                  profiles you&apos;ve saved for
+                  later.
+                </p>
+              </div>
             </div>
 
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900">
-                Favorite Roommates
-              </h1>
+            {!loading && (
+              <div className="flex items-center gap-3 rounded-[22px] border border-[#D4A34F]/20 bg-[#D4A34F]/10 px-5 py-4">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#D4A34F]/15">
+                  <Sparkles
+                    size={19}
+                    className="text-[#F0C86A]"
+                  />
+                </div>
 
-              <p className="mt-2 text-gray-600">
-                View and manage the roommate
-                profiles you&apos;ve saved.
-              </p>
-            </div>
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#9EAEA7]">
+                    Saved profiles
+                  </p>
+
+                  <p className="mt-1 text-2xl font-bold text-[#F0C86A]">
+                    {favorites.length}
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
-        </div>
+        </section>
 
         {loading ? (
           <ProfileSkeleton />
@@ -122,6 +152,8 @@ export default function FavoriteRoommatesPage() {
             roommates={favorites}
             onFavorite={handleRemoveFavorite}
             onInterest={handleInterest}
+            emptyTitle="No favorite roommates yet"
+            emptyDescription="Save profiles you like, and they will appear here for quick access."
           />
         )}
       </section>

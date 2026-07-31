@@ -3,6 +3,7 @@ import {
   SearchX,
   SlidersHorizontal,
   Users,
+  Sparkles,
 } from "lucide-react";
 
 interface RoommateEmptyStateProps {
@@ -26,43 +27,62 @@ export default function RoommateEmptyState({
     type === "favorites"
       ? Users
       : type === "profile"
-        ? Users
-        : SearchX;
+      ? Users
+      : SearchX;
 
   return (
-    <div className="flex min-h-[360px] flex-col items-center justify-center rounded-2xl border border-dashed border-[#D6C7A1] bg-[#FBFAF5] px-6 py-12 text-center">
-      <div className="mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-[#EEF2E4] text-[#6B8E23]">
-        <Icon size={30} aria-hidden="true" />
-      </div>
+    <div className="relative overflow-hidden rounded-[30px] border border-[#205C46]/40 bg-[#0D211B] px-8 py-14 text-center shadow-[0_18px_50px_rgba(0,0,0,0.22)]">
+      {/* Background Glow */}
+      <div className="absolute -left-16 -top-16 h-44 w-44 rounded-full bg-[#205C46]/20 blur-3xl" />
+      <div className="absolute -right-20 bottom-0 h-52 w-52 rounded-full bg-[#D4A34F]/10 blur-3xl" />
 
-      <h2 className="text-xl font-bold text-gray-900">
-        {title}
-      </h2>
+      <div className="relative z-10 flex flex-col items-center">
+        <div className="flex h-24 w-24 items-center justify-center rounded-full border border-[#D4A34F]/30 bg-gradient-to-br from-[#D4A34F]/15 to-[#205C46]/20">
+          <Icon
+            size={42}
+            className="text-[#F0C86A]"
+          />
+        </div>
 
-      <p className="mt-2 max-w-md text-sm leading-6 text-gray-600">
-        {description}
-      </p>
+        <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-[#D4A34F]/25 bg-[#D4A34F]/10 px-4 py-1.5">
+          <Sparkles
+            size={14}
+            className="text-[#F0C86A]"
+          />
+          <span className="text-xs font-semibold uppercase tracking-[0.15em] text-[#F0C86A]">
+            AI Roommate Matching
+          </span>
+        </div>
 
-      <div className="mt-6 flex flex-wrap justify-center gap-3">
-        {onClearFilters && (
-          <button
-            type="button"
-            onClick={onClearFilters}
-            className="inline-flex items-center gap-2 rounded-xl border border-[#6B8E23] px-5 py-2.5 font-semibold text-[#6B8E23] transition hover:bg-[#EEF2E4]"
-          >
-            <SlidersHorizontal size={17} />
-            Clear filters
-          </button>
-        )}
+        <h2 className="mt-6 text-3xl font-bold text-[#FBFAF7]">
+          {title}
+        </h2>
 
-        {actionLabel && actionHref && (
-          <Link
-            href={actionHref}
-            className="rounded-xl bg-[#6B8E23] px-5 py-2.5 font-semibold text-white transition hover:opacity-90"
-          >
-            {actionLabel}
-          </Link>
-        )}
+        <p className="mt-4 max-w-xl text-base leading-7 text-[#AEBDB6]">
+          {description}
+        </p>
+
+        <div className="mt-8 flex flex-wrap justify-center gap-4">
+          {onClearFilters && (
+            <button
+              type="button"
+              onClick={onClearFilters}
+              className="inline-flex items-center gap-2 rounded-2xl border border-[#205C46]/45 bg-[#10271F] px-6 py-3 font-semibold text-[#D6E0DB] transition-all duration-200 hover:border-[#D4A34F]/40 hover:text-[#F0C86A]"
+            >
+              <SlidersHorizontal size={18} />
+              Clear Filters
+            </button>
+          )}
+
+          {actionLabel && actionHref && (
+            <Link
+              href={actionHref}
+              className="inline-flex items-center justify-center rounded-2xl bg-[#D4A34F] px-6 py-3 font-semibold text-[#071512] shadow-[0_10px_24px_rgba(212,163,79,0.18)] transition-all duration-200 hover:bg-[#F0C86A]"
+            >
+              {actionLabel}
+            </Link>
+          )}
+        </div>
       </div>
     </div>
   );

@@ -2,7 +2,13 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, Loader2, PencilLine } from "lucide-react";
+import {
+  ArrowLeft,
+  Loader2,
+  PencilLine,
+  Sparkles,
+  UserRoundPlus,
+} from "lucide-react";
 import { toast } from "sonner";
 
 import RoommateProfileForm from "@/components/roommates/RoommateProfileForm";
@@ -40,16 +46,24 @@ export default function EditRoommateProfilePage() {
 
   if (loading) {
     return (
-      <main className="min-h-screen bg-[#FBFAF5] px-4 py-12">
-        <div className="mx-auto flex max-w-5xl items-center justify-center rounded-3xl border border-gray-200 bg-white py-24 shadow-sm">
-          <div className="text-center">
-            <Loader2
-              size={38}
-              className="mx-auto animate-spin text-[#6B8E23]"
-            />
+      <main className="min-h-screen bg-[#071512] px-4 py-12">
+        <div className="mx-auto flex min-h-[520px] max-w-5xl items-center justify-center overflow-hidden rounded-[32px] border border-[#205C46]/35 bg-[#0D211B] shadow-[0_24px_70px_rgba(0,0,0,0.28)]">
+          <div className="relative text-center">
+            <div className="absolute left-1/2 top-1/2 h-40 w-40 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#D4A34F]/10 blur-3xl" />
 
-            <p className="mt-4 text-gray-600">
-              Loading your roommate profile...
+            <div className="relative mx-auto flex h-20 w-20 items-center justify-center rounded-[24px] border border-[#D4A34F]/25 bg-[#D4A34F]/10">
+              <Loader2
+                size={38}
+                className="animate-spin text-[#F0C86A]"
+              />
+            </div>
+
+            <h1 className="mt-6 text-xl font-bold text-[#FBFAF7]">
+              Loading your profile
+            </h1>
+
+            <p className="mt-2 text-sm text-[#9EAEA7]">
+              Preparing your roommate details and preferences...
             </p>
           </div>
         </div>
@@ -59,67 +73,124 @@ export default function EditRoommateProfilePage() {
 
   if (!profile) {
     return (
-      <main className="min-h-screen bg-[#FBFAF5] px-4 py-12">
-        <section className="mx-auto max-w-3xl rounded-3xl border border-dashed border-[#D6C7A1] bg-white p-10 text-center shadow-sm">
-          <h1 className="text-3xl font-bold text-gray-900">
-            No Roommate Profile Found
-          </h1>
+      <main className="min-h-screen bg-[#071512] px-4 py-12">
+        <section className="relative mx-auto max-w-3xl overflow-hidden rounded-[32px] border border-[#D4A34F]/20 bg-[#0D211B] p-8 text-center shadow-[0_24px_70px_rgba(0,0,0,0.28)] sm:p-12">
+          <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-[#D4A34F]/10 blur-3xl" />
 
-          <p className="mt-3 text-gray-600">
-            Create your roommate profile before trying to edit it.
-          </p>
+          <div className="relative">
+            <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-[24px] border border-[#D4A34F]/25 bg-[#D4A34F]/10">
+              <UserRoundPlus
+                size={34}
+                className="text-[#F0C86A]"
+              />
+            </div>
 
-          <Link
-            href="/roommates/profile/create"
-            className="mt-7 inline-flex items-center justify-center rounded-xl bg-[#6B8E23] px-6 py-3 font-semibold text-white transition hover:opacity-90"
-          >
-            Create Profile
-          </Link>
+            <p className="mt-6 text-xs font-bold uppercase tracking-[0.22em] text-[#D4A34F]">
+              Profile required
+            </p>
+
+            <h1 className="mt-3 text-3xl font-bold text-[#FBFAF7] sm:text-4xl">
+              No Roommate Profile Found
+            </h1>
+
+            <p className="mx-auto mt-4 max-w-xl leading-7 text-[#9EAEA7]">
+              Create your roommate profile first, then you
+              can return here to update your details and
+              matching preferences.
+            </p>
+
+            <Link
+              href="/roommates/profile/create"
+              className="mt-8 inline-flex items-center justify-center gap-2 rounded-2xl bg-[#D4A34F] px-6 py-3.5 font-bold text-[#071512] shadow-[0_12px_30px_rgba(212,163,79,0.24)] transition hover:bg-[#F0C86A]"
+            >
+              <UserRoundPlus size={18} />
+              Create Profile
+            </Link>
+          </div>
         </section>
       </main>
     );
   }
 
   return (
-    <main className="min-h-screen bg-[#FBFAF5]">
-      <section className="mx-auto max-w-5xl px-4 py-10 lg:px-8">
+    <main className="min-h-screen bg-[#071512]">
+      <section className="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
         <Link
           href="/roommates/profile"
-          className="inline-flex items-center gap-2 text-sm font-semibold text-[#6B8E23] transition hover:opacity-75"
+          className="group inline-flex items-center gap-2 rounded-xl px-1 py-2 text-sm font-semibold text-[#D4A34F] transition hover:text-[#F0C86A]"
         >
-          <ArrowLeft size={17} />
+          <ArrowLeft
+            size={18}
+            className="transition-transform group-hover:-translate-x-1"
+          />
           Back to Profile
         </Link>
 
-        <div className="mt-6 rounded-3xl border border-gray-200 bg-white p-7 shadow-sm sm:p-9">
-          <div className="flex flex-col gap-5 sm:flex-row sm:items-center">
-            <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-[#EEF2E4] text-[#6B8E23]">
-              <PencilLine size={31} />
+        <section className="relative mt-6 overflow-hidden rounded-[32px] border border-[#205C46]/35 bg-[#0D211B] p-7 shadow-[0_24px_70px_rgba(0,0,0,0.3)] sm:p-10">
+          <div className="absolute -right-24 -top-24 h-72 w-72 rounded-full bg-[#D4A34F]/10 blur-3xl" />
+          <div className="absolute -left-16 bottom-0 h-52 w-52 rounded-full bg-[#205C46]/15 blur-3xl" />
+
+          <div className="relative flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+            <div className="flex items-start gap-5">
+              <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-[24px] border border-[#D4A34F]/20 bg-[#D4A34F]/10">
+                <PencilLine
+                  size={36}
+                  className="text-[#F0C86A]"
+                />
+              </div>
+
+              <div>
+                <div className="inline-flex items-center gap-2 rounded-full border border-[#D4A34F]/20 bg-[#D4A34F]/10 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.18em] text-[#F0C86A]">
+                  <Sparkles size={15} />
+                  Profile Settings
+                </div>
+
+                <h1 className="mt-4 text-4xl font-bold tracking-tight text-[#FBFAF7] sm:text-5xl">
+                  Edit Your
+                  <span className="block text-[#F0C86A]">
+                    Roommate Profile
+                  </span>
+                </h1>
+
+                <p className="mt-5 max-w-2xl text-base leading-8 text-[#B8C5BF]">
+                  Keep your lifestyle, budget, location,
+                  and roommate preferences up to date to
+                  improve the accuracy of your AI-powered
+                  recommendations.
+                </p>
+              </div>
             </div>
 
-            <div>
-              <p className="font-semibold text-[#6B8E23]">
-                Profile settings
-              </p>
+            <div className="grid grid-cols-2 gap-4 lg:w-[290px]">
+              <div className="rounded-2xl border border-[#205C46]/40 bg-[#10271F] p-5">
+                <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#7F9189]">
+                  Profile
+                </p>
 
-              <h1 className="mt-1 text-3xl font-bold text-gray-900 sm:text-4xl">
-                Edit Your Roommate Profile
-              </h1>
+                <p className="mt-2 text-2xl font-bold text-[#F0C86A]">
+                  Active
+                </p>
+              </div>
 
-              <p className="mt-3 max-w-2xl leading-7 text-gray-600">
-                Update your details and preferences to improve the
-                accuracy of your AI roommate recommendations.
-              </p>
+              <div className="rounded-2xl border border-[#205C46]/40 bg-[#10271F] p-5">
+                <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#7F9189]">
+                  Matching
+                </p>
+
+                <p className="mt-2 text-2xl font-bold text-[#F0C86A]">
+                  Smart
+                </p>
+              </div>
             </div>
           </div>
-        </div>
+        </section>
 
-        <div className="mt-8">
+        <section className="mt-10">
           <RoommateProfileForm
             mode="edit"
             initialProfile={profile}
           />
-        </div>
+        </section>
       </section>
     </main>
   );

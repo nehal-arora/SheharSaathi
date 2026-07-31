@@ -24,32 +24,49 @@ export default function CompatibilityBadge({
   );
 
   const label = getCompatibilityLabel(safeScore);
-  const styles = getCompatibilityStyles(safeScore);
 
   const sizeClasses = {
-    sm: "gap-1 px-2 py-1 text-xs",
-    md: "gap-1.5 px-3 py-1.5 text-sm",
-    lg: "gap-2 px-4 py-2 text-base",
+    sm: {
+      wrapper: "px-2.5 py-1 text-[11px]",
+      icon: 12,
+    },
+    md: {
+      wrapper: "px-3.5 py-1.5 text-xs",
+      icon: 14,
+    },
+    lg: {
+      wrapper: "px-4 py-2 text-sm",
+      icon: 16,
+    },
   };
 
-  const iconSizes = {
-    sm: 13,
-    md: 15,
-    lg: 18,
-  };
+  let ring =
+    "border-[#205C46]/50 bg-[#10271F]/90 text-[#D6E0DB]";
+
+  if (safeScore >= 85) {
+    ring =
+      "border-[#D4A34F]/50 bg-[#D4A34F]/15 text-[#F0C86A]";
+  } else if (safeScore >= 70) {
+    ring =
+      "border-[#4C8C68]/50 bg-[#205C46]/20 text-[#D8F2E2]";
+  } else if (safeScore >= 50) {
+    ring =
+      "border-[#9A7A42]/45 bg-[#9A7A42]/15 text-[#F3D99A]";
+  }
 
   return (
     <div
       className={[
-        "inline-flex items-center rounded-full border font-semibold",
-        styles.badge,
-        sizeClasses[size],
+        "inline-flex items-center gap-1.5 rounded-full border backdrop-blur-md font-semibold shadow-lg",
+        ring,
+        sizeClasses[size].wrapper,
         className,
       ].join(" ")}
       aria-label={`${safeScore}% compatibility, ${label}`}
     >
       <Sparkles
-        size={iconSizes[size]}
+        size={sizeClasses[size].icon}
+        className="text-current"
         aria-hidden="true"
       />
 
@@ -57,7 +74,7 @@ export default function CompatibilityBadge({
 
       {showLabel && (
         <>
-          <span aria-hidden="true">•</span>
+          <span className="opacity-50">•</span>
           <span>{label}</span>
         </>
       )}

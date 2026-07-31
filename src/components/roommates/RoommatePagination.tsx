@@ -25,7 +25,7 @@ export default function RoommatePagination({
 
   return (
     <nav
-      className="mt-10 flex flex-wrap items-center justify-center gap-2"
+      className="mt-12 flex flex-wrap items-center justify-center gap-3"
       aria-label="Roommate pagination"
     >
       {/* Previous */}
@@ -36,9 +36,9 @@ export default function RoommatePagination({
         onClick={() =>
           onPageChange(currentPage - 1)
         }
-        className="flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-4 py-2 text-sm font-medium transition hover:border-[#6B8E23] hover:bg-[#EEF2E4] disabled:cursor-not-allowed disabled:opacity-50"
+        className="inline-flex items-center gap-2 rounded-2xl border border-[#205C46]/40 bg-[#0D211B] px-5 py-3 text-sm font-semibold text-[#D6E0DB] shadow-lg transition-all duration-200 hover:border-[#D4A34F]/40 hover:bg-[#10271F] hover:text-[#F0C86A] disabled:cursor-not-allowed disabled:opacity-40"
       >
-        <ChevronLeft size={16} />
+        <ChevronLeft size={18} />
         Previous
       </button>
 
@@ -48,7 +48,7 @@ export default function RoommatePagination({
         page === "..." ? (
           <div
             key={`ellipsis-${index}`}
-            className="flex h-10 w-10 items-center justify-center text-gray-400"
+            className="flex h-12 w-12 items-center justify-center text-[#7C8E86]"
           >
             <MoreHorizontal size={18} />
           </div>
@@ -59,10 +59,10 @@ export default function RoommatePagination({
             onClick={() =>
               onPageChange(page)
             }
-            className={`h-10 w-10 rounded-xl text-sm font-semibold transition ${
+            className={`flex h-12 w-12 items-center justify-center rounded-2xl text-sm font-bold transition-all duration-200 ${
               currentPage === page
-                ? "bg-[#6B8E23] text-white"
-                : "border border-gray-200 bg-white hover:border-[#6B8E23] hover:bg-[#EEF2E4]"
+                ? "bg-[#D4A34F] text-[#071512] shadow-[0_10px_25px_rgba(212,163,79,0.30)]"
+                : "border border-[#205C46]/40 bg-[#0D211B] text-[#D6E0DB] hover:border-[#D4A34F]/40 hover:bg-[#10271F] hover:text-[#F0C86A]"
             }`}
             aria-current={
               currentPage === page
@@ -83,10 +83,10 @@ export default function RoommatePagination({
         onClick={() =>
           onPageChange(currentPage + 1)
         }
-        className="flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-4 py-2 text-sm font-medium transition hover:border-[#6B8E23] hover:bg-[#EEF2E4] disabled:cursor-not-allowed disabled:opacity-50"
+        className="inline-flex items-center gap-2 rounded-2xl border border-[#205C46]/40 bg-[#0D211B] px-5 py-3 text-sm font-semibold text-[#D6E0DB] shadow-lg transition-all duration-200 hover:border-[#D4A34F]/40 hover:bg-[#10271F] hover:text-[#F0C86A] disabled:cursor-not-allowed disabled:opacity-40"
       >
         Next
-        <ChevronRight size={16} />
+        <ChevronRight size={18} />
       </button>
     </nav>
   );

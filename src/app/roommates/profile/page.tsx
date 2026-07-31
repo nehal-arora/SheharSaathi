@@ -225,16 +225,24 @@ export default function MyRoommateProfilePage() {
 
   if (loading) {
     return (
-      <main className="min-h-screen bg-[#FBFAF5] px-4 py-12">
-        <div className="mx-auto flex max-w-6xl items-center justify-center rounded-3xl border border-gray-200 bg-white py-24 shadow-sm">
-          <div className="text-center">
-            <Loader2
-              size={38}
-              className="mx-auto animate-spin text-[#6B8E23]"
-            />
+      <main className="min-h-screen bg-[#071512] px-4 py-12">
+        <div className="mx-auto flex min-h-[520px] max-w-6xl items-center justify-center overflow-hidden rounded-[32px] border border-[#205C46]/35 bg-[#0D211B] shadow-[0_24px_70px_rgba(0,0,0,0.3)]">
+          <div className="relative text-center">
+            <div className="absolute left-1/2 top-1/2 h-40 w-40 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#D4A34F]/10 blur-3xl" />
 
-            <p className="mt-4 text-gray-600">
-              Loading your roommate profile...
+            <div className="relative mx-auto flex h-20 w-20 items-center justify-center rounded-[24px] border border-[#D4A34F]/25 bg-[#D4A34F]/10">
+              <Loader2
+                size={38}
+                className="animate-spin text-[#F0C86A]"
+              />
+            </div>
+
+            <h1 className="mt-6 text-xl font-bold text-[#FBFAF7]">
+              Loading your profile
+            </h1>
+
+            <p className="mt-2 text-sm text-[#9EAEA7]">
+              Preparing your roommate details and preferences...
             </p>
           </div>
         </div>
@@ -244,32 +252,40 @@ export default function MyRoommateProfilePage() {
 
   if (!profile) {
     return (
-      <main className="min-h-screen bg-[#FBFAF5] px-4 py-12">
-        <section className="mx-auto max-w-3xl rounded-3xl border border-dashed border-[#D6C7A1] bg-white p-10 text-center shadow-sm">
-          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[#EEF2E4]">
-            <UserRound
-              size={30}
-              className="text-[#6B8E23]"
-            />
+      <main className="min-h-screen bg-[#071512] px-4 py-12">
+        <section className="relative mx-auto max-w-3xl overflow-hidden rounded-[32px] border border-[#D4A34F]/20 bg-[#0D211B] p-8 text-center shadow-[0_24px_70px_rgba(0,0,0,0.3)] sm:p-12">
+          <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-[#D4A34F]/10 blur-3xl" />
+
+          <div className="relative">
+            <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-[24px] border border-[#D4A34F]/25 bg-[#D4A34F]/10">
+              <UserRound
+                size={34}
+                className="text-[#F0C86A]"
+              />
+            </div>
+
+            <p className="mt-6 text-xs font-bold uppercase tracking-[0.22em] text-[#D4A34F]">
+              Start matching
+            </p>
+
+            <h1 className="mt-3 text-3xl font-bold text-[#FBFAF7] sm:text-4xl">
+              Create Your Roommate Profile
+            </h1>
+
+            <p className="mx-auto mt-4 max-w-xl leading-7 text-[#9EAEA7]">
+              Tell us about your lifestyle, budget, location and
+              preferences to receive personalized roommate
+              recommendations.
+            </p>
+
+            <Link
+              href="/roommates/profile/create"
+              className="mt-8 inline-flex items-center justify-center gap-2 rounded-2xl bg-[#D4A34F] px-6 py-3.5 font-bold text-[#071512] shadow-[0_12px_30px_rgba(212,163,79,0.24)] transition hover:bg-[#F0C86A]"
+            >
+              <Sparkles size={19} />
+              Create Profile
+            </Link>
           </div>
-
-          <h1 className="mt-6 text-3xl font-bold text-gray-900">
-            Create Your Roommate Profile
-          </h1>
-
-          <p className="mx-auto mt-3 max-w-xl text-gray-600">
-            Tell us about your lifestyle, budget, location and
-            preferences to receive personalized roommate
-            recommendations.
-          </p>
-
-          <Link
-            href="/roommates/profile/create"
-            className="mt-7 inline-flex items-center justify-center gap-2 rounded-xl bg-[#6B8E23] px-6 py-3 font-semibold text-white transition hover:opacity-90"
-          >
-            <Sparkles size={19} />
-            Create Profile
-          </Link>
         </section>
       </main>
     );
@@ -278,51 +294,58 @@ export default function MyRoommateProfilePage() {
   const profileImage = getProfileImage(profile);
 
   return (
-    <main className="min-h-screen bg-[#FBFAF5]">
-      <section className="mx-auto max-w-6xl px-4 py-10 lg:px-8">
-        <div className="mb-8 flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <p className="font-semibold text-[#6B8E23]">
-              My roommate profile
-            </p>
+    <main className="min-h-screen bg-[#071512]">
+      <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
+        <section className="relative mb-8 overflow-hidden rounded-[32px] border border-[#205C46]/35 bg-[#0D211B] p-6 shadow-[0_24px_70px_rgba(0,0,0,0.3)] sm:p-8">
+          <div className="absolute -right-24 -top-24 h-72 w-72 rounded-full bg-[#D4A34F]/10 blur-3xl" />
+          <div className="absolute -bottom-20 -left-20 h-60 w-60 rounded-full bg-[#205C46]/15 blur-3xl" />
 
-            <h1 className="mt-1 text-3xl font-bold text-gray-900">
-              Manage Your Profile
-            </h1>
+          <div className="relative flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+            <div>
+              <div className="inline-flex items-center gap-2 rounded-full border border-[#D4A34F]/20 bg-[#D4A34F]/10 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.18em] text-[#F0C86A]">
+                <UserRound size={15} />
+                My Roommate Profile
+              </div>
 
-            <p className="mt-2 text-gray-600">
-              Keep your details updated for better AI matches.
-            </p>
+              <h1 className="mt-4 text-4xl font-bold tracking-tight text-[#FBFAF7] sm:text-5xl">
+                Manage Your Profile
+              </h1>
+
+              <p className="mt-4 max-w-2xl text-base leading-7 text-[#9EAEA7]">
+                Keep your details updated to receive more accurate
+                AI-powered roommate matches.
+              </p>
+            </div>
+
+            <div className="flex flex-col gap-3 sm:flex-row">
+              <Link
+                href="/roommates/recommendations"
+                className="inline-flex items-center justify-center gap-2 rounded-2xl border border-[#D4A34F]/40 bg-[#D4A34F]/10 px-5 py-3.5 font-bold text-[#F0C86A] transition hover:bg-[#D4A34F]/15"
+              >
+                <Sparkles size={18} />
+                View Matches
+              </Link>
+
+              <Link
+                href="/roommates/profile/edit"
+                className="inline-flex items-center justify-center gap-2 rounded-2xl bg-[#D4A34F] px-5 py-3.5 font-bold text-[#071512] shadow-[0_12px_30px_rgba(212,163,79,0.22)] transition hover:bg-[#F0C86A]"
+              >
+                <Edit3 size={18} />
+                Edit Profile
+              </Link>
+            </div>
           </div>
-
-          <div className="flex flex-col gap-3 sm:flex-row">
-            <Link
-              href="/roommates/recommendations"
-              className="inline-flex items-center justify-center gap-2 rounded-xl border border-[#6B8E23] px-5 py-3 font-semibold text-[#6B8E23] transition hover:bg-[#EEF2E4]"
-            >
-              <Sparkles size={18} />
-              View Matches
-            </Link>
-
-            <Link
-              href="/roommates/profile/edit"
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#6B8E23] px-5 py-3 font-semibold text-white transition hover:opacity-90"
-            >
-              <Edit3 size={18} />
-              Edit Profile
-            </Link>
-          </div>
-        </div>
+        </section>
 
         <ProfileCompletionBar
           percentage={completion.percentage}
           missingFields={completion.missingFields}
         />
 
-        <div className="mt-8 grid gap-8 lg:grid-cols-[340px_1fr]">
+        <div className="mt-8 grid gap-8 lg:grid-cols-[360px_minmax(0,1fr)]">
           <aside className="space-y-6">
-            <section className="overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-sm">
-              <div className="relative flex h-80 items-center justify-center overflow-hidden bg-[#EEF2E4]">
+            <section className="overflow-hidden rounded-[30px] border border-[#205C46]/35 bg-[#0D211B] shadow-[0_20px_60px_rgba(0,0,0,0.24)]">
+              <div className="relative flex h-[390px] items-center justify-center overflow-hidden bg-[#10271F]">
                 {!imageFailed && profileImage ? (
                   <img
                     src={profileImage}
@@ -331,53 +354,63 @@ export default function MyRoommateProfilePage() {
                     onError={() => setImageFailed(true)}
                   />
                 ) : (
-                  <div className="flex h-28 w-28 items-center justify-center rounded-full bg-white text-[#6B8E23] shadow-sm">
+                  <div className="flex h-28 w-28 items-center justify-center rounded-full border border-[#D4A34F]/25 bg-[#D4A34F]/10 text-[#F0C86A]">
                     <UserRound size={58} />
                   </div>
                 )}
+
+                <div className="absolute inset-0 bg-gradient-to-t from-[#071512] via-transparent to-transparent" />
+
+                <div className="absolute inset-x-0 bottom-0 p-6">
+                  <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#F0C86A]">
+                    Roommate profile
+                  </p>
+
+                  <h2 className="mt-2 text-3xl font-bold text-[#FBFAF7]">
+                    {profile.name}
+                  </h2>
+
+                  <p className="mt-1 text-[#B8C5BF]">
+                    {profile.age} years • {profile.gender}
+                  </p>
+                </div>
               </div>
 
-              <div className="p-6">
-                <h2 className="text-2xl font-bold text-gray-900">
-                  {profile.name}
-                </h2>
+              <div className="space-y-4 p-6">
+                <ProfileLine
+                  icon={<Briefcase size={18} />}
+                  text={profile.occupation}
+                />
 
-                <p className="mt-1 text-gray-500">
-                  {profile.age} years • {profile.gender}
-                </p>
+                <ProfileLine
+                  icon={<Home size={18} />}
+                  text={profile.company_or_college}
+                />
 
-                <div className="mt-5 space-y-3 text-sm text-gray-600">
-                  <ProfileLine
-                    icon={<Briefcase size={18} />}
-                    text={profile.occupation}
-                  />
+                <ProfileLine
+                  icon={<MapPin size={18} />}
+                  text={`${profile.preferred_locality}, ${profile.city}`}
+                />
 
-                  <ProfileLine
-                    icon={<Home size={18} />}
-                    text={profile.company_or_college}
-                  />
-
-                  <ProfileLine
-                    icon={<MapPin size={18} />}
-                    text={`${profile.preferred_locality}, ${profile.city}`}
-                  />
-
-                  <ProfileLine
-                    icon={<Wallet size={18} />}
-                    text={`${formatBudget(
-                      profile.budget
-                    )} monthly budget`}
-                  />
-                </div>
+                <ProfileLine
+                  icon={<Wallet size={18} />}
+                  text={`${formatBudget(
+                    profile.budget
+                  )} monthly budget`}
+                />
               </div>
             </section>
 
-            <section className="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm">
-              <h2 className="font-bold text-gray-900">
-                Looking for
-              </h2>
+            <section className="rounded-[28px] border border-[#205C46]/35 bg-[#0D211B] p-6 shadow-[0_18px_50px_rgba(0,0,0,0.2)]">
+              <div className="flex items-center gap-3">
+                <div className="h-2 w-2 rounded-full bg-[#D4A34F]" />
 
-              <div className="mt-4 space-y-4">
+                <h2 className="text-lg font-bold text-[#FBFAF7]">
+                  Looking For
+                </h2>
+              </div>
+
+              <div className="mt-6 space-y-4">
                 <ProfileDetail
                   label="Preferred gender"
                   value={profile.preferred_gender}
@@ -406,22 +439,20 @@ export default function MyRoommateProfilePage() {
           </aside>
 
           <div className="space-y-6">
-            <section className="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm sm:p-8">
-              <h2 className="text-xl font-bold text-gray-900">
-                About Me
-              </h2>
-
-              <p className="mt-4 whitespace-pre-line leading-7 text-gray-600">
+            <ContentSection
+              eyebrow="Introduction"
+              title="About Me"
+            >
+              <p className="whitespace-pre-line leading-8 text-[#B8C5BF]">
                 {profile.bio}
               </p>
-            </section>
+            </ContentSection>
 
-            <section className="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm sm:p-8">
-              <h2 className="text-xl font-bold text-gray-900">
-                Lifestyle Preferences
-              </h2>
-
-              <div className="mt-6 grid gap-4 sm:grid-cols-2">
+            <ContentSection
+              eyebrow="Compatibility"
+              title="Lifestyle Preferences"
+            >
+              <div className="grid gap-4 sm:grid-cols-2">
                 <PreferenceCard
                   title="Food"
                   value={profile.food_preference}
@@ -462,14 +493,13 @@ export default function MyRoommateProfilePage() {
                   value={profile.work_schedule}
                 />
               </div>
-            </section>
+            </ContentSection>
 
-            <section className="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm sm:p-8">
-              <h2 className="text-xl font-bold text-gray-900">
-                Additional Details
-              </h2>
-
-              <div className="mt-6 grid gap-5 sm:grid-cols-2">
+            <ContentSection
+              eyebrow="Profile details"
+              title="Additional Information"
+            >
+              <div className="grid gap-4 sm:grid-cols-2">
                 <InfoCard
                   icon={<Clock3 size={21} />}
                   label="Wake-up time"
@@ -499,23 +529,28 @@ export default function MyRoommateProfilePage() {
                   value={profile.sharing_type}
                 />
               </div>
-            </section>
+            </ContentSection>
 
-            <section className="rounded-3xl border border-red-200 bg-white p-6 shadow-sm sm:p-8">
-              <h2 className="text-xl font-bold text-gray-900">
+            <section className="rounded-[30px] border border-red-400/20 bg-[#0D211B] p-6 shadow-[0_18px_50px_rgba(0,0,0,0.2)] sm:p-8">
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-red-300">
+                Danger Zone
+              </p>
+
+              <h2 className="mt-2 text-2xl font-bold text-[#FBFAF7]">
                 Delete Profile
               </h2>
 
-              <p className="mt-2 text-sm leading-6 text-gray-600">
-                Deleting your profile will remove it from
-                roommate searches and recommendations.
+              <p className="mt-3 max-w-2xl text-sm leading-7 text-[#9EAEA7]">
+                Deleting your profile will remove it from roommate
+                searches and recommendations. This action cannot be
+                undone.
               </p>
 
               <button
                 type="button"
                 onClick={handleDeleteProfile}
                 disabled={deleting}
-                className="mt-5 inline-flex items-center justify-center gap-2 rounded-xl border border-red-300 px-5 py-3 font-semibold text-red-600 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-60"
+                className="mt-6 inline-flex items-center justify-center gap-2 rounded-2xl border border-red-400/30 bg-red-400/10 px-5 py-3 font-bold text-red-300 transition hover:bg-red-400/15 disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {deleting ? (
                   <>
@@ -540,6 +575,34 @@ export default function MyRoommateProfilePage() {
   );
 }
 
+interface ContentSectionProps {
+  eyebrow: string;
+  title: string;
+  children: React.ReactNode;
+}
+
+function ContentSection({
+  eyebrow,
+  title,
+  children,
+}: ContentSectionProps) {
+  return (
+    <section className="rounded-[30px] border border-[#205C46]/35 bg-[#0D211B] p-6 shadow-[0_18px_50px_rgba(0,0,0,0.2)] sm:p-8">
+      <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#D4A34F]">
+        {eyebrow}
+      </p>
+
+      <h2 className="mt-2 text-2xl font-bold text-[#FBFAF7]">
+        {title}
+      </h2>
+
+      <div className="mt-6">
+        {children}
+      </div>
+    </section>
+  );
+}
+
 interface ProfileLineProps {
   icon: React.ReactNode;
   text: string;
@@ -550,12 +613,14 @@ function ProfileLine({
   text,
 }: ProfileLineProps) {
   return (
-    <div className="flex items-start gap-3">
-      <span className="mt-0.5 shrink-0 text-[#6B8E23]">
+    <div className="flex items-start gap-3 rounded-2xl border border-[#205C46]/30 bg-[#10271F] p-4">
+      <span className="mt-0.5 shrink-0 text-[#F0C86A]">
         {icon}
       </span>
 
-      <span>{text}</span>
+      <span className="text-sm leading-6 text-[#D6E0DB]">
+        {text}
+      </span>
     </div>
   );
 }
@@ -570,12 +635,12 @@ function ProfileDetail({
   value,
 }: ProfileDetailProps) {
   return (
-    <div className="flex items-start justify-between gap-4 border-b border-gray-100 pb-3 last:border-0 last:pb-0">
-      <span className="text-sm text-gray-500">
+    <div className="flex items-start justify-between gap-4 border-b border-[#205C46]/25 pb-4 last:border-0 last:pb-0">
+      <span className="text-sm text-[#7F9189]">
         {label}
       </span>
 
-      <span className="text-right text-sm font-semibold text-gray-800">
+      <span className="text-right text-sm font-semibold text-[#FBFAF7]">
         {value}
       </span>
     </div>
@@ -592,12 +657,12 @@ function PreferenceCard({
   value,
 }: PreferenceCardProps) {
   return (
-    <div className="rounded-2xl border border-gray-100 bg-[#FBFAF5] p-4">
-      <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">
+    <div className="rounded-[22px] border border-[#205C46]/30 bg-[#10271F] p-5 transition hover:border-[#D4A34F]/25">
+      <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#7F9189]">
         {title}
       </p>
 
-      <p className="mt-2 font-semibold text-gray-900">
+      <p className="mt-2 font-semibold text-[#FBFAF7]">
         {value}
       </p>
     </div>
@@ -616,17 +681,17 @@ function InfoCard({
   value,
 }: InfoCardProps) {
   return (
-    <div className="flex items-start gap-4 rounded-2xl bg-[#EEF2E4] p-4">
-      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white text-[#6B8E23]">
+    <div className="flex items-start gap-4 rounded-[22px] border border-[#205C46]/30 bg-[#10271F] p-5 transition hover:border-[#D4A34F]/25">
+      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-[#D4A34F]/15 bg-[#D4A34F]/10 text-[#F0C86A]">
         {icon}
       </div>
 
       <div>
-        <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">
+        <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#7F9189]">
           {label}
         </p>
 
-        <p className="mt-1 font-semibold text-gray-900">
+        <p className="mt-1 font-semibold text-[#FBFAF7]">
           {value || "Not provided"}
         </p>
       </div>

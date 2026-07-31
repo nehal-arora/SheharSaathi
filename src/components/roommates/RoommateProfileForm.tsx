@@ -365,8 +365,8 @@ export default function RoommateProfileForm({
           ...values,
 
           profile_image:
-  values.profile_image?.trim() ||
-  "",
+            values.profile_image?.trim() ||
+            "",
 
           languages: values.languages
             .split(",")
@@ -414,7 +414,7 @@ export default function RoommateProfileForm({
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="space-y-8"
+      className="space-y-10"
     >
       <FormSection
         title="Basic Information"
@@ -842,7 +842,7 @@ export default function RoommateProfileForm({
               className={inputClasses}
             />
 
-            <p className="mt-1 text-xs text-gray-500">
+            <p className="mt-2 text-xs leading-5 text-[#9EAEA7]">
               Separate multiple languages
               using commas.
             </p>
@@ -850,14 +850,14 @@ export default function RoommateProfileForm({
         </FormGrid>
       </FormSection>
 
-      <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+      <div className="rounded-[28px] border border-[#205C46]/40 bg-[#0D211B] p-5 shadow-[0_18px_50px_rgba(0,0,0,0.22)] sm:flex sm:items-center sm:justify-end sm:gap-3">
         <button
           type="button"
           onClick={() =>
             router.back()
           }
           disabled={submitting}
-          className="rounded-xl border border-gray-300 px-6 py-3 font-semibold text-gray-700 transition hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-50"
+          className="inline-flex min-h-12 items-center justify-center rounded-2xl border border-[#205C46]/45 bg-[#10271F] px-6 py-3 font-semibold text-[#D6E0DB] transition-all duration-200 hover:border-[#D4A34F]/40 hover:text-[#F0C86A] disabled:cursor-not-allowed disabled:opacity-50"
         >
           Cancel
         </button>
@@ -865,7 +865,7 @@ export default function RoommateProfileForm({
         <button
           type="submit"
           disabled={submitting}
-          className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#6B8E23] px-6 py-3 font-semibold text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
+          className="inline-flex min-h-12 items-center justify-center gap-2 rounded-2xl bg-[#D4A34F] px-6 py-3 font-semibold text-[#071512] shadow-[0_10px_24px_rgba(212,163,79,0.20)] transition-all duration-200 hover:bg-[#F0C86A] disabled:cursor-not-allowed disabled:opacity-60"
         >
           {submitting ? (
             <>
@@ -896,7 +896,7 @@ export default function RoommateProfileForm({
 }
 
 const inputClasses =
-  "w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-[#6B8E23] focus:ring-4 focus:ring-[#EEF2E4]";
+  "w-full rounded-2xl border border-[#205C46]/40 bg-[#10271F] px-4 py-3 text-sm text-[#FBFAF7] outline-none transition placeholder:text-[#6F8179] hover:border-[#205C46]/70 focus:border-[#D4A34F] focus:ring-4 focus:ring-[#D4A34F]/10 [&>option]:bg-[#10271F] [&>option]:text-[#FBFAF7]";
 
 interface FormSectionProps {
   title: string;
@@ -910,18 +910,21 @@ function FormSection({
   children,
 }: FormSectionProps) {
   return (
-    <section className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm sm:p-7">
-      <div className="mb-6">
-        <h2 className="text-xl font-bold text-gray-900">
+    <section className="relative overflow-hidden rounded-[28px] border border-[#205C46]/40 bg-[#0D211B] p-6 shadow-[0_20px_55px_rgba(0,0,0,0.24)] sm:p-8">
+      <div className="pointer-events-none absolute -right-20 -top-20 h-52 w-52 rounded-full bg-[#D4A34F]/8 blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-24 -left-20 h-52 w-52 rounded-full bg-[#205C46]/15 blur-3xl" />
+
+      <div className="relative mb-7 border-b border-[#205C46]/30 pb-5">
+        <h2 className="text-xl font-bold text-[#FBFAF7]">
           {title}
         </h2>
 
-        <p className="mt-1 text-sm text-gray-500">
+        <p className="mt-2 text-sm leading-6 text-[#9EAEA7]">
           {description}
         </p>
       </div>
 
-      <div className="space-y-5">
+      <div className="relative space-y-6">
         {children}
       </div>
     </section>
@@ -936,7 +939,7 @@ function FormGrid({
   children,
 }: FormGridProps) {
   return (
-    <div className="grid gap-5 md:grid-cols-2">
+    <div className="grid gap-6 md:grid-cols-2">
       {children}
     </div>
   );
@@ -955,14 +958,14 @@ function FormField({
 }: FormFieldProps) {
   return (
     <label className="block">
-      <span className="mb-2 block text-sm font-semibold text-gray-700">
+      <span className="mb-2.5 block text-sm font-semibold text-[#D6E0DB]">
         {label}
       </span>
 
       {children}
 
       {error && (
-        <span className="mt-1 block text-sm text-red-600">
+        <span className="mt-2 block text-sm font-medium text-[#F3A39A]">
           {error}
         </span>
       )}

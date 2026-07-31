@@ -1,6 +1,10 @@
 "use client";
 
-import { RotateCcw, SlidersHorizontal, X } from "lucide-react";
+import {
+  RotateCcw,
+  SlidersHorizontal,
+  X,
+} from "lucide-react";
 
 import type {
   CleanlinessLevel,
@@ -15,6 +19,8 @@ import type {
   WorkSchedule,
 } from "@/types/roommates";
 
+/* ---------- Types ---------- */
+
 interface RoommateFilterSidebarProps {
   filters: RoommateFilters;
   onChange: (filters: RoommateFilters) => void;
@@ -22,6 +28,8 @@ interface RoommateFilterSidebarProps {
   isOpen?: boolean;
   onClose?: () => void;
 }
+
+/* ---------- Options ---------- */
 
 const genders: Gender[] = [
   "Male",
@@ -103,10 +111,10 @@ export default function RoommateFilterSidebar({
   }
 
   const sidebarClasses = [
-    "rounded-2xl border border-gray-200 bg-white p-5 shadow-sm",
+    "rounded-[28px] border border-[#205C46]/40 bg-[#0D211B] p-6 shadow-[0_20px_50px_rgba(0,0,0,0.24)]",
     "lg:sticky lg:top-24",
     isOpen
-      ? "fixed inset-y-0 left-0 z-50 w-[88%] max-w-sm overflow-y-auto rounded-none lg:relative lg:inset-auto lg:z-auto lg:w-full lg:max-w-none lg:rounded-2xl"
+      ? "fixed inset-y-0 left-0 z-50 w-[88%] max-w-sm overflow-y-auto rounded-none lg:relative lg:inset-auto lg:z-auto lg:w-full lg:max-w-none lg:rounded-[28px]"
       : "hidden lg:block",
   ].join(" ");
 
@@ -117,34 +125,41 @@ export default function RoommateFilterSidebar({
           type="button"
           aria-label="Close filter overlay"
           onClick={onClose}
-          className="fixed inset-0 z-40 bg-black/40 lg:hidden"
+          className="fixed inset-0 z-40 bg-black/70 backdrop-blur-sm lg:hidden"
         />
       )}
 
       <aside className={sidebarClasses}>
-        <div className="mb-6 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <SlidersHorizontal
-              size={20}
-              className="text-[#6B8E23]"
-            />
+        <div className="mb-7 flex items-center justify-between border-b border-[#205C46]/30 pb-5">
+          <div className="flex items-center gap-3">
+            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#D4A34F]/12">
+              <SlidersHorizontal
+                size={20}
+                className="text-[#F0C86A]"
+              />
+            </div>
 
-            <h2 className="text-lg font-bold text-gray-900">
-              Filters
-            </h2>
+            <div>
+              <p className="text-xs uppercase tracking-[0.18em] text-[#9EAEA7]">
+                Smart Filters
+              </p>
+
+              <h2 className="text-xl font-bold text-[#FBFAF7]">
+                Find Better Matches
+              </h2>
+            </div>
           </div>
 
           <button
             type="button"
             onClick={onClose}
-            className="rounded-lg p-2 text-gray-500 transition hover:bg-gray-100 lg:hidden"
-            aria-label="Close filters"
+            className="rounded-xl p-2 text-[#9EAEA7] transition hover:bg-[#205C46]/20 hover:text-[#FBFAF7] lg:hidden"
           >
             <X size={20} />
           </button>
         </div>
 
-        <div className="space-y-5">
+        <div className="space-y-6">
           <FilterInput
             label="City"
             value={filters.city ?? ""}
@@ -170,7 +185,7 @@ export default function RoommateFilterSidebar({
           />
 
           <div>
-            <FilterLabel>Monthly budget</FilterLabel>
+            <FilterLabel>Monthly Budget</FilterLabel>
 
             <div className="grid grid-cols-2 gap-3">
               <NumberInput
@@ -208,7 +223,7 @@ export default function RoommateFilterSidebar({
           />
 
           <FilterSelect
-            label="Preferred gender"
+            label="Preferred Gender"
             value={filters.preferred_gender ?? ""}
             options={["Any", ...genders]}
             onChange={(value) =>
@@ -223,7 +238,7 @@ export default function RoommateFilterSidebar({
           />
 
           <FilterSelect
-            label="Food preference"
+            label="Food Preference"
             value={filters.food_preference ?? ""}
             options={foodPreferences}
             onChange={(value) =>
@@ -279,7 +294,7 @@ export default function RoommateFilterSidebar({
           />
 
           <FilterSelect
-            label="Sleep schedule"
+            label="Sleep Schedule"
             value={filters.sleep_schedule ?? ""}
             options={sleepSchedules}
             onChange={(value) =>
@@ -307,7 +322,7 @@ export default function RoommateFilterSidebar({
           />
 
           <FilterSelect
-            label="Work schedule"
+            label="Work Schedule"
             value={filters.work_schedule ?? ""}
             options={workSchedules}
             onChange={(value) =>
@@ -321,7 +336,7 @@ export default function RoommateFilterSidebar({
           />
 
           <FilterSelect
-            label="Sharing type"
+            label="Sharing Type"
             value={filters.sharing_type ?? ""}
             options={sharingTypes}
             onChange={(value) =>
@@ -335,18 +350,18 @@ export default function RoommateFilterSidebar({
           />
 
           <div>
-            <FilterLabel>Move-in by</FilterLabel>
+            <FilterLabel>Move-in By</FilterLabel>
 
             <input
               type="date"
               value={filters.move_in_date ?? ""}
-              onChange={(event) =>
+              onChange={(e) =>
                 updateFilter(
                   "move_in_date",
-                  event.target.value || undefined
+                  e.target.value || undefined
                 )
               }
-              className="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm outline-none transition focus:border-[#6B8E23] focus:ring-4 focus:ring-[#EEF2E4]"
+              className="w-full rounded-2xl border border-[#205C46]/40 bg-[#10271F] px-4 py-3 text-sm text-[#FBFAF7] outline-none transition focus:border-[#D4A34F] focus:ring-4 focus:ring-[#D4A34F]/10"
             />
           </div>
         </div>
@@ -354,10 +369,10 @@ export default function RoommateFilterSidebar({
         <button
           type="button"
           onClick={onClear}
-          className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl border border-[#6B8E23] px-4 py-3 font-semibold text-[#6B8E23] transition hover:bg-[#EEF2E4]"
+          className="mt-8 flex w-full items-center justify-center gap-2 rounded-2xl bg-[#D4A34F] px-4 py-3 font-semibold text-[#071512] transition hover:bg-[#F0C86A]"
         >
-          <RotateCcw size={17} />
-          Clear all filters
+          <RotateCcw size={18} />
+          Clear All Filters
         </button>
       </aside>
     </>
@@ -372,7 +387,7 @@ function FilterLabel({
   children,
 }: FilterLabelProps) {
   return (
-    <label className="mb-2 block text-sm font-semibold text-gray-700">
+    <label className="mb-2.5 block text-sm font-semibold text-[#D6E0DB]">
       {children}
     </label>
   );
@@ -402,7 +417,7 @@ function FilterInput({
         onChange={(event) =>
           onChange(event.target.value)
         }
-        className="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm outline-none transition placeholder:text-gray-400 focus:border-[#6B8E23] focus:ring-4 focus:ring-[#EEF2E4]"
+        className="w-full rounded-2xl border border-[#205C46]/40 bg-[#10271F] px-4 py-3 text-sm text-[#FBFAF7] outline-none transition placeholder:text-[#6F8179] hover:border-[#205C46]/70 focus:border-[#D4A34F] focus:ring-4 focus:ring-[#D4A34F]/10"
       />
     </div>
   );
@@ -437,7 +452,7 @@ function NumberInput({
             : undefined
         );
       }}
-      className="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm outline-none transition placeholder:text-gray-400 focus:border-[#6B8E23] focus:ring-4 focus:ring-[#EEF2E4]"
+      className="w-full rounded-2xl border border-[#205C46]/40 bg-[#10271F] px-4 py-3 text-sm text-[#FBFAF7] outline-none transition placeholder:text-[#6F8179] hover:border-[#205C46]/70 focus:border-[#D4A34F] focus:ring-4 focus:ring-[#D4A34F]/10"
     />
   );
 }
@@ -464,14 +479,20 @@ function FilterSelect({
         onChange={(event) =>
           onChange(event.target.value)
         }
-        className="w-full rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-sm outline-none transition focus:border-[#6B8E23] focus:ring-4 focus:ring-[#EEF2E4]"
+        className="w-full cursor-pointer rounded-2xl border border-[#205C46]/40 bg-[#10271F] px-4 py-3 text-sm text-[#FBFAF7] outline-none transition hover:border-[#205C46]/70 focus:border-[#D4A34F] focus:ring-4 focus:ring-[#D4A34F]/10"
       >
-        <option value="">All</option>
+        <option
+          value=""
+          className="bg-[#10271F] text-[#FBFAF7]"
+        >
+          All
+        </option>
 
         {options.map((option) => (
           <option
             key={option}
             value={option}
+            className="bg-[#10271F] text-[#FBFAF7]"
           >
             {option}
           </option>

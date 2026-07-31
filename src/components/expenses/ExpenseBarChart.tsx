@@ -47,12 +47,12 @@ function CustomTooltip({
   }
 
   return (
-    <div className="rounded-xl border border-[#E7E2D5] bg-white px-4 py-3 shadow-lg">
-      <p className="font-semibold text-[#333333]">
+    <div className="rounded-2xl border border-[#D4A34F]/20 bg-[#0D211B] px-4 py-3 shadow-[0_16px_40px_rgba(0,0,0,0.35)]">
+      <p className="font-semibold text-[#FBFAF7]">
         {item.label}
       </p>
 
-      <p className="mt-1 text-sm font-medium text-[#6B8E23]">
+      <p className="mt-1 text-sm font-bold text-[#F0C86A]">
         {formatCurrency(item.total_spent)}
       </p>
     </div>
@@ -82,97 +82,133 @@ export default function ExpenseBarChart({
 
   if (!hasData) {
     return (
-      <section className="flex min-h-[360px] flex-col items-center justify-center rounded-2xl border border-[#E7E2D5] bg-white p-6 text-center shadow-sm">
-        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#EEF2E4] text-2xl">
-          📈
+      <section className="relative flex min-h-[360px] flex-col items-center justify-center overflow-hidden rounded-[30px] border border-dashed border-[#D4A34F]/25 bg-[#0D211B] p-8 text-center shadow-[0_20px_60px_rgba(0,0,0,0.24)]">
+        <div className="absolute left-1/2 top-1/2 h-56 w-56 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#D4A34F]/5 blur-3xl" />
+
+        <div className="relative flex flex-col items-center">
+          <div className="flex h-20 w-20 items-center justify-center rounded-[24px] border border-[#D4A34F]/20 bg-[#D4A34F]/10 text-3xl">
+            📈
+          </div>
+
+          <p className="mt-6 text-xs font-bold uppercase tracking-[0.18em] text-[#D4A34F]">
+            Spending analytics
+          </p>
+
+          <h2 className="mt-3 text-2xl font-bold text-[#FBFAF7]">
+            No spending trend yet
+          </h2>
+
+          <p className="mt-3 max-w-md text-sm leading-7 text-[#9EAEA7]">
+            Monthly spending trends will appear
+            here once expense data becomes
+            available.
+          </p>
         </div>
-
-        <h2 className="mt-4 text-lg font-bold text-[#333333]">
-          No spending trend yet
-        </h2>
-
-        <p className="mt-2 max-w-sm text-sm leading-6 text-muted-foreground">
-          Monthly spending trends will
-          appear once expense data is
-          available.
-        </p>
       </section>
     );
   }
 
   return (
-    <section className="rounded-2xl border border-[#E7E2D5] bg-white p-5 shadow-sm sm:p-6">
-      <div className="mb-5">
-        <h2 className="text-lg font-bold text-[#333333]">
-          Monthly Spending Trend
-        </h2>
+    <section className="relative overflow-hidden rounded-[30px] border border-[#205C46]/35 bg-[#0D211B] p-5 shadow-[0_20px_60px_rgba(0,0,0,0.24)] sm:p-7">
+      <div className="absolute -right-20 -top-20 h-56 w-56 rounded-full bg-[#D4A34F]/8 blur-3xl" />
 
-        <p className="mt-1 text-sm text-muted-foreground">
-          Compare your total spending
-          across recent months.
-        </p>
-      </div>
+      <div className="relative">
+        <div className="mb-6">
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#D4A34F]">
+            Monthly analytics
+          </p>
 
-      <div className="h-[340px] w-full">
-        <ResponsiveContainer
-          width="100%"
-          height="100%"
-        >
-          <BarChart
-            data={data}
-            margin={{
-              top: 10,
-              right: 10,
-              left: 5,
-              bottom: 5,
-            }}
+          <h2 className="mt-2 text-2xl font-bold text-[#FBFAF7]">
+            Monthly Spending Trend
+          </h2>
+
+          <p className="mt-2 text-sm leading-6 text-[#9EAEA7]">
+            Compare your total spending across
+            recent months.
+          </p>
+        </div>
+
+        <div className="h-[340px] w-full rounded-[24px] border border-[#205C46]/25 bg-[#10271F] p-3 sm:p-5">
+          <ResponsiveContainer
+            width="100%"
+            height="100%"
           >
-            <CartesianGrid
-              strokeDasharray="4 4"
-              vertical={false}
-              stroke="#E7E2D5"
-            />
-
-            <XAxis
-              dataKey="label"
-              tickLine={false}
-              axisLine={false}
-              tick={{
-                fill: "#666666",
-                fontSize: 12,
+            <BarChart
+              data={data}
+              margin={{
+                top: 10,
+                right: 10,
+                left: 5,
+                bottom: 5,
               }}
-            />
+            >
+              <defs>
+                <linearGradient
+                  id="expenseBarGradient"
+                  x1="0"
+                  y1="0"
+                  x2="0"
+                  y2="1"
+                >
+                  <stop
+                    offset="0%"
+                    stopColor="#F0C86A"
+                  />
 
-            <YAxis
-              tickLine={false}
-              axisLine={false}
-              width={64}
-              tick={{
-                fill: "#666666",
-                fontSize: 12,
-              }}
-              tickFormatter={
-                formatYAxisValue
-              }
-            />
+                  <stop
+                    offset="100%"
+                    stopColor="#D4A34F"
+                  />
+                </linearGradient>
+              </defs>
 
-            <Tooltip
-              cursor={{
-                fill:
-                  "rgba(238, 242, 228, 0.55)",
-              }}
-              content={<CustomTooltip />}
-            />
+              <CartesianGrid
+                strokeDasharray="4 4"
+                vertical={false}
+                stroke="rgba(138,181,156,0.16)"
+              />
 
-            <Bar
-              dataKey="total_spent"
-              name="Total spent"
-              fill="#6B8E23"
-              radius={[8, 8, 0, 0]}
-              maxBarSize={56}
-            />
-          </BarChart>
-        </ResponsiveContainer>
+              <XAxis
+                dataKey="label"
+                tickLine={false}
+                axisLine={false}
+                tick={{
+                  fill: "#9EAEA7",
+                  fontSize: 12,
+                }}
+              />
+
+              <YAxis
+                tickLine={false}
+                axisLine={false}
+                width={64}
+                tick={{
+                  fill: "#9EAEA7",
+                  fontSize: 12,
+                }}
+                tickFormatter={
+                  formatYAxisValue
+                }
+              />
+
+              <Tooltip
+                cursor={{
+                  fill:
+                    "rgba(212,163,79,0.07)",
+                }}
+                content={<CustomTooltip />}
+              />
+
+              <Bar
+                dataKey="total_spent"
+                name="Total spent"
+                fill="url(#expenseBarGradient)"
+                radius={[10, 10, 0, 0]}
+                maxBarSize={56}
+              />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
       </div>
     </section>
   );

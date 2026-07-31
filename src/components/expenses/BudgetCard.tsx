@@ -38,31 +38,42 @@ export default function BudgetCard({
   const statusStyles = {
     safe: {
       container:
-        "border-green-200 bg-green-50",
-      icon: "bg-green-100 text-green-700",
-      text: "text-green-700",
-      progress: "bg-green-600",
+        "border-emerald-400/20 bg-emerald-400/10",
+      icon:
+        "border border-emerald-400/20 bg-emerald-400/10 text-emerald-300",
+      text: "text-emerald-300",
+      progress:
+        "bg-gradient-to-r from-emerald-500 to-emerald-300",
     },
+
     warning: {
       container:
-        "border-amber-200 bg-amber-50",
-      icon: "bg-amber-100 text-amber-700",
-      text: "text-amber-700",
-      progress: "bg-amber-500",
+        "border-amber-400/20 bg-amber-400/10",
+      icon:
+        "border border-amber-400/20 bg-amber-400/10 text-amber-300",
+      text: "text-amber-300",
+      progress:
+        "bg-gradient-to-r from-amber-500 to-[#F0C86A]",
     },
+
     danger: {
       container:
-        "border-red-200 bg-red-50",
-      icon: "bg-red-100 text-red-700",
-      text: "text-red-700",
-      progress: "bg-red-600",
+        "border-red-400/20 bg-red-400/10",
+      icon:
+        "border border-red-400/20 bg-red-400/10 text-red-300",
+      text: "text-red-300",
+      progress:
+        "bg-gradient-to-r from-red-600 to-red-400",
     },
+
     none: {
       container:
-        "border-[#E7E2D5] bg-[#FBFAF5]",
-      icon: "bg-[#EEF2E4] text-[#6B8E23]",
-      text: "text-muted-foreground",
-      progress: "bg-[#6B8E23]",
+        "border-[#205C46]/35 bg-[#10271F]",
+      icon:
+        "border border-[#D4A34F]/20 bg-[#D4A34F]/10 text-[#F0C86A]",
+      text: "text-[#D6E0DB]",
+      progress:
+        "bg-gradient-to-r from-[#B27B2D] to-[#F0C86A]",
     },
   };
 
@@ -82,91 +93,91 @@ export default function BudgetCard({
   }
 
   return (
-    <section className="rounded-2xl border border-[#E7E2D5] bg-white p-5 shadow-sm sm:p-6">
-      <div className="flex flex-col gap-5">
-        <div className="flex items-start justify-between gap-4">
-          <div className="flex items-start gap-3">
-            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#EEF2E4] text-[#6B8E23]">
-              <PiggyBank size={22} />
+    <section className="relative overflow-hidden rounded-[30px] border border-[#205C46]/35 bg-[#0D211B] p-6 shadow-[0_20px_60px_rgba(0,0,0,0.24)] sm:p-7">
+      <div className="absolute -right-20 -top-20 h-60 w-60 rounded-full bg-[#D4A34F]/10 blur-3xl" />
+
+      <div className="relative flex flex-col gap-7">
+        <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
+          <div className="flex items-start gap-4">
+            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-[18px] border border-[#D4A34F]/20 bg-[#D4A34F]/10 text-[#F0C86A]">
+              <PiggyBank size={25} />
             </div>
 
             <div>
-              <h2 className="text-lg font-bold text-[#333333]">
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#D4A34F]">
+                Budget overview
+              </p>
+
+              <h2 className="mt-2 text-2xl font-bold text-[#FBFAF7]">
                 Monthly Budget
               </h2>
 
-              <p className="mt-1 text-sm text-muted-foreground">
-                Track how much of your budget
-                has been used.
+              <p className="mt-2 max-w-xl text-sm leading-6 text-[#9EAEA7]">
+                Track your planned budget, current
+                spending and the amount remaining for
+                the month.
               </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-1 rounded-full bg-[#EEF2E4] px-3 py-1 text-sm font-semibold text-[#6B8E23]">
+          <div className="inline-flex w-fit items-center gap-2 rounded-full border border-[#D4A34F]/20 bg-[#D4A34F]/10 px-4 py-2 text-sm font-bold text-[#F0C86A]">
             <IndianRupee size={15} />
-            Budget
+            Monthly Plan
           </div>
         </div>
 
         <div className="grid gap-4 sm:grid-cols-3">
-          <div className="rounded-xl bg-[#FBFAF5] p-4">
-            <p className="text-sm text-muted-foreground">
-              Budget
-            </p>
-
-            <p className="mt-2 text-xl font-bold text-[#333333]">
-              {hasBudget
+          <BudgetStat
+            label="Budget"
+            value={
+              hasBudget
                 ? formatCurrency(budget)
-                : "Not set"}
-            </p>
-          </div>
+                : "Not set"
+            }
+          />
 
-          <div className="rounded-xl bg-[#FBFAF5] p-4">
-            <p className="text-sm text-muted-foreground">
-              Spent
-            </p>
+          <BudgetStat
+            label="Spent"
+            value={formatCurrency(totalSpent)}
+          />
 
-            <p className="mt-2 text-xl font-bold text-[#333333]">
-              {formatCurrency(totalSpent)}
-            </p>
-          </div>
-
-          <div className="rounded-xl bg-[#FBFAF5] p-4">
-            <p className="text-sm text-muted-foreground">
-              Remaining
-            </p>
-
-            <p
-              className={`mt-2 text-xl font-bold ${
-                remaining !== null &&
-                remaining < 0
-                  ? "text-red-600"
-                  : "text-[#333333]"
-              }`}
-            >
-              {remaining !== null
+          <BudgetStat
+            label="Remaining"
+            value={
+              remaining !== null
                 ? formatCurrency(remaining)
-                : "N/A"}
-            </p>
-          </div>
+                : "N/A"
+            }
+            danger={
+              remaining !== null &&
+              remaining < 0
+            }
+          />
         </div>
 
-        <div>
-          <div className="mb-2 flex items-center justify-between gap-4">
-            <p className="text-sm font-medium text-[#333333]">
-              Budget usage
-            </p>
+        <div className="rounded-[24px] border border-[#205C46]/30 bg-[#10271F] p-5">
+          <div className="flex items-center justify-between gap-4">
+            <div>
+              <p className="text-sm font-semibold text-[#D6E0DB]">
+                Budget usage
+              </p>
 
-            <p className="text-sm font-semibold text-[#333333]">
+              <p className="mt-1 text-xs text-[#7F9189]">
+                Percentage of your monthly
+                budget already used.
+              </p>
+            </div>
+
+            <div className="rounded-xl border border-[#D4A34F]/20 bg-[#D4A34F]/10 px-4 py-2 text-sm font-bold text-[#F0C86A]">
               {usagePercentage !== null
                 ? `${usagePercentage.toFixed(1)}%`
                 : "No budget"}
-            </p>
+            </div>
           </div>
 
-          <div className="h-3 overflow-hidden rounded-full bg-[#EEEADD]">
+          <div className="mt-5 h-3 overflow-hidden rounded-full bg-[#071512]">
             <div
-              className={`h-full rounded-full transition-all duration-500 ${currentStyles.progress}`}
+              className={`h-full rounded-full transition-all duration-700 ${currentStyles.progress}`}
               style={{
                 width: `${progressValue}%`,
               }}
@@ -175,24 +186,24 @@ export default function BudgetCard({
         </div>
 
         <div
-          className={`flex items-start gap-3 rounded-xl border p-4 ${currentStyles.container}`}
+          className={`flex items-start gap-4 rounded-[22px] border p-5 ${currentStyles.container}`}
         >
           <div
-            className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${currentStyles.icon}`}
+            className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${currentStyles.icon}`}
           >
             {renderStatusIcon()}
           </div>
 
           <div>
             <p
-              className={`font-semibold ${currentStyles.text}`}
+              className={`font-bold ${currentStyles.text}`}
             >
               {getBudgetStatusLabel(
                 usagePercentage
               )}
             </p>
 
-            <p className="mt-1 text-sm text-muted-foreground">
+            <p className="mt-2 text-sm leading-6 text-[#9EAEA7]">
               {!hasBudget
                 ? "Set a monthly budget to monitor your spending limit."
                 : budgetStatus === "danger"
@@ -205,5 +216,35 @@ export default function BudgetCard({
         </div>
       </div>
     </section>
+  );
+}
+
+interface BudgetStatProps {
+  label: string;
+  value: string;
+  danger?: boolean;
+}
+
+function BudgetStat({
+  label,
+  value,
+  danger = false,
+}: BudgetStatProps) {
+  return (
+    <div className="rounded-[22px] border border-[#205C46]/30 bg-[#10271F] p-5 transition hover:border-[#D4A34F]/25">
+      <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#7F9189]">
+        {label}
+      </p>
+
+      <p
+        className={
+          danger
+            ? "mt-3 break-words text-2xl font-bold text-red-300"
+            : "mt-3 break-words text-2xl font-bold text-[#FBFAF7]"
+        }
+      >
+        {value}
+      </p>
+    </div>
   );
 }

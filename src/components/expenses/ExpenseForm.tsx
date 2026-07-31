@@ -221,237 +221,245 @@ export default function ExpenseForm({
   return (
     <form
       onSubmit={handleSubmit}
-      className="space-y-6"
+      className="relative overflow-hidden rounded-[30px] border border-[#205C46]/35 bg-[#0D211B] p-6 shadow-[0_20px_60px_rgba(0,0,0,0.24)] sm:p-8"
     >
-      <div className="grid gap-6 md:grid-cols-2">
-        {/* Amount */}
+      <div className="absolute -right-24 -top-24 h-72 w-72 rounded-full bg-[#D4A34F]/8 blur-3xl" />
 
-        <div className="space-y-2">
-          <label
-            htmlFor="expense-amount"
-            className="text-sm font-semibold text-[#333333]"
-          >
-            Amount
-            <span className="ml-1 text-red-500">
-              *
-            </span>
-          </label>
+      <div className="relative space-y-8">
+        <div>
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#D4A34F]">
+            Expense details
+          </p>
 
-          <div className="relative">
-            <IndianRupee
-              size={18}
-              className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[#6B8E23]"
-            />
+          <h2 className="mt-2 text-2xl font-bold text-[#FBFAF7]">
+            {mode === "edit"
+              ? "Update Expense"
+              : "Add New Expense"}
+          </h2>
 
-            <Input
-              id="expense-amount"
-              type="number"
-              min="1"
-              step="1"
-              value={
-                formValues.amount || ""
-              }
-              onChange={(event) =>
-                handleInputChange(
-                  "amount",
-                  event.target.value
-                )
-              }
-              placeholder="Enter amount"
-              className="h-11 pl-10"
-              disabled={loading}
-            />
-          </div>
-
-          {errors.amount && (
-            <p className="text-sm text-red-500">
-              {errors.amount}
-            </p>
-          )}
+          <p className="mt-2 max-w-2xl text-sm leading-6 text-[#9EAEA7]">
+            Enter the amount, category, date and
+            an optional note for this expense.
+          </p>
         </div>
 
-        {/* Category */}
-
-        <div className="space-y-2">
-          <label
-            htmlFor="expense-category"
-            className="text-sm font-semibold text-[#333333]"
+        <div className="grid gap-6 md:grid-cols-2">
+          <FormField
+            label="Amount"
+            required
+            error={errors.amount}
           >
-            Category
-            <span className="ml-1 text-red-500">
-              *
-            </span>
-          </label>
+            <div className="relative">
+              <IndianRupee
+                size={18}
+                className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-[#F0C86A]"
+              />
 
-          <div className="relative">
-            <Tag
-              size={18}
-              className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[#6B8E23]"
-            />
+              <Input
+                id="expense-amount"
+                type="number"
+                min="1"
+                step="1"
+                value={
+                  formValues.amount || ""
+                }
+                onChange={(event) =>
+                  handleInputChange(
+                    "amount",
+                    event.target.value
+                  )
+                }
+                placeholder="Enter amount"
+                className={`${inputClasses} pl-11`}
+                disabled={loading}
+              />
+            </div>
+          </FormField>
 
-            <select
-              id="expense-category"
-              value={
-                formValues.category
-              }
-              onChange={(event) =>
-                handleInputChange(
-                  "category",
-                  event.target
-                    .value as ExpenseCategory
-                )
-              }
-              disabled={loading}
-              className="h-11 w-full rounded-md border border-input bg-background pl-10 pr-3 text-sm outline-none transition focus:border-[#6B8E23] focus:ring-2 focus:ring-[#6B8E23]/20 disabled:cursor-not-allowed disabled:opacity-50"
-            >
-              {EXPENSE_CATEGORIES.map(
-                (category) => (
-                  <option
-                    key={category}
-                    value={category}
-                  >
-                    {category}
-                  </option>
-                )
-              )}
-            </select>
-          </div>
+          <FormField
+            label="Category"
+            required
+            error={errors.category}
+          >
+            <div className="relative">
+              <Tag
+                size={18}
+                className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-[#F0C86A]"
+              />
 
-          {errors.category && (
-            <p className="text-sm text-red-500">
-              {errors.category}
-            </p>
-          )}
+              <select
+                id="expense-category"
+                value={formValues.category}
+                onChange={(event) =>
+                  handleInputChange(
+                    "category",
+                    event.target
+                      .value as ExpenseCategory
+                  )
+                }
+                disabled={loading}
+                className={`${selectClasses} pl-11`}
+              >
+                {EXPENSE_CATEGORIES.map(
+                  (category) => (
+                    <option
+                      key={category}
+                      value={category}
+                    >
+                      {category}
+                    </option>
+                  )
+                )}
+              </select>
+            </div>
+          </FormField>
+
+          <FormField
+            label="Date"
+            required
+            error={errors.date}
+          >
+            <div className="relative">
+              <CalendarDays
+                size={18}
+                className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-[#F0C86A]"
+              />
+
+              <Input
+                id="expense-date"
+                type="date"
+                value={formValues.date}
+                onChange={(event) =>
+                  handleInputChange(
+                    "date",
+                    event.target.value
+                  )
+                }
+                className={`${inputClasses} pl-11`}
+                disabled={loading}
+              />
+            </div>
+          </FormField>
         </div>
 
-        {/* Date */}
+        <FormField
+          label="Description"
+          error={errors.description}
+          helper={`${formValues.description.length}/250`}
+        >
+          <textarea
+            id="expense-description"
+            value={
+              formValues.description
+            }
+            onChange={(event) =>
+              handleInputChange(
+                "description",
+                event.target.value
+              )
+            }
+            placeholder="Add a short note about this expense"
+            rows={5}
+            maxLength={250}
+            disabled={loading}
+            className="w-full resize-none rounded-[20px] border border-[#205C46]/40 bg-[#10271F] px-4 py-4 text-sm leading-6 text-[#FBFAF7] outline-none transition placeholder:text-[#6F8179] hover:border-[#205C46]/70 focus:border-[#D4A34F] focus:ring-4 focus:ring-[#D4A34F]/10 disabled:cursor-not-allowed disabled:opacity-50"
+          />
+        </FormField>
 
-        <div className="space-y-2">
-          <label
-            htmlFor="expense-date"
-            className="text-sm font-semibold text-[#333333]"
+        <div className="flex flex-col-reverse gap-3 border-t border-[#205C46]/25 pt-6 sm:flex-row sm:justify-end">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={handleCancel}
+            disabled={loading}
+            className="min-h-12 rounded-2xl border-[#205C46]/45 bg-[#10271F] px-6 font-semibold text-[#D6E0DB] hover:border-[#D4A34F]/35 hover:bg-[#D4A34F]/10 hover:text-[#F0C86A] sm:min-w-28"
           >
-            Date
-            <span className="ml-1 text-red-500">
-              *
-            </span>
-          </label>
+            Cancel
+          </Button>
 
-          <div className="relative">
-            <CalendarDays
-              size={18}
-              className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[#6B8E23]"
-            />
+          <Button
+            type="submit"
+            disabled={loading}
+            className="min-h-12 rounded-2xl bg-[#D4A34F] px-6 font-bold text-[#071512] shadow-[0_12px_30px_rgba(212,163,79,0.22)] hover:bg-[#F0C86A] sm:min-w-40"
+          >
+            {loading ? (
+              <>
+                <Loader2
+                  size={17}
+                  className="mr-2 animate-spin"
+                />
 
-            <Input
-              id="expense-date"
-              type="date"
-              value={formValues.date}
-              onChange={(event) =>
-                handleInputChange(
-                  "date",
-                  event.target.value
-                )
-              }
-              className="h-11 pl-10"
-              disabled={loading}
-            />
-          </div>
+                {mode === "edit"
+                  ? "Updating..."
+                  : "Saving..."}
+              </>
+            ) : (
+              <>
+                <Save
+                  size={17}
+                  className="mr-2"
+                />
 
-          {errors.date && (
-            <p className="text-sm text-red-500">
-              {errors.date}
-            </p>
-          )}
+                {mode === "edit"
+                  ? "Update Expense"
+                  : "Save Expense"}
+              </>
+            )}
+          </Button>
         </div>
       </div>
+    </form>
+  );
+}
 
-      {/* Description */}
+const inputClasses =
+  "h-12 rounded-[18px] border-[#205C46]/40 bg-[#10271F] px-4 text-sm text-[#FBFAF7] outline-none transition placeholder:text-[#6F8179] hover:border-[#205C46]/70 focus-visible:border-[#D4A34F] focus-visible:ring-4 focus-visible:ring-[#D4A34F]/10 disabled:cursor-not-allowed disabled:opacity-50";
 
-      <div className="space-y-2">
-        <div className="flex items-center justify-between gap-4">
-          <label
-            htmlFor="expense-description"
-            className="text-sm font-semibold text-[#333333]"
-          >
-            Description
-          </label>
+const selectClasses =
+  "h-12 w-full rounded-[18px] border border-[#205C46]/40 bg-[#10271F] px-4 text-sm text-[#FBFAF7] outline-none transition hover:border-[#205C46]/70 focus:border-[#D4A34F] focus:ring-4 focus:ring-[#D4A34F]/10 disabled:cursor-not-allowed disabled:opacity-50";
 
-          <span className="text-xs text-muted-foreground">
-            {
-              formValues.description
-                .length
-            }
-            /250
+interface FormFieldProps {
+  label: string;
+  required?: boolean;
+  error?: string;
+  helper?: string;
+  children: React.ReactNode;
+}
+
+function FormField({
+  label,
+  required = false,
+  error,
+  helper,
+  children,
+}: FormFieldProps) {
+  return (
+    <div className="space-y-2.5">
+      <div className="flex items-center justify-between gap-4">
+        <label className="text-sm font-semibold text-[#D6E0DB]">
+          {label}
+
+          {required && (
+            <span className="ml-1 text-red-300">
+              *
+            </span>
+          )}
+        </label>
+
+        {helper && (
+          <span className="text-xs font-medium text-[#7F9189]">
+            {helper}
           </span>
-        </div>
-
-        <textarea
-          id="expense-description"
-          value={
-            formValues.description
-          }
-          onChange={(event) =>
-            handleInputChange(
-              "description",
-              event.target.value
-            )
-          }
-          placeholder="Add a short note about this expense"
-          rows={5}
-          maxLength={250}
-          disabled={loading}
-          className="w-full resize-none rounded-md border border-input bg-background px-3 py-3 text-sm outline-none transition placeholder:text-muted-foreground focus:border-[#6B8E23] focus:ring-2 focus:ring-[#6B8E23]/20 disabled:cursor-not-allowed disabled:opacity-50"
-        />
-
-        {errors.description && (
-          <p className="text-sm text-red-500">
-            {errors.description}
-          </p>
         )}
       </div>
 
-      {/* Actions */}
+      {children}
 
-      <div className="flex flex-col-reverse gap-3 border-t pt-5 sm:flex-row sm:justify-end">
-        <Button
-          type="button"
-          variant="outline"
-          onClick={handleCancel}
-          disabled={loading}
-          className="sm:min-w-28"
-        >
-          Cancel
-        </Button>
-
-        <Button
-          type="submit"
-          disabled={loading}
-          className="bg-[#6B8E23] text-white hover:bg-[#5d7d1f] sm:min-w-36"
-        >
-          {loading ? (
-            <>
-              <Loader2
-                size={17}
-                className="mr-2 animate-spin"
-              />
-              {mode === "edit"
-                ? "Updating..."
-                : "Saving..."}
-            </>
-          ) : (
-            <>
-              <Save
-                size={17}
-                className="mr-2"
-              />
-              {mode === "edit"
-                ? "Update Expense"
-                : "Save Expense"}
-            </>
-          )}
-        </Button>
-      </div>
-    </form>
+      {error && (
+        <p className="text-sm font-medium text-red-300">
+          {error}
+        </p>
+      )}
+    </div>
   );
 }

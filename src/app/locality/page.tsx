@@ -5,6 +5,7 @@ import {
   BriefcaseBusiness,
   IndianRupee,
   MapPinned,
+  Sparkles,
   TrainFront,
 } from "lucide-react";
 import { toast } from "sonner";
@@ -114,8 +115,8 @@ export default function LocalityPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#FBFAF5]">
-      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+    <main className="min-h-screen bg-[#071512]">
+      <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
         <AIHeader
           badge="AI Locality Recommender"
           title="Find localities that match your lifestyle"
@@ -123,34 +124,41 @@ export default function LocalityPage() {
           icon={<MapPinned className="h-7 w-7" />}
         />
 
-        <div className="mt-8 grid gap-8 lg:grid-cols-[380px_1fr]">
-          <section className="h-fit rounded-3xl border border-gray-200 bg-white p-6 shadow-sm">
-            <div>
-              <h2 className="text-xl font-semibold text-gray-900">
-                Your locality preferences
-              </h2>
+        <div className="mt-8 grid items-start gap-8 lg:grid-cols-[400px_minmax(0,1fr)]">
+          <section className="relative overflow-hidden rounded-[30px] border border-[#205C46]/40 bg-[#0D211B] p-6 shadow-[0_20px_60px_rgba(0,0,0,0.24)] lg:sticky lg:top-6">
+            <div className="absolute -right-16 -top-16 h-52 w-52 rounded-full bg-[#D4A34F]/8 blur-3xl" />
 
-              <p className="mt-2 text-sm leading-6 text-gray-500">
-                Provide the details below to receive personalised locality
-                recommendations.
-              </p>
-            </div>
+            <div className="relative">
+              <div className="flex items-start gap-4">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-[16px] border border-[#D4A34F]/20 bg-[#D4A34F]/10 text-[#F0C86A]">
+                  <MapPinned className="h-6 w-6" />
+                </div>
 
-            <form
-              onSubmit={handleSubmit}
-              className="mt-6 space-y-5"
-            >
-              <div>
-                <label
-                  htmlFor="city"
-                  className="text-sm font-medium text-gray-700"
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#D4A34F]">
+                    Locality Preferences
+                  </p>
+
+                  <h2 className="mt-1 text-xl font-bold text-[#FBFAF7]">
+                    Tell Us What You Need
+                  </h2>
+
+                  <p className="mt-2 text-sm leading-6 text-[#9EAEA7]">
+                    Add your location, budget, occupation and transport
+                    preference.
+                  </p>
+                </div>
+              </div>
+
+              <form
+                onSubmit={handleSubmit}
+                className="mt-7 space-y-5"
+              >
+                <FormField
+                  id="city"
+                  label="Preferred city"
+                  icon={<MapPinned className="h-4 w-4" />}
                 >
-                  Preferred city
-                </label>
-
-                <div className="relative mt-2">
-                  <MapPinned className="pointer-events-none absolute left-3 top-3.5 h-4 w-4 text-gray-400" />
-
                   <input
                     id="city"
                     type="text"
@@ -159,23 +167,16 @@ export default function LocalityPage() {
                       updateField("city", event.target.value)
                     }
                     placeholder="For example, Delhi"
-                    className="h-11 w-full rounded-xl border border-gray-200 bg-white pl-10 pr-3 text-sm outline-none transition focus:border-[#6B8E23] focus:ring-2 focus:ring-[#EEF2E4]"
+                    className={inputClasses}
                     required
                   />
-                </div>
-              </div>
+                </FormField>
 
-              <div>
-                <label
-                  htmlFor="budget"
-                  className="text-sm font-medium text-gray-700"
+                <FormField
+                  id="budget"
+                  label="Monthly rent budget"
+                  icon={<IndianRupee className="h-4 w-4" />}
                 >
-                  Monthly rent budget
-                </label>
-
-                <div className="relative mt-2">
-                  <IndianRupee className="pointer-events-none absolute left-3 top-3.5 h-4 w-4 text-gray-400" />
-
                   <input
                     id="budget"
                     type="number"
@@ -187,23 +188,18 @@ export default function LocalityPage() {
                         Number(event.target.value)
                       )
                     }
-                    className="h-11 w-full rounded-xl border border-gray-200 bg-white pl-10 pr-3 text-sm outline-none transition focus:border-[#6B8E23] focus:ring-2 focus:ring-[#EEF2E4]"
+                    className={inputClasses}
                     required
                   />
-                </div>
-              </div>
+                </FormField>
 
-              <div>
-                <label
-                  htmlFor="occupation"
-                  className="text-sm font-medium text-gray-700"
+                <FormField
+                  id="occupation"
+                  label="Occupation"
+                  icon={
+                    <BriefcaseBusiness className="h-4 w-4" />
+                  }
                 >
-                  Occupation
-                </label>
-
-                <div className="relative mt-2">
-                  <BriefcaseBusiness className="pointer-events-none absolute left-3 top-3.5 h-4 w-4 text-gray-400" />
-
                   <input
                     id="occupation"
                     type="text"
@@ -215,23 +211,16 @@ export default function LocalityPage() {
                       )
                     }
                     placeholder="Student, software engineer, etc."
-                    className="h-11 w-full rounded-xl border border-gray-200 bg-white pl-10 pr-3 text-sm outline-none transition focus:border-[#6B8E23] focus:ring-2 focus:ring-[#EEF2E4]"
+                    className={inputClasses}
                     required
                   />
-                </div>
-              </div>
+                </FormField>
 
-              <div>
-                <label
-                  htmlFor="transport"
-                  className="text-sm font-medium text-gray-700"
+                <FormField
+                  id="transport"
+                  label="Preferred transport"
+                  icon={<TrainFront className="h-4 w-4" />}
                 >
-                  Preferred transport
-                </label>
-
-                <div className="relative mt-2">
-                  <TrainFront className="pointer-events-none absolute left-3 top-3.5 h-4 w-4 text-gray-400" />
-
                   <select
                     id="transport"
                     value={form.transport}
@@ -241,40 +230,51 @@ export default function LocalityPage() {
                         event.target.value
                       )
                     }
-                    className="h-11 w-full appearance-none rounded-xl border border-gray-200 bg-white pl-10 pr-3 text-sm outline-none transition focus:border-[#6B8E23] focus:ring-2 focus:ring-[#EEF2E4]"
+                    className={selectClasses}
                     required
                   >
                     <option value="">
                       Select transport preference
                     </option>
-                    <option value="Metro">Metro</option>
-                    <option value="Bus">Bus</option>
+
+                    <option value="Metro">
+                      Metro
+                    </option>
+
+                    <option value="Bus">
+                      Bus
+                    </option>
+
                     <option value="Personal Vehicle">
                       Personal vehicle
                     </option>
+
                     <option value="Walking and Cycling">
                       Walking and cycling
                     </option>
-                    <option value="Any">Any</option>
+
+                    <option value="Any">
+                      Any
+                    </option>
                   </select>
-                </div>
-              </div>
+                </FormField>
 
-              <button
-                type="submit"
-                disabled={loading}
-                className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#6B8E23] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#58751d] disabled:cursor-not-allowed disabled:opacity-60"
-              >
-                <MapPinned className="h-4 w-4" />
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl bg-[#D4A34F] px-5 font-bold text-[#071512] shadow-[0_12px_30px_rgba(212,163,79,0.22)] transition hover:bg-[#F0C86A] disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  <MapPinned className="h-4 w-4" />
 
-                {loading
-                  ? "Finding localities..."
-                  : "Get recommendations"}
-              </button>
-            </form>
+                  {loading
+                    ? "Finding localities..."
+                    : "Get Recommendations"}
+                </button>
+              </form>
+            </div>
           </section>
 
-          <section>
+          <section className="min-w-0">
             {loading ? (
               <AILoadingState
                 title="Finding suitable localities"
@@ -288,17 +288,33 @@ export default function LocalityPage() {
                 retrying={loading}
               />
             ) : recommendations.length > 0 ? (
-              <div className="space-y-5">
-                <div>
-                  <h2 className="text-2xl font-semibold text-gray-900">
-                    Recommended localities
-                  </h2>
+              <div className="space-y-6">
+                <section className="relative overflow-hidden rounded-[26px] border border-[#205C46]/35 bg-[#0D211B] p-6 shadow-[0_18px_50px_rgba(0,0,0,0.22)]">
+                  <div className="absolute -right-12 -top-12 h-40 w-40 rounded-full bg-[#D4A34F]/8 blur-3xl" />
 
-                  <p className="mt-2 text-sm leading-6 text-gray-500">
-                    {summary ||
-                      "These suggestions are based on your current preferences."}
-                  </p>
-                </div>
+                  <div className="relative">
+                    <div className="inline-flex items-center gap-2 rounded-full border border-[#D4A34F]/20 bg-[#D4A34F]/10 px-3 py-1.5 text-xs font-bold uppercase tracking-[0.16em] text-[#F0C86A]">
+                      <Sparkles className="h-4 w-4" />
+                      AI Results
+                    </div>
+
+                    <h2 className="mt-4 text-3xl font-bold text-[#FBFAF7]">
+                      Recommended Localities
+                    </h2>
+
+                    <p className="mt-3 max-w-3xl text-sm leading-7 text-[#9EAEA7]">
+                      {summary ||
+                        "These suggestions are based on your current preferences."}
+                    </p>
+
+                    <div className="mt-5 inline-flex rounded-full border border-[#205C46]/40 bg-[#10271F] px-4 py-2 text-sm font-semibold text-[#D6E0DB]">
+                      {recommendations.length}{" "}
+                      {recommendations.length === 1
+                        ? "match found"
+                        : "matches found"}
+                    </div>
+                  </div>
+                </section>
 
                 {recommendations.map(
                   (recommendation, index) => (
@@ -310,24 +326,77 @@ export default function LocalityPage() {
                 )}
               </div>
             ) : (
-              <div className="flex min-h-[430px] flex-col items-center justify-center rounded-3xl border border-dashed border-gray-300 bg-white px-6 py-12 text-center">
-                <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-[#EEF2E4] text-[#6B8E23]">
-                  <MapPinned className="h-7 w-7" />
+              <section className="relative flex min-h-[500px] flex-col items-center justify-center overflow-hidden rounded-[30px] border border-dashed border-[#D4A34F]/25 bg-[#0D211B] px-6 py-12 text-center shadow-[0_20px_60px_rgba(0,0,0,0.24)]">
+                <div className="absolute left-1/2 top-1/2 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#D4A34F]/5 blur-3xl" />
+
+                <div className="relative flex flex-col items-center">
+                  <div className="flex h-24 w-24 items-center justify-center rounded-[28px] border border-[#D4A34F]/25 bg-[#D4A34F]/10 text-[#F0C86A]">
+                    <MapPinned className="h-10 w-10" />
+                  </div>
+
+                  <p className="mt-6 text-xs font-bold uppercase tracking-[0.2em] text-[#D4A34F]">
+                    AI Locality Discovery
+                  </p>
+
+                  <h2 className="mt-3 text-3xl font-bold text-[#FBFAF7]">
+                    Your Recommendations Will Appear Here
+                  </h2>
+
+                  <p className="mt-4 max-w-lg text-sm leading-7 text-[#9EAEA7] sm:text-base">
+                    Fill in your city, rent budget, occupation and
+                    transport preference to discover suitable
+                    localities.
+                  </p>
+
+                  <div className="mt-7 inline-flex items-center gap-2 rounded-full border border-[#205C46]/40 bg-[#10271F] px-4 py-2 text-sm font-semibold text-[#D6E0DB]">
+                    <Sparkles className="h-4 w-4 text-[#F0C86A]" />
+                    Smart locality matching
+                  </div>
                 </div>
-
-                <h2 className="mt-5 text-xl font-semibold text-gray-900">
-                  Your recommendations will appear here
-                </h2>
-
-                <p className="mt-2 max-w-md text-sm leading-6 text-gray-500">
-                  Fill in your city, rent budget, occupation, and
-                  transport preference to discover suitable localities.
-                </p>
-              </div>
+              </section>
             )}
           </section>
         </div>
-      </div>
+      </section>
     </main>
+  );
+}
+
+const inputClasses =
+  "h-12 w-full rounded-[18px] border border-[#205C46]/40 bg-[#10271F] pl-11 pr-4 text-sm text-[#FBFAF7] outline-none transition placeholder:text-[#6F8179] hover:border-[#205C46]/70 focus:border-[#D4A34F] focus:ring-4 focus:ring-[#D4A34F]/10";
+
+const selectClasses =
+  "h-12 w-full appearance-none rounded-[18px] border border-[#205C46]/40 bg-[#10271F] pl-11 pr-4 text-sm text-[#FBFAF7] outline-none transition hover:border-[#205C46]/70 focus:border-[#D4A34F] focus:ring-4 focus:ring-[#D4A34F]/10";
+
+interface FormFieldProps {
+  id: string;
+  label: string;
+  icon: React.ReactNode;
+  children: React.ReactNode;
+}
+
+function FormField({
+  id,
+  label,
+  icon,
+  children,
+}: FormFieldProps) {
+  return (
+    <div className="space-y-2">
+      <label
+        htmlFor={id}
+        className="text-sm font-semibold text-[#D6E0DB]"
+      >
+        {label}
+      </label>
+
+      <div className="relative">
+        <span className="pointer-events-none absolute left-4 top-1/2 z-10 -translate-y-1/2 text-[#F0C86A]">
+          {icon}
+        </span>
+
+        {children}
+      </div>
+    </div>
   );
 }

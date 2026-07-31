@@ -6,6 +6,7 @@ import {
   Calculator,
   CircleAlert,
   PiggyBank,
+  Sparkles,
   TrendingUp,
 } from "lucide-react";
 
@@ -156,7 +157,9 @@ export default function BudgetAdvisorPage() {
     result?.summary ??
     "No budget summary was returned.";
 
-  const spendingAlerts = Array.isArray(result?.spending_alerts)
+  const spendingAlerts = Array.isArray(
+    result?.spending_alerts
+  )
     ? result.spending_alerts
     : Array.isArray(result?.warnings)
       ? result.warnings
@@ -171,8 +174,8 @@ export default function BudgetAdvisorPage() {
       : [];
 
   return (
-    <main className="min-h-screen bg-[#FBFAF5]">
-      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+    <main className="min-h-screen bg-[#071512]">
+      <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
         <AIHeader
           badge="AI Budget Advisor"
           title="Plan a realistic monthly relocation budget"
@@ -180,69 +183,84 @@ export default function BudgetAdvisorPage() {
           icon={<Calculator className="h-7 w-7" />}
         />
 
-        <div className="mt-8 grid gap-8 lg:grid-cols-[400px_1fr]">
-          <section className="h-fit rounded-3xl border border-gray-200 bg-white p-6 shadow-sm">
-            <h2 className="text-xl font-semibold text-gray-900">
-              Monthly financial details
-            </h2>
+        <div className="mt-8 grid items-start gap-8 lg:grid-cols-[420px_minmax(0,1fr)]">
+          <section className="relative overflow-hidden rounded-[30px] border border-[#205C46]/40 bg-[#0D211B] p-6 shadow-[0_20px_60px_rgba(0,0,0,0.24)] lg:sticky lg:top-6">
+            <div className="absolute -right-16 -top-16 h-52 w-52 rounded-full bg-[#D4A34F]/8 blur-3xl" />
 
-            <p className="mt-2 text-sm leading-6 text-gray-500">
-              Add your expected income, living costs, and savings
-              target.
-            </p>
+            <div className="relative">
+              <div className="flex items-start gap-4">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-[16px] border border-[#D4A34F]/20 bg-[#D4A34F]/10 text-[#F0C86A]">
+                  <BadgeIndianRupee className="h-6 w-6" />
+                </div>
 
-            <form
-              onSubmit={handleSubmit}
-              className="mt-6 space-y-5"
-            >
-              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
-                {fields.map((field) => (
-                  <div key={field.key}>
-                    <label
-                      htmlFor={field.key}
-                      className="text-sm font-medium text-gray-700"
-                    >
-                      {field.label}
-                    </label>
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#D4A34F]">
+                    Financial Inputs
+                  </p>
 
-                    <div className="relative mt-2">
-                      <BadgeIndianRupee className="pointer-events-none absolute left-3 top-3.5 h-4 w-4 text-gray-400" />
+                  <h2 className="mt-1 text-xl font-bold text-[#FBFAF7]">
+                    Monthly Financial Details
+                  </h2>
 
-                      <input
-                        id={field.key}
-                        type="number"
-                        min={0}
-                        value={form[field.key]}
-                        onChange={(event) =>
-                          updateField(
-                            field.key,
-                            Number(event.target.value)
-                          )
-                        }
-                        placeholder={field.placeholder}
-                        className="h-11 w-full rounded-xl border border-gray-200 bg-white pl-10 pr-3 text-sm outline-none transition focus:border-[#6B8E23] focus:ring-2 focus:ring-[#EEF2E4]"
-                        required
-                      />
-                    </div>
-                  </div>
-                ))}
+                  <p className="mt-2 text-sm leading-6 text-[#9EAEA7]">
+                    Add your expected income, living costs and savings target.
+                  </p>
+                </div>
               </div>
 
-              <button
-                type="submit"
-                disabled={loading}
-                className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#6B8E23] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#58751d] disabled:cursor-not-allowed disabled:opacity-60"
+              <form
+                onSubmit={handleSubmit}
+                className="mt-7 space-y-6"
               >
-                <Calculator className="h-4 w-4" />
+                <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-1">
+                  {fields.map((field) => (
+                    <div key={field.key} className="space-y-2">
+                      <label
+                        htmlFor={field.key}
+                        className="text-sm font-semibold text-[#D6E0DB]"
+                      >
+                        {field.label}
+                      </label>
 
-                {loading
-                  ? "Generating advice..."
-                  : "Generate budget advice"}
-              </button>
-            </form>
+                      <div className="relative">
+                        <BadgeIndianRupee className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[#F0C86A]" />
+
+                        <input
+                          id={field.key}
+                          type="number"
+                          min={0}
+                          value={form[field.key]}
+                          onChange={(event) =>
+                            updateField(
+                              field.key,
+                              Number(event.target.value)
+                            )
+                          }
+                          placeholder={field.placeholder}
+                          className="h-12 w-full rounded-[18px] border border-[#205C46]/40 bg-[#10271F] pl-11 pr-4 text-sm text-[#FBFAF7] outline-none transition placeholder:text-[#6F8179] hover:border-[#205C46]/70 focus:border-[#D4A34F] focus:ring-4 focus:ring-[#D4A34F]/10"
+                          required
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl bg-[#D4A34F] px-5 font-bold text-[#071512] shadow-[0_12px_30px_rgba(212,163,79,0.22)] transition hover:bg-[#F0C86A] disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  <Calculator className="h-4 w-4" />
+
+                  {loading
+                    ? "Generating advice..."
+                    : "Generate Budget Advice"}
+                </button>
+              </form>
+            </div>
           </section>
 
-          <section>
+          <section className="min-w-0">
             {loading ? (
               <AILoadingState
                 title="Preparing your budget analysis"
@@ -258,35 +276,23 @@ export default function BudgetAdvisorPage() {
             ) : result ? (
               <div className="space-y-6">
                 <div className="grid gap-4 sm:grid-cols-3">
-                  <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
-                    <p className="text-sm font-medium text-gray-500">
-                      Total expenses
-                    </p>
+                  <BudgetMetric
+                    title="Total expenses"
+                    value={formatCurrency(totalExpenses)}
+                    tone="default"
+                  />
 
-                    <p className="mt-2 text-2xl font-bold text-gray-900">
-                      {formatCurrency(totalExpenses)}
-                    </p>
-                  </div>
+                  <BudgetMetric
+                    title="Remaining amount"
+                    value={formatCurrency(remainingAmount)}
+                    tone="positive"
+                  />
 
-                  <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
-                    <p className="text-sm font-medium text-gray-500">
-                      Remaining amount
-                    </p>
-
-                    <p className="mt-2 text-2xl font-bold text-[#6B8E23]">
-                      {formatCurrency(remainingAmount)}
-                    </p>
-                  </div>
-
-                  <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
-                    <p className="text-sm font-medium text-gray-500">
-                      Savings rate
-                    </p>
-
-                    <p className="mt-2 text-2xl font-bold text-gray-900">
-                      {savingsRate.toFixed(1)}%
-                    </p>
-                  </div>
+                  <BudgetMetric
+                    title="Savings rate"
+                    value={`${savingsRate.toFixed(1)}%`}
+                    tone="default"
+                  />
                 </div>
 
                 <AIResultCard
@@ -294,7 +300,7 @@ export default function BudgetAdvisorPage() {
                   description="A personalised overview based on the financial details you provided."
                   icon={<TrendingUp className="h-5 w-5" />}
                 >
-                  <p className="text-sm leading-7 text-gray-700">
+                  <p className="text-sm leading-7 text-[#D6E0DB]">
                     {advice}
                   </p>
                 </AIResultCard>
@@ -310,15 +316,15 @@ export default function BudgetAdvisorPage() {
                         {spendingAlerts.map((alert, index) => (
                           <li
                             key={`${alert}-${index}`}
-                            className="flex items-start gap-3 rounded-xl bg-amber-50 p-4 text-sm leading-6 text-amber-900"
+                            className="flex items-start gap-3 rounded-[18px] border border-amber-400/20 bg-amber-400/10 p-4 text-sm leading-6 text-amber-200"
                           >
-                            <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-amber-500" />
+                            <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-amber-300" />
                             {alert}
                           </li>
                         ))}
                       </ul>
                     ) : (
-                      <p className="text-sm text-gray-500">
+                      <p className="text-sm leading-6 text-[#9EAEA7]">
                         No major spending alerts were identified.
                       </p>
                     )}
@@ -335,43 +341,88 @@ export default function BudgetAdvisorPage() {
                           (suggestion, index) => (
                             <li
                               key={`${suggestion}-${index}`}
-                              className="flex items-start gap-3 rounded-xl bg-[#EEF2E4] p-4 text-sm leading-6 text-gray-700"
+                              className="flex items-start gap-3 rounded-[18px] border border-emerald-400/20 bg-emerald-400/10 p-4 text-sm leading-6 text-emerald-100"
                             >
-                              <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-[#6B8E23]" />
+                              <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-emerald-300" />
                               {suggestion}
                             </li>
                           )
                         )}
                       </ul>
                     ) : (
-                      <p className="text-sm text-gray-500">
-                        No additional savings suggestions are
-                        available.
+                      <p className="text-sm leading-6 text-[#9EAEA7]">
+                        No additional savings suggestions are available.
                       </p>
                     )}
                   </AIResultCard>
                 </div>
               </div>
             ) : (
-              <div className="flex min-h-[460px] flex-col items-center justify-center rounded-3xl border border-dashed border-gray-300 bg-white px-6 py-12 text-center">
-                <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-[#EEF2E4] text-[#6B8E23]">
-                  <PiggyBank className="h-7 w-7" />
+              <section className="relative flex min-h-[500px] flex-col items-center justify-center overflow-hidden rounded-[30px] border border-dashed border-[#D4A34F]/25 bg-[#0D211B] px-6 py-12 text-center shadow-[0_20px_60px_rgba(0,0,0,0.24)]">
+                <div className="absolute left-1/2 top-1/2 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#D4A34F]/5 blur-3xl" />
+
+                <div className="relative flex flex-col items-center">
+                  <div className="flex h-24 w-24 items-center justify-center rounded-[28px] border border-[#D4A34F]/25 bg-[#D4A34F]/10 text-[#F0C86A]">
+                    <PiggyBank className="h-10 w-10" />
+                  </div>
+
+                  <p className="mt-6 text-xs font-bold uppercase tracking-[0.2em] text-[#D4A34F]">
+                    AI Financial Planning
+                  </p>
+
+                  <h2 className="mt-3 text-3xl font-bold text-[#FBFAF7]">
+                    Your Budget Advice Will Appear Here
+                  </h2>
+
+                  <p className="mt-4 max-w-lg text-sm leading-7 text-[#9EAEA7] sm:text-base">
+                    Enter your monthly income, expected expenses and savings
+                    target to generate a personalised financial plan.
+                  </p>
+
+                  <div className="mt-7 inline-flex items-center gap-2 rounded-full border border-[#205C46]/40 bg-[#10271F] px-4 py-2 text-sm font-semibold text-[#D6E0DB]">
+                    <Sparkles className="h-4 w-4 text-[#F0C86A]" />
+                    Smart financial analysis
+                  </div>
                 </div>
-
-                <h2 className="mt-5 text-xl font-semibold text-gray-900">
-                  Your budget advice will appear here
-                </h2>
-
-                <p className="mt-2 max-w-md text-sm leading-6 text-gray-500">
-                  Enter your monthly income, expected expenses, and
-                  savings target to generate a personalised financial
-                  plan.
-                </p>
-              </div>
+              </section>
             )}
           </section>
         </div>
-      </div>
+      </section>
     </main>
+  );
+}
+
+interface BudgetMetricProps {
+  title: string;
+  value: string;
+  tone?: "default" | "positive";
+}
+
+function BudgetMetric({
+  title,
+  value,
+  tone = "default",
+}: BudgetMetricProps) {
+  return (
+    <article className="relative overflow-hidden rounded-[24px] border border-[#205C46]/35 bg-[#0D211B] p-5 shadow-[0_18px_50px_rgba(0,0,0,0.22)]">
+      <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-[#D4A34F]/8 blur-3xl" />
+
+      <div className="relative">
+        <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#7F9189]">
+          {title}
+        </p>
+
+        <p
+          className={
+            tone === "positive"
+              ? "mt-3 break-words text-2xl font-bold text-emerald-300"
+              : "mt-3 break-words text-2xl font-bold text-[#FBFAF7]"
+          }
+        >
+          {value}
+        </p>
+      </div>
+    </article>
   );
 }

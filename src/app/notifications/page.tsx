@@ -1,6 +1,12 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
+
 import {
   AlertCircle,
   Bell,
@@ -10,6 +16,7 @@ import {
   Loader2,
   ReceiptIndianRupee,
   RefreshCw,
+  Sparkles,
   Trash2,
   UserRound,
 } from "lucide-react";
@@ -27,7 +34,9 @@ import type {
 
 type NotificationFilter = "all" | "unread";
 
-function getNotificationIcon(type: NotificationType) {
+function getNotificationIcon(
+  type: NotificationType
+) {
   switch (type) {
     case "housing":
       return Building2;
@@ -46,7 +55,9 @@ function getNotificationIcon(type: NotificationType) {
   }
 }
 
-function getNotificationLabel(type: NotificationType): string {
+function getNotificationLabel(
+  type: NotificationType
+): string {
   switch (type) {
     case "housing":
       return "Housing";
@@ -68,7 +79,9 @@ function getNotificationLabel(type: NotificationType): string {
   }
 }
 
-function formatNotificationDate(date: string): string {
+function formatNotificationDate(
+  date: string
+): string {
   const parsedDate = new Date(date);
 
   if (Number.isNaN(parsedDate.getTime())) {
@@ -84,22 +97,28 @@ function formatNotificationDate(date: string): string {
 function NotificationSkeleton() {
   return (
     <div className="space-y-4">
-      {Array.from({ length: 4 }).map((_, index) => (
-        <div
-          key={index}
-          className="animate-pulse rounded-2xl border border-neutral-200 bg-white p-5"
-        >
-          <div className="flex gap-4">
-            <div className="h-11 w-11 rounded-xl bg-neutral-200" />
+      {Array.from({ length: 4 }).map(
+        (_, index) => (
+          <div
+            key={index}
+            className="animate-pulse rounded-[26px] border border-[#205C46]/30 bg-[#0D211B] p-5"
+          >
+            <div className="flex gap-4">
+              <div className="h-12 w-12 shrink-0 rounded-[16px] bg-[#163329]" />
 
-            <div className="flex-1">
-              <div className="h-4 w-44 rounded bg-neutral-200" />
-              <div className="mt-3 h-3 w-full rounded bg-neutral-200" />
-              <div className="mt-2 h-3 w-3/4 rounded bg-neutral-200" />
+              <div className="flex-1">
+                <div className="h-4 w-44 rounded bg-[#163329]" />
+
+                <div className="mt-4 h-3 w-full rounded bg-[#163329]" />
+
+                <div className="mt-2 h-3 w-3/4 rounded bg-[#163329]" />
+
+                <div className="mt-4 h-3 w-28 rounded bg-[#163329]" />
+              </div>
             </div>
           </div>
-        </div>
-      ))}
+        )
+      )}
     </div>
   );
 }
@@ -107,8 +126,12 @@ function NotificationSkeleton() {
 interface NotificationCardProps {
   notification: Notification;
   busy: boolean;
-  onMarkRead: (notificationId: number) => void;
-  onDelete: (notificationId: number) => void;
+  onMarkRead: (
+    notificationId: number
+  ) => void;
+  onDelete: (
+    notificationId: number
+  ) => void;
 }
 
 function NotificationCard({
@@ -117,46 +140,66 @@ function NotificationCard({
   onMarkRead,
   onDelete,
 }: NotificationCardProps) {
-  const Icon = getNotificationIcon(notification.type);
+  const Icon = getNotificationIcon(
+    notification.type
+  );
 
   return (
     <article
-      className={`rounded-2xl border bg-white p-5 shadow-sm transition ${
+      className={[
+        "group relative overflow-hidden rounded-[26px] border bg-[#0D211B] p-5 shadow-[0_18px_50px_rgba(0,0,0,0.22)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_26px_70px_rgba(0,0,0,0.3)]",
         notification.is_read
-          ? "border-neutral-200"
-          : "border-[#6B8E23]/40"
-      }`}
+          ? "border-[#205C46]/30"
+          : "border-[#D4A34F]/35",
+      ].join(" ")}
     >
-      <div className="flex items-start gap-4">
-        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#EEF2E4] text-[#6B8E23]">
+      {!notification.is_read && (
+        <div className="absolute inset-y-0 left-0 w-1 bg-gradient-to-b from-[#F0C86A] to-[#B27B2D]" />
+      )}
+
+      <div className="absolute -right-14 -top-14 h-40 w-40 rounded-full bg-[#D4A34F]/8 opacity-0 blur-3xl transition-opacity group-hover:opacity-100" />
+
+      <div className="relative flex items-start gap-4">
+        <div
+          className={[
+            "flex h-12 w-12 shrink-0 items-center justify-center rounded-[16px] border",
+            notification.is_read
+              ? "border-[#205C46]/35 bg-[#10271F] text-[#8FA59B]"
+              : "border-[#D4A34F]/20 bg-[#D4A34F]/10 text-[#F0C86A]",
+          ].join(" ")}
+        >
           <Icon className="h-5 w-5" />
         </div>
 
         <div className="min-w-0 flex-1">
-          <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
-            <div>
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+            <div className="min-w-0">
               <div className="flex flex-wrap items-center gap-2">
-                <h2 className="font-semibold text-neutral-900">
+                <h2 className="font-bold text-[#FBFAF7]">
                   {notification.title}
                 </h2>
 
                 {!notification.is_read && (
-                  <span className="rounded-full bg-[#EEF2E4] px-2 py-0.5 text-xs font-semibold text-[#6B8E23]">
+                  <span className="rounded-full border border-[#D4A34F]/20 bg-[#D4A34F]/10 px-2.5 py-1 text-[11px] font-bold uppercase tracking-[0.12em] text-[#F0C86A]">
                     New
                   </span>
                 )}
 
-                <span className="rounded-full bg-neutral-100 px-2 py-0.5 text-xs font-medium text-neutral-600">
-                  {getNotificationLabel(notification.type)}
+                <span className="rounded-full border border-[#205C46]/35 bg-[#10271F] px-2.5 py-1 text-[11px] font-semibold text-[#9EAEA7]">
+                  {getNotificationLabel(
+                    notification.type
+                  )}
                 </span>
               </div>
 
-              <p className="mt-2 text-sm leading-6 text-neutral-600">
+              <p className="mt-3 text-sm leading-7 text-[#B8C5BF]">
                 {notification.message}
               </p>
 
-              <p className="mt-3 text-xs text-neutral-400">
-                {formatNotificationDate(notification.created_at)}
+              <p className="mt-3 text-xs font-medium text-[#6F8179]">
+                {formatNotificationDate(
+                  notification.created_at
+                )}
               </p>
             </div>
 
@@ -164,25 +207,30 @@ function NotificationCard({
               {!notification.is_read && (
                 <button
                   type="button"
-                  onClick={() => onMarkRead(notification.id)}
+                  onClick={() =>
+                    onMarkRead(notification.id)
+                  }
                   disabled={busy}
-                  className="inline-flex items-center gap-2 rounded-lg border border-neutral-200 px-3 py-2 text-xs font-semibold text-neutral-700 transition hover:border-[#6B8E23] hover:text-[#6B8E23] disabled:cursor-not-allowed disabled:opacity-50"
+                  className="inline-flex min-h-10 items-center justify-center gap-2 rounded-xl border border-[#D4A34F]/20 bg-[#D4A34F]/10 px-3 text-xs font-bold text-[#F0C86A] transition hover:bg-[#D4A34F]/15 disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   {busy ? (
                     <Loader2 className="h-3.5 w-3.5 animate-spin" />
                   ) : (
                     <Check className="h-3.5 w-3.5" />
                   )}
-                  Mark read
+
+                  Mark Read
                 </button>
               )}
 
               <button
                 type="button"
-                onClick={() => onDelete(notification.id)}
+                onClick={() =>
+                  onDelete(notification.id)
+                }
                 disabled={busy}
                 aria-label={`Delete ${notification.title}`}
-                className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-neutral-200 text-neutral-500 transition hover:border-red-200 hover:bg-red-50 hover:text-red-600 disabled:cursor-not-allowed disabled:opacity-50"
+                className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-red-400/20 bg-red-400/10 text-red-300 transition hover:bg-red-400/15 hover:text-red-200 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {busy ? (
                   <Loader2 className="h-4 w-4 animate-spin" />
@@ -199,14 +247,28 @@ function NotificationCard({
 }
 
 export default function NotificationsPage() {
-  const [notifications, setNotifications] = useState<Notification[]>([]);
-  const [filter, setFilter] = useState<NotificationFilter>("all");
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const [error, setError] = useState("");
-  const [busyNotificationId, setBusyNotificationId] = useState<number | null>(
-    null
-  );
+  const [notifications, setNotifications] =
+    useState<Notification[]>([]);
+
+  const [filter, setFilter] =
+    useState<NotificationFilter>("all");
+
+  const [loading, setLoading] =
+    useState(true);
+
+  const [refreshing, setRefreshing] =
+    useState(false);
+
+  const [error, setError] =
+    useState("");
+
+  const [
+    busyNotificationId,
+    setBusyNotificationId,
+  ] = useState<number | null>(null);
+
+  const [markingAll, setMarkingAll] =
+    useState(false);
 
   const loadNotifications = useCallback(
     async (showFullLoader = true) => {
@@ -219,8 +281,12 @@ export default function NotificationsPage() {
       setError("");
 
       try {
-        const response = await getNotifications();
-        setNotifications(response.notifications);
+        const response =
+          await getNotifications();
+
+        setNotifications(
+          response.notifications
+        );
       } catch (caughtError) {
         setError(
           caughtError instanceof Error
@@ -241,34 +307,51 @@ export default function NotificationsPage() {
 
   const unreadCount = useMemo(
     () =>
-      notifications.filter((notification) => !notification.is_read).length,
+      notifications.filter(
+        (notification) =>
+          !notification.is_read
+      ).length,
     [notifications]
   );
 
-  const visibleNotifications = useMemo(() => {
-    if (filter === "unread") {
-      return notifications.filter((notification) => !notification.is_read);
-    }
+  const visibleNotifications =
+    useMemo(() => {
+      if (filter === "unread") {
+        return notifications.filter(
+          (notification) =>
+            !notification.is_read
+        );
+      }
 
-    return notifications;
-  }, [filter, notifications]);
+      return notifications;
+    }, [filter, notifications]);
 
-  async function handleMarkRead(notificationId: number) {
-    setBusyNotificationId(notificationId);
+  async function handleMarkRead(
+    notificationId: number
+  ) {
+    setBusyNotificationId(
+      notificationId
+    );
+
     setError("");
 
     try {
-      await markNotificationRead(notificationId);
+      await markNotificationRead(
+        notificationId
+      );
 
-      setNotifications((currentNotifications) =>
-        currentNotifications.map((notification) =>
-          notification.id === notificationId
-            ? {
-                ...notification,
-                is_read: true,
-              }
-            : notification
-        )
+      setNotifications(
+        (currentNotifications) =>
+          currentNotifications.map(
+            (notification) =>
+              notification.id ===
+              notificationId
+                ? {
+                    ...notification,
+                    is_read: true,
+                  }
+                : notification
+          )
       );
     } catch (caughtError) {
       setError(
@@ -281,17 +364,27 @@ export default function NotificationsPage() {
     }
   }
 
-  async function handleDelete(notificationId: number) {
-    setBusyNotificationId(notificationId);
+  async function handleDelete(
+    notificationId: number
+  ) {
+    setBusyNotificationId(
+      notificationId
+    );
+
     setError("");
 
     try {
-      await deleteNotification(notificationId);
+      await deleteNotification(
+        notificationId
+      );
 
-      setNotifications((currentNotifications) =>
-        currentNotifications.filter(
-          (notification) => notification.id !== notificationId
-        )
+      setNotifications(
+        (currentNotifications) =>
+          currentNotifications.filter(
+            (notification) =>
+              notification.id !==
+              notificationId
+          )
       );
     } catch (caughtError) {
       setError(
@@ -304,58 +397,122 @@ export default function NotificationsPage() {
     }
   }
 
-  function handleMarkAllRead() {
+  async function handleMarkAllRead() {
     const unreadIds = notifications
-      .filter((notification) => !notification.is_read)
-      .map((notification) => notification.id);
+      .filter(
+        (notification) =>
+          !notification.is_read
+      )
+      .map(
+        (notification) =>
+          notification.id
+      );
 
-    unreadIds.forEach((notificationId) => {
-      void handleMarkRead(notificationId);
-    });
+    if (unreadIds.length === 0) {
+      return;
+    }
+
+    try {
+      setMarkingAll(true);
+      setError("");
+
+      await Promise.all(
+        unreadIds.map(
+          (notificationId) =>
+            markNotificationRead(
+              notificationId
+            )
+        )
+      );
+
+      setNotifications(
+        (currentNotifications) =>
+          currentNotifications.map(
+            (notification) => ({
+              ...notification,
+              is_read: true,
+            })
+          )
+      );
+    } catch (caughtError) {
+      setError(
+        caughtError instanceof Error
+          ? caughtError.message
+          : "Unable to mark all notifications as read."
+      );
+    } finally {
+      setMarkingAll(false);
+    }
   }
 
   return (
-    <main className="min-h-screen bg-[#FBFAF5]">
-      <div className="mx-auto w-full max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
-        <header className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
-          <div>
-            <p className="text-sm font-semibold text-[#6B8E23]">
-              Notification Center
-            </p>
+    <main className="min-h-screen bg-[#071512]">
+      <section className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
+        <section className="relative overflow-hidden rounded-[32px] border border-[#205C46]/35 bg-gradient-to-br from-[#0D211B] via-[#123126] to-[#071512] p-7 shadow-[0_26px_80px_rgba(0,0,0,0.32)] sm:p-9">
+          <div className="absolute -right-24 -top-24 h-72 w-72 rounded-full bg-[#D4A34F]/10 blur-3xl" />
 
-            <h1 className="mt-1 text-3xl font-bold tracking-tight text-neutral-900">
-              Stay updated
-            </h1>
+          <div className="absolute -bottom-20 -left-16 h-56 w-56 rounded-full bg-[#205C46]/20 blur-3xl" />
 
-            <p className="mt-2 max-w-2xl text-sm leading-6 text-neutral-500">
-              View housing, roommate, expense, AI and reminder updates in one
-              place.
-            </p>
+          <div className="relative flex flex-col gap-7 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <div className="inline-flex items-center gap-2 rounded-full border border-[#D4A34F]/20 bg-[#D4A34F]/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-[#F0C86A]">
+                <Sparkles className="h-4 w-4" />
+                Notification Center
+              </div>
+
+              <h1 className="mt-5 text-4xl font-bold tracking-tight text-[#FBFAF7] sm:text-5xl">
+                Stay
+                <span className="block text-[#F0C86A]">
+                  Updated
+                </span>
+              </h1>
+
+              <p className="mt-4 max-w-2xl text-sm leading-7 text-[#B8C5BF] sm:text-base">
+                View housing, roommate, expense,
+                AI and reminder updates from one
+                place.
+              </p>
+            </div>
+
+            <button
+              type="button"
+              onClick={() =>
+                void loadNotifications(false)
+              }
+              disabled={refreshing}
+              className="inline-flex min-h-12 items-center justify-center gap-2 self-start rounded-2xl border border-[#D4A34F]/25 bg-[#D4A34F]/10 px-5 text-sm font-bold text-[#F0C86A] transition hover:bg-[#D4A34F]/15 disabled:cursor-not-allowed disabled:opacity-60 sm:self-auto"
+            >
+              <RefreshCw
+                className={[
+                  "h-4 w-4",
+                  refreshing
+                    ? "animate-spin"
+                    : "",
+                ].join(" ")}
+              />
+
+              {refreshing
+                ? "Refreshing"
+                : "Refresh"}
+            </button>
           </div>
+        </section>
 
-          <button
-            type="button"
-            onClick={() => void loadNotifications(false)}
-            disabled={refreshing}
-            className="inline-flex items-center justify-center gap-2 self-start rounded-xl border border-neutral-200 bg-white px-4 py-2.5 text-sm font-semibold text-neutral-700 shadow-sm transition hover:border-[#6B8E23] hover:text-[#6B8E23] disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            <RefreshCw
-              className={`h-4 w-4 ${refreshing ? "animate-spin" : ""}`}
-            />
-            {refreshing ? "Refreshing" : "Refresh"}
-          </button>
-        </header>
+        <section className="relative mt-8 overflow-hidden rounded-[28px] border border-[#205C46]/35 bg-[#0D211B] p-6 shadow-[0_20px_60px_rgba(0,0,0,0.24)]">
+          <div className="absolute -right-16 -top-16 h-48 w-48 rounded-full bg-[#D4A34F]/8 blur-3xl" />
 
-        <section className="mt-8 rounded-2xl border border-neutral-200 bg-white p-5 shadow-sm">
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex items-center gap-3">
-              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#EEF2E4] text-[#6B8E23]">
-                <Bell className="h-5 w-5" />
+          <div className="relative flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-center gap-4">
+              <div className="flex h-14 w-14 items-center justify-center rounded-[18px] border border-[#D4A34F]/20 bg-[#D4A34F]/10 text-[#F0C86A]">
+                <Bell className="h-6 w-6" />
               </div>
 
               <div>
-                <p className="text-sm text-neutral-500">Unread notifications</p>
-                <p className="text-2xl font-bold text-neutral-900">
+                <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#7F9189]">
+                  Unread Notifications
+                </p>
+
+                <p className="mt-1 text-3xl font-bold text-[#FBFAF7]">
                   {unreadCount}
                 </p>
               </div>
@@ -364,45 +521,50 @@ export default function NotificationsPage() {
             {unreadCount > 0 && (
               <button
                 type="button"
-                onClick={handleMarkAllRead}
-                className="inline-flex items-center gap-2 self-start rounded-xl bg-[#6B8E23] px-4 py-2.5 text-sm font-semibold text-white transition hover:opacity-90 sm:self-center"
+                onClick={() =>
+                  void handleMarkAllRead()
+                }
+                disabled={markingAll}
+                className="inline-flex min-h-11 items-center justify-center gap-2 self-start rounded-2xl bg-[#D4A34F] px-5 text-sm font-bold text-[#071512] shadow-[0_12px_30px_rgba(212,163,79,0.22)] transition hover:bg-[#F0C86A] disabled:cursor-not-allowed disabled:opacity-60 sm:self-center"
               >
-                <Check className="h-4 w-4" />
-                Mark all as read
+                {markingAll ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Check className="h-4 w-4" />
+                )}
+
+                {markingAll
+                  ? "Marking..."
+                  : "Mark All as Read"}
               </button>
             )}
           </div>
         </section>
 
-        <div className="mt-6 flex flex-wrap gap-2">
-          <button
-            type="button"
-            onClick={() => setFilter("all")}
-            className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
-              filter === "all"
-                ? "bg-[#6B8E23] text-white"
-                : "border border-neutral-200 bg-white text-neutral-600 hover:border-[#6B8E23]"
-            }`}
+        <div className="mt-6 flex flex-wrap gap-3">
+          <FilterButton
+            active={filter === "all"}
+            onClick={() =>
+              setFilter("all")
+            }
           >
             All ({notifications.length})
-          </button>
+          </FilterButton>
 
-          <button
-            type="button"
-            onClick={() => setFilter("unread")}
-            className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
-              filter === "unread"
-                ? "bg-[#6B8E23] text-white"
-                : "border border-neutral-200 bg-white text-neutral-600 hover:border-[#6B8E23]"
-            }`}
+          <FilterButton
+            active={filter === "unread"}
+            onClick={() =>
+              setFilter("unread")
+            }
           >
             Unread ({unreadCount})
-          </button>
+          </FilterButton>
         </div>
 
         {error && (
-          <div className="mt-6 flex items-start gap-3 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
-            <AlertCircle className="mt-0.5 h-5 w-5 shrink-0" />
+          <div className="mt-6 flex items-start gap-3 rounded-[20px] border border-red-400/20 bg-red-400/10 p-4 text-sm leading-6 text-red-200">
+            <AlertCircle className="mt-0.5 h-5 w-5 shrink-0 text-red-300" />
+
             <p>{error}</p>
           </div>
         )}
@@ -410,43 +572,94 @@ export default function NotificationsPage() {
         <section className="mt-6">
           {loading ? (
             <NotificationSkeleton />
-          ) : visibleNotifications.length > 0 ? (
+          ) : visibleNotifications.length >
+            0 ? (
             <div className="space-y-4">
-              {visibleNotifications.map((notification) => (
-                <NotificationCard
-                  key={notification.id}
-                  notification={notification}
-                  busy={busyNotificationId === notification.id}
-                  onMarkRead={(notificationId) =>
-                    void handleMarkRead(notificationId)
-                  }
-                  onDelete={(notificationId) =>
-                    void handleDelete(notificationId)
-                  }
-                />
-              ))}
+              {visibleNotifications.map(
+                (notification) => (
+                  <NotificationCard
+                    key={notification.id}
+                    notification={
+                      notification
+                    }
+                    busy={
+                      busyNotificationId ===
+                      notification.id
+                    }
+                    onMarkRead={(
+                      notificationId
+                    ) =>
+                      void handleMarkRead(
+                        notificationId
+                      )
+                    }
+                    onDelete={(
+                      notificationId
+                    ) =>
+                      void handleDelete(
+                        notificationId
+                      )
+                    }
+                  />
+                )
+              )}
             </div>
           ) : (
-            <div className="rounded-2xl border border-dashed border-neutral-300 bg-white p-10 text-center">
-              <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#EEF2E4] text-[#6B8E23]">
-                <Bell className="h-6 w-6" />
+            <section className="relative flex min-h-[420px] flex-col items-center justify-center overflow-hidden rounded-[30px] border border-dashed border-[#D4A34F]/25 bg-[#0D211B] p-8 text-center shadow-[0_20px_60px_rgba(0,0,0,0.24)]">
+              <div className="absolute left-1/2 top-1/2 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#D4A34F]/5 blur-3xl" />
+
+              <div className="relative flex flex-col items-center">
+                <div className="flex h-24 w-24 items-center justify-center rounded-[28px] border border-[#D4A34F]/25 bg-[#D4A34F]/10 text-[#F0C86A]">
+                  <Bell className="h-10 w-10" />
+                </div>
+
+                <p className="mt-6 text-xs font-bold uppercase tracking-[0.2em] text-[#D4A34F]">
+                  Notification Center
+                </p>
+
+                <h2 className="mt-3 text-3xl font-bold text-[#FBFAF7]">
+                  {filter === "unread"
+                    ? "No Unread Notifications"
+                    : "No Notifications Yet"}
+                </h2>
+
+                <p className="mt-4 max-w-lg text-sm leading-7 text-[#9EAEA7] sm:text-base">
+                  {filter === "unread"
+                    ? "You are all caught up. New unread updates will appear here."
+                    : "Housing, roommate, expense, AI and reminder updates will appear here when available."}
+                </p>
               </div>
-
-              <h2 className="mt-4 text-lg font-semibold text-neutral-900">
-                {filter === "unread"
-                  ? "No unread notifications"
-                  : "No notifications yet"}
-              </h2>
-
-              <p className="mt-2 text-sm text-neutral-500">
-                {filter === "unread"
-                  ? "You are all caught up."
-                  : "New updates will appear here when they become available."}
-              </p>
-            </div>
+            </section>
           )}
         </section>
-      </div>
+      </section>
     </main>
+  );
+}
+
+interface FilterButtonProps {
+  active: boolean;
+  onClick: () => void;
+  children: React.ReactNode;
+}
+
+function FilterButton({
+  active,
+  onClick,
+  children,
+}: FilterButtonProps) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={[
+        "rounded-full border px-5 py-2.5 text-sm font-bold transition",
+        active
+          ? "border-[#D4A34F] bg-[#D4A34F] text-[#071512]"
+          : "border-[#205C46]/40 bg-[#0D211B] text-[#9EAEA7] hover:border-[#D4A34F]/30 hover:text-[#F0C86A]",
+      ].join(" ")}
+    >
+      {children}
+    </button>
   );
 }

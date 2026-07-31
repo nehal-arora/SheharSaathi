@@ -12,19 +12,19 @@ export default function AuthHeader({
   subtitle,
 }: AuthHeaderProps) {
   return (
-    <div className="mb-10 text-center">
+    <div className="mb-8 text-center">
       {/* Logo */}
-      <div className="mb-8 flex justify-center">
+      <div className="mb-7 flex justify-center">
         <Logo showTagline={false} />
       </div>
 
       {/* Heading */}
-      <h1 className="text-3xl font-bold tracking-tight text-[#333333] md:text-4xl">
+      <h1 className="text-3xl font-bold tracking-tight text-[#FBFAF7] md:text-4xl">
         {title}
       </h1>
 
       {/* Subtitle */}
-      <p className="mt-3 text-sm leading-6 text-gray-500 md:text-base">
+      <p className="mx-auto mt-3 max-w-md text-sm leading-7 text-[#A9BBB4] md:text-base">
         {subtitle}
       </p>
     </div>

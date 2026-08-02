@@ -1,36 +1,100 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# शहरSaathi 🏙️
 
-## Getting Started
+An AI-powered relocation assistant that helps students and working professionals relocate to a new city with confidence.
 
-First, run the development server:
+## 🚀 Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- 🏠 Smart Housing Search
+- 👥 AI Roommate Matching
+- 💰 Expense Management & Reports
+- 🤖 AI Relocation Assistant
+- 📍 Locality Recommendation
+- 🛡️ Rental Scam Detection
+- 💸 AI Budget Advisor
+- 💡 Personalized Suggestions
+- 🚌 Transport Planner
+- 🔔 Smart Notifications
+- 🔐 Secure Authentication
+
+---
+
+## 🛠️ Tech Stack
+
+### Frontend
+- Next.js 16
+- React
+- TypeScript
+- Tailwind CSS
+- shadcn/ui
+- Framer Motion
+- Axios
+- Lucide React
+
+### Backend
+- FastAPI
+- PostgreSQL / Supabase
+- JWT Authentication
+- Pydantic
+- SQLAlchemy
+
+### AI
+- Google Gemini API
+
+---
+
+## 📂 Project Structure
+
+```text
+Frontend (Next.js)
+├── Authentication
+├── Dashboard
+├── Housing
+├── Roommates
+├── Expenses
+├── AI Assistant
+├── Transport
+└── Notifications
+
+Backend (FastAPI)
+├── Auth APIs
+├── Housing APIs
+├── Roommate APIs
+├── Expense APIs
+├── AI APIs
+├── Transport APIs
+└── Notification APIs
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## ✨ AI Features
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- AI Relocation Chat
+- Locality Recommendation
+- Rental Scam Checker
+- Budget Advisor
+- Personalized Suggestions
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🌍 Deployment
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **Frontend:** Vercel
+- **Backend:** Render
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 👥 Team
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Developed as a collaborative project by the शहरSaathi team.
+
+---
+
+## 📄 License
+
+This project is intended for educational and learning purposes.
+
+## Contributors
+
+- Nehal Arora
+- Rishika Jain

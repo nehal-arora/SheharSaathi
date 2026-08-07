@@ -1,24 +1,24 @@
-# शहरSaathi 🏙️
+# शहरSaathi 
 
 An AI-powered relocation assistant that helps students and working professionals relocate to a new city with confidence.
 
-## 🚀 Features
+##  Features
 
-- 🏠 Smart Housing Search
-- 👥 AI Roommate Matching
-- 💰 Expense Management & Reports
-- 🤖 AI Relocation Assistant
-- 📍 Locality Recommendation
-- 🛡️ Rental Scam Detection
-- 💸 AI Budget Advisor
-- 💡 Personalized Suggestions
-- 🚌 Transport Planner
-- 🔔 Smart Notifications
-- 🔐 Secure Authentication
+-  Smart Housing Search
+-  AI Roommate Matching
+-  Expense Management & Reports
+-  AI Relocation Assistant
+-  Locality Recommendation
+-  Rental Scam Detection
+-  AI Budget Advisor
+-  Personalized Suggestions
+-  Transport Planner
+-  Smart Notifications
+-  Secure Authentication
 
 ---
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 ### Frontend
 - Next.js 16
@@ -42,7 +42,7 @@ An AI-powered relocation assistant that helps students and working professionals
 
 ---
 
-## 📂 Project Structure
+##  Project Structure
 
 ```text
 Frontend (Next.js)
@@ -67,7 +67,7 @@ Backend (FastAPI)
 
 ---
 
-## ✨ AI Features
+##  AI Features
 
 - AI Relocation Chat
 - Locality Recommendation
@@ -77,20 +77,20 @@ Backend (FastAPI)
 
 
 
-## 🌍 Deployment
+##  Deployment
 
 - **Frontend:** Vercel
 - **Backend:** Render
 
 ---
 
-## 👥 Team
+##  Team
 
 Developed as a collaborative project by the शहरSaathi team.
 
 ---
 
-## 📄 License
+##  License
 
 This project is intended for educational and learning purposes.
 

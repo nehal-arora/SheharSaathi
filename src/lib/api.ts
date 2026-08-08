@@ -16,16 +16,17 @@ const api = axios.create({
  * Reads and cleans the token stored in localStorage.
  *
  * Handles accidental values such as:
- * "eyJ..."
- * Bearer eyJ...
- * extra spaces
+ * - "eyJ..."
+ * - Bearer eyJ...
+ * - extra spaces
  */
 function getStoredAccessToken(): string | null {
   if (typeof window === "undefined") {
     return null;
   }
 
-  const storedToken = localStorage.getItem("access_token");
+  const storedToken =
+    localStorage.getItem("access_token");
 
   if (!storedToken) {
     return null;
@@ -46,16 +47,19 @@ api.interceptors.request.use(
 
     const isAuthRequest =
       requestUrl.includes("/auth/login") ||
-      requestUrl.includes("/auth/signup");
+      requestUrl.includes("/auth/signup") ||
+      requestUrl.includes("/auth/google");
 
     /*
-     * Never attach an old token to login or signup.
+     * Never attach an old token to
+     * login, signup, or Google auth.
      */
     if (!isAuthRequest) {
       const token = getStoredAccessToken();
 
       if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
+        config.headers.Authorization =
+          `Bearer ${token}`;
       } else {
         delete config.headers.Authorization;
       }
@@ -83,6 +87,10 @@ export interface LoginData {
   password: string;
 }
 
+export interface GoogleLoginData {
+  credential: string;
+}
+
 export interface User {
   id: number;
   name: string;
@@ -97,40 +105,27 @@ export interface LoginResponse {
 }
 
 /* =========================================================
-   AUTH APIs
+   AUTH HELPERS
 ========================================================= */
 
-export async function signupUser(data: SignupData) {
-  const response = await api.post("/auth/signup", data);
-  return response.data;
-}
+function storeAuthSession(
+  response: LoginResponse
+): LoginResponse {
+  const rawToken =
+    response.access_token;
 
-export async function loginUser(
-  data: LoginData
-): Promise<LoginResponse> {
-  /*
-   * Remove any expired token before making the login request.
-   */
-  if (typeof window !== "undefined") {
-    localStorage.removeItem("access_token");
-    localStorage.removeItem("user");
-  }
-
-  const response = await api.post<LoginResponse>(
-    "/auth/login",
-    data
-  );
-
-  const rawToken = response.data.access_token;
-
-  if (!rawToken || typeof rawToken !== "string") {
+  if (
+    !rawToken ||
+    typeof rawToken !== "string"
+  ) {
     throw new Error(
       "The backend did not return a valid access token."
     );
   }
 
   /*
-   * Store only the raw JWT, without quotes or Bearer.
+   * Store only the raw JWT,
+   * without quotes or Bearer.
    */
   const cleanToken = rawToken
     .trim()
@@ -145,31 +140,105 @@ export async function loginUser(
   }
 
   if (typeof window !== "undefined") {
-    localStorage.setItem("access_token", cleanToken);
+    localStorage.setItem(
+      "access_token",
+      cleanToken
+    );
+
     localStorage.setItem(
       "user",
-      JSON.stringify(response.data.user)
+      JSON.stringify(response.user)
     );
   }
 
   return {
-    ...response.data,
+    ...response,
     access_token: cleanToken,
   };
 }
 
-export async function getCurrentUser(): Promise<User> {
-  const response = await api.get<User>("/users/me");
-  return response.data;
-}
-
-export function logoutUser(): void {
+function clearAuthSession(): void {
   if (typeof window === "undefined") {
     return;
   }
 
   localStorage.removeItem("access_token");
   localStorage.removeItem("user");
+}
+
+/* =========================================================
+   AUTH APIs
+========================================================= */
+
+export async function signupUser(
+  data: SignupData
+) {
+  const response = await api.post(
+    "/auth/signup",
+    data
+  );
+
+  return response.data;
+}
+
+export async function loginUser(
+  data: LoginData
+): Promise<LoginResponse> {
+  /*
+   * Remove any expired token before
+   * making the login request.
+   */
+  clearAuthSession();
+
+  const response =
+    await api.post<LoginResponse>(
+      "/auth/login",
+      data
+    );
+
+  return storeAuthSession(
+    response.data
+  );
+}
+
+export async function googleLogin(
+  credential: string
+): Promise<LoginResponse> {
+  if (!credential) {
+    throw new Error(
+      "Google did not return a valid credential."
+    );
+  }
+
+  /*
+   * Remove any previous session before
+   * Google authentication.
+   */
+  clearAuthSession();
+
+  const response =
+    await api.post<LoginResponse>(
+      "/auth/google",
+      {
+        credential,
+      } satisfies GoogleLoginData
+    );
+
+  return storeAuthSession(
+    response.data
+  );
+}
+
+export async function getCurrentUser():
+  Promise<User> {
+  const response =
+    await api.get<User>("/users/me");
+
+  return response.data;
+}
+
+export function logoutUser(): void {
+  clearAuthSession();
 }
 
 export default api;

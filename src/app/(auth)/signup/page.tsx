@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import {
   ArrowRight,
@@ -18,8 +17,12 @@ import AuthCard from "@/components/auth/AuthCard";
 import AuthHeader from "@/components/auth/AuthHeader";
 import AuthInput from "@/components/auth/AuthInput";
 import PasswordInput from "@/components/auth/PasswordInput";
+import GoogleSignInButton from "@/components/auth/GoogleSignInButton";
 
-import { signupUser } from "@/lib/api";
+import {
+  googleLogin,
+  signupUser,
+} from "@/lib/api";
 
 export default function SignupPage() {
   const router = useRouter();
@@ -37,6 +40,11 @@ export default function SignupPage() {
 
   const [loading, setLoading] =
     useState(false);
+
+  const [
+    googleLoading,
+    setGoogleLoading,
+  ] = useState(false);
 
   async function handleSubmit(
     event: React.FormEvent<HTMLFormElement>
@@ -74,6 +82,32 @@ export default function SignupPage() {
       toast.error(message);
     } finally {
       setLoading(false);
+    }
+  }
+
+  async function handleGoogleSuccess(
+    credential: string
+  ) {
+    try {
+      setGoogleLoading(true);
+
+      await googleLogin(credential);
+
+      toast.success(
+        "Account created with Google!"
+      );
+
+      router.replace("/dashboard");
+      router.refresh();
+    } catch (error: any) {
+      const message =
+        error?.response?.data?.detail ||
+        error?.message ||
+        "Google sign-up failed.";
+
+      toast.error(message);
+    } finally {
+      setGoogleLoading(false);
     }
   }
 
@@ -160,7 +194,10 @@ export default function SignupPage() {
 
               <button
                 type="submit"
-                disabled={loading}
+                disabled={
+                  loading ||
+                  googleLoading
+                }
                 className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl bg-[#D4A34F] px-5 text-base font-bold text-[#071512] shadow-[0_12px_30px_rgba(212,163,79,0.24)] transition hover:-translate-y-0.5 hover:bg-[#F0C86A] disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {loading ? (
@@ -172,6 +209,7 @@ export default function SignupPage() {
                 ) : (
                   <>
                     Create Account
+
                     <ArrowRight className="h-5 w-5" />
                   </>
                 )}
@@ -188,19 +226,26 @@ export default function SignupPage() {
               <div className="h-px flex-1 bg-[#205C46]/40" />
             </div>
 
-            <button
-              type="button"
-              className="flex min-h-12 w-full items-center justify-center gap-3 rounded-2xl border border-[#205C46]/45 bg-[#10271F] px-5 font-semibold text-[#D6E0DB] transition hover:border-[#D4A34F]/35 hover:bg-[#D4A34F]/10 hover:text-[#F0C86A]"
-            >
-              <Image
-                src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
-                alt="Google"
-                width={20}
-                height={20}
-              />
+            <div className="flex min-h-12 w-full items-center justify-center rounded-2xl border border-[#205C46]/45 bg-[#10271F] px-4 py-2">
+              {googleLoading ? (
+                <div className="flex items-center gap-3 text-sm font-semibold text-[#D6E0DB]">
+                  <span className="h-5 w-5 animate-spin rounded-full border-2 border-[#D4A34F] border-t-transparent" />
 
-              Continue with Google
-            </button>
+                  Creating account with Google...
+                </div>
+              ) : (
+                <GoogleSignInButton
+                  onSuccess={
+                    handleGoogleSuccess
+                  }
+                  onError={() =>
+                    toast.error(
+                      "Google sign-up failed."
+                    )
+                  }
+                />
+              )}
+            </div>
 
             <div className="mt-7 rounded-[20px] border border-[#205C46]/35 bg-[#10271F] p-4">
               <div className="flex items-start gap-3">
@@ -232,6 +277,7 @@ export default function SignupPage() {
 
             <div className="mt-5 flex items-center justify-center gap-2 text-xs text-[#6F8179]">
               <LockKeyhole className="h-3.5 w-3.5 text-[#D4A34F]" />
+
               Protected account registration
             </div>
           </div>

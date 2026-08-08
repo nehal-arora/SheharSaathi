@@ -44,7 +44,7 @@ export default function RootLayout({
       lang="en"
       className={`${manrope.variable} ${notoSansDevanagari.variable}`}
     >
-      <body className="min-h-screen bg-[#071512] font-sans text-[#FBFAF7] antialiased">
+      <body>
         {children}
 
         <Toaster

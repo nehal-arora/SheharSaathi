@@ -5,12 +5,14 @@ from database.session import get_db
 from schemas.auth import (
     SignupRequest,
     LoginRequest,
+    GoogleLoginRequest,
     LoginResponse,
 )
 from schemas.user import UserResponse
 from services.auth_service import (
     register_user,
     login_user,
+    login_with_google,
 )
 
 router = APIRouter(
@@ -40,3 +42,16 @@ def login(
     db: Session = Depends(get_db),
 ):
     return login_user(login_data, db)
+
+@router.post(
+    "/google",
+    response_model=LoginResponse,
+)
+def google_login(
+    google_data: GoogleLoginRequest,
+    db: Session = Depends(get_db),
+):
+    return login_with_google(
+        google_data,
+        db,
+    )    
